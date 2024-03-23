@@ -107,7 +107,11 @@ class Container extends React.Component{
         postCommentAry:[],
         commentCounter:[],
         userAccount:[],
-        commentAccount:[]
+        commentAccount:[],
+        likeCounter:0,
+        likeState:0,
+        loginUid:7
+        
     }
     render(){
         return(  
@@ -118,7 +122,11 @@ class Container extends React.Component{
                         commentCounter = {this.state.commentCounter}
                         userAccount = {this.state.userAccount}
                         commentAccount = {this.state.commentAccount}      
-                        handleModal = {this.handleModal}  
+                        handleModal = {this.handleModal}
+                        handleLikeState = {this.handleLikeState}  
+                        likeState = {this.state.likeState}
+                        loginUid = {this.state.loginUid}
+                        likeCounter= {this.state.likeCounter}
                         />
                 <FilterBar handleFilterBar={this.handleFilterBar}/>
                 <Content dataAry={this.state.dataAry} handleModal={this.handleModal}/>
@@ -129,7 +137,6 @@ class Container extends React.Component{
         let result = await axios.get("http://localhost:8000/viewPage/imgList");
         let newState = {...this.state};
         newState.dataAry = result.data;
-        console.log("all list:",newState.dataAry);
         this.setState(newState);
     }
     handleFilterBar = (result) =>{
@@ -139,28 +146,39 @@ class Container extends React.Component{
         this.setState(newState);
     }  
     handleModal = async(postid)=>{
-        const [postContent, postTag,postComment,commentCounter,userAccount,commentAccount] = await Promise.all([
+        const [postContent, postTag,userAccount,postComment,commentCounter,commentAccount,likeCounter,likeState] = await Promise.all([
             axios.get(`http://localhost:8000/viewPage/getModal?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getTag?postid=${postid}`),
-            axios.get(`http://localhost:8000/viewPage/getComment?postid=${postid}`),
-            axios.get(`http://localhost:8000/viewPage/getCommentCouner?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getUserAccount?postid=${postid}`),
-            axios.get(`http://localhost:8000/viewPage/getCommentAccount?postid=${postid}`) 
+            axios.get(`http://localhost:8000/viewPage/getComment?postid=${postid}`),
+            axios.get(`http://localhost:8000/viewPage/getCommentCouner?postid=${postid}`),        
+            axios.get(`http://localhost:8000/viewPage/getCommentAccount?postid=${postid}`),
+            axios.get(`http://localhost:8000/viewPage/getLikeCounter?postid=${postid}`),
+            axios.get(`http://localhost:8000/viewPage/getLikeState?uid=${this.state.loginUid}&postid=${postid}`)      
         ]);
 
         let newState = {...this.state};
 
-        newState.modalInfoAry = postContent.data;
-        newState.postTagAry = postTag.data;
+        newState.modalInfoAry = postContent.data;   
+        newState.postTagAry = postTag.data;     
+        newState.userAccount = userAccount.data ; 
         newState.postCommentAry = postComment.data;
         newState.commentCounter = commentCounter.data ; 
-        newState.userAccount = userAccount.data ; 
         newState.commentAccount = commentAccount.data;
+        newState.likeCounter = likeCounter.data[0].likeCounter;
+        newState.likeState = likeState.data[0].state;
 
         console.log("change to newState:",newState);
         this.setState(newState);
     }
-  
+
+    handleLikeState = (state)=>{
+      
+        let newState = {...this.state};
+        newState.likeState = state ;     
+        (state) ? newState.likeCounter+=1:newState.likeCounter-=1;        
+        this.setState(newState);
+    }
 }
 
 //整頁viewPage

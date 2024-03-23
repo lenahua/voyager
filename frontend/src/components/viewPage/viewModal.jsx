@@ -9,6 +9,7 @@ class Modal extends React.Component{
         commentText:"",
     };
   
+    //slider設定
     settings = {
         dots: true,
         infinite: true,
@@ -25,16 +26,29 @@ class Modal extends React.Component{
         let result = await axios.post(`http://localhost:8000/viewPage/postComment`,dataToServer);
         this.setState({commentText:""});
         this.props.handleModal(this.props.info[0].postid);
-     
     }
-    formatTime = (utcDateString)=>{
+    //點愛心改變已點讚或未點讚,點擊後的狀態傳給handleLikeState
+    clickLike = async()=>{
+        console.log("click likeBtb props.likeState: ",this.props.likeState);
+        let state = 0;
+        if(this.props.likeState){
+            await axios.delete(`http://localhost:8000/viewPage/cancelLike?uid=${this.props.loginUid}`);
+            this.props.handleLikeState(state);
+        }else{
+            await axios.post(`http://localhost:8000/viewPage/addLike?uid=${this.props.loginUid}&postid=${this.props.info[0].postid}`);
+            state = 1 ; 
+            this.props.handleLikeState(state);
+        }
+    }
+    //轉換日期格式:UTC轉當地時間
+    formatTime = (utcDateString)=>{ 
         const utcDate = new Date(utcDateString);
         const localDateString = utcDate.toLocaleString();
         return localDateString;
     }
    
     render(){
-        
+        //貼文內容換行字串處理
         let postContent = (this.props.info.length)?this.props.info[0].postcontent:"";
         let formatContentAry = postContent.split('\r\n');
         return(
@@ -46,7 +60,7 @@ class Modal extends React.Component{
                             <button type="button" id="modalclosebtn" className="btn-close position-fixed top-0 end-0 mt-3 me-3" data-bs-dismiss="modal"></button>
                             <div id="mybox" className="mybox d-flex flex-row flex-wrap w-100 h-100">
                                 <div className="imgArea col-12 col-sm-6 d-flex align-items-center h-100">   
-                                
+                                {/* {單張圖僅顯示圖片,多張圖才用輪播} */}
                                 {this.props.info.length === 1 ? (
                                         <img src={`data:image/jpeg;base64,${this.props.info[0].img}`} alt="img" style={{ width: '100%', height: 'auto' }} />
                                     ) : (
@@ -113,7 +127,7 @@ class Modal extends React.Component{
 
                                         {
                                             this.props.comment.map((comment,index)=>{
-                                                console.log(this.props.commentAccount[index].account);
+                                               
 
                                                 return(
                                                     <div class="postComment py-2 d-flex">
@@ -157,17 +171,18 @@ class Modal extends React.Component{
                                     
                                     <div class="postFoot">
                                         <div class="postInfo py-1 border-top border-1 border-secondary">
-                                            <span class="postTotalLike">{(this.props.info.length)?this.props.info[0].likecounter:0}個讚</span>
+                                            <span class="postTotalLike">{this.props.likeCounter}個讚</span>
                                             <span class="postTotalComment ms-2">{(this.props.commentCounter.length)?this.props.commentCounter[0].comment_counter:""}則回覆</span>
-                                            <button class="float-end likeBtn">
-                                                
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class=" bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                                                    <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                                                </svg>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="d-none bi bi-suit-heart" viewBox="0 0 16 16">
-                                                    <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
-                                                </svg>
-
+                                            <button class="float-end likeBtn" onClick={this.clickLike}>
+                                                {
+                                                (this.props.likeState)?(
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class=" bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                                        <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                                                    </svg>
+                                                ):(<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class=" bi bi-suit-heart" viewBox="0 0 16 16">
+                                                        <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+                                                    </svg>
+                                                )}
                                             </button>
                                         </div>
                                         <div class="writeCommentBox py-2 border-top border-1 border-secondary d-flex align-items-center">

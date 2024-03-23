@@ -161,8 +161,38 @@ app.get(`/viewPage/getCommentAccount`,function(req,res){
         res.send(result);
     });
 });
-
-
-
-
-
+//取得貼文按讚狀態=>已點or未點
+app.get(`/viewPage/getLikeState`,function(req,res){
+    connection.query(`
+        SELECT count(*) as state
+        FROM postliketable
+        WHERE uid = ? AND
+        postid = ?`,[req.query.uid,req.query.postid],
+    function(err,result){
+        res.send(result);
+    });
+});
+//取消特定貼文的點讚
+app.delete(`/viewPage/cancelLike`,function(req,res){
+    connection.query(`
+        DELETE FROM postliketable WHERE uid = ?`,[req.query.uid],
+    function(err,result){
+        res.send("cancel sucess");
+    })
+})
+//對特定貼文點讚
+app.post(`/viewPage/addLike`,function(req,res){
+    connection.query(`
+        INSERT INTO postliketable(postid,uid) VALUES (?,?)`,[req.query.postid,req.query.uid],
+    function(err,result){
+        res.send("addLike sucess");
+    })
+})
+//取得特定貼文讚數
+app.get(`/viewPage/getLikeCounter`,function(req,res){
+    connection.query(`
+        SELECT COUNT(*) as likeCounter FROM postliketable WHERE postid = ?`,[req.query.postid],
+    function(err,result){
+        res.send(result);
+    })
+})
