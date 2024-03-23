@@ -29,8 +29,8 @@ class Modal extends React.Component{
     }
     //點愛心改變已點讚或未點讚,點擊後的狀態傳給handleLikeState
     clickLike = async()=>{
-        console.log("click likeBtb props.likeState: ",this.props.likeState);
         let state = 0;
+        console.log("click likeBtb props.likeState: ",this.props.likeState);        
         if(this.props.likeState){
             await axios.delete(`http://localhost:8000/viewPage/cancelLike?uid=${this.props.loginUid}`);
             this.props.handleLikeState(state);
@@ -40,6 +40,20 @@ class Modal extends React.Component{
             this.props.handleLikeState(state);
         }
     }
+    clickSaving = async()=>{
+        let state = 0;
+        console.log("click savingBtb props.likeState: ",this.props.savingState);
+        if(this.props.savingState){
+            await axios.delete(`http://localhost:8000/viewPage/deleteSavingState?uid=${this.props.loginUid}&postid=${this.props.info[0].postid}`)
+            this.props.handleSavingState(state);
+        }else{
+            state = 1;
+            await axios.post(`http://localhost:8000/viewPage/addSavingState?uid=${this.props.loginUid}&postid=${this.props.info[0].postid}`)
+             this.props.handleSavingState(state)
+        }
+    }
+
+
     //轉換日期格式:UTC轉當地時間
     formatTime = (utcDateString)=>{ 
         const utcDate = new Date(utcDateString);
@@ -78,11 +92,17 @@ class Modal extends React.Component{
                                     
                                     <div class="postHead d-flex align-items-center justify-content-between border-bottom border-secondary py-2">
                                         <h3 class="mb-0">{(this.props.info.length)?this.props.info[0].title:""}</h3>
-                                        <div>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                            </svg>  
-                                        </div>
+                                        <button className='iconBtn' onClick={this.clickSaving}>
+                                            {
+                                            (this.props.savingState)?(
+                                                <svg class="bi bi-bookmark-fill" width="28" height="28" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd" d="M3 3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12l-5-3-5 3V3z"/>
+                                                </svg>
+                                            ):(<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                                </svg>
+                                            )}                                   
+                                        </button>
                                     </div>
 
                                     <div class="postBody h-100 px-2">
@@ -97,7 +117,7 @@ class Modal extends React.Component{
                                             </div>
 
                                             <div class="postContent">
-                                                <a href=""><b>{this.props.userAccount.length?this.props.userAccount[0].account:""}</b></a>
+                                                <a href=""><b>{this.props.info.length?this.props.info[0].account:""}</b></a>
                                                 
                                                 <p>
                                                 {
@@ -173,7 +193,7 @@ class Modal extends React.Component{
                                         <div class="postInfo py-1 border-top border-1 border-secondary">
                                             <span class="postTotalLike">{this.props.likeCounter}個讚</span>
                                             <span class="postTotalComment ms-2">{(this.props.commentCounter.length)?this.props.commentCounter[0].comment_counter:""}則回覆</span>
-                                            <button class="float-end likeBtn" onClick={this.clickLike}>
+                                            <button class="float-end iconBtn" onClick={this.clickLike}>
                                                 {
                                                 (this.props.likeState)?(
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class=" bi bi-suit-heart-fill" viewBox="0 0 16 16">

@@ -151,7 +151,7 @@ textarea:focus{
 #modalclosebtn{
     color: rgb(255, 255, 255);
 }
-.likeBtn{
+.iconBtn{
     background-color: transparent;
     border: none;
     outline: none;

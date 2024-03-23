@@ -38,10 +38,12 @@ let changeToBase64 = (result)=>{
 //找到特定貼文postid的所有照+資訊,回傳的是陣列
 app.get("/viewPage/getModal", function (req, res) {
     connection.query(
-        `SELECT * 
-        FROM imgdata,post 
+        `SELECT post.postid,imgdata.img,post.title,
+        post.postdate,post.postcontent,userinfo.account
+        FROM imgdata,post,userinfo
         WHERE imgdata.postid  = post.postid 
-        AND imgdata.postid = ?`,[req.query.postid],
+        AND post.uid = userinfo.uid
+        AND post.postid = ?`,[req.query.postid],
         function (err, result) {
             let newResult = changeToBase64(result);
             console.log(result);
@@ -136,18 +138,6 @@ app.get(`/viewPage/getCommentCouner`,function(req,res){
     })
 });
 
-//取得特定貼文postid的使用者帳號(account)
-app.get(`/viewPage/getUserAccount`,function(req,res){
-    connection.query(`
-        SELECT account 
-        FROM post,userinfo 
-        WHERE post.Uid = userinfo.Uid AND
-        post.postid = ?`,[req.query.postid],
-    function(err,result){
-        res.send(result);
-    })
-    
-});
 //取得特定貼文的留言的使用者帳號(account)
 app.get(`/viewPage/getCommentAccount`,function(req,res){
     connection.query(`
@@ -196,3 +186,35 @@ app.get(`/viewPage/getLikeCounter`,function(req,res){
         res.send(result);
     })
 })
+
+//取得特定貼文是否被收藏
+app.get(`/viewPage/getSavingState`,function(req,res){
+    connection.query(`
+        SELECT COUNT(*) as state
+        FROM savinglist 
+        WHERE postid = ? AND
+        uid = ?`,[req.query.postid,req.query.uid],
+    function(err,result){
+        res.send(result);
+    })
+})
+//對特定貼文取消收藏
+app.delete(`/viewPage/deleteSavingState`,function(req,res){
+    connection.query(`
+        DELETE FROM savinglist 
+        WHERE postid = ? AND uid = ?`,[req.query.postid,req.query.uid],
+    function(err,result){
+        res.send("cancle saving");
+    })
+}); 
+
+//對特定貼文增加收藏
+app.post(`/viewPage/addSavingState`,function(req,res){
+    connection.query(`
+        INSERT INTO savinglist( Uid, postId, categoryId, saveTime) 
+        VALUES (?,?,?,NOW())`,[req.query.uid,req.query.postid,8],
+    function(err,result){
+        res.send("addLike sucess");
+    })
+})
+

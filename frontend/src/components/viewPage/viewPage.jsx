@@ -110,23 +110,25 @@ class Container extends React.Component{
         commentAccount:[],
         likeCounter:0,
         likeState:0,
+        savingState:0,
         loginUid:7
         
     }
     render(){
         return(  
             <div className="container max-width: 100% mt-3 d-flex gx-5 align-items-start">
-                <Modal info={this.state.modalInfoAry} 
+                <Modal  info={this.state.modalInfoAry} 
                         tag={this.state.postTagAry} 
                         comment = {this.state.postCommentAry}
-                        commentCounter = {this.state.commentCounter}
-                        userAccount = {this.state.userAccount}
+                        commentCounter = {this.state.commentCounter}                   
                         commentAccount = {this.state.commentAccount}      
-                        handleModal = {this.handleModal}
-                        handleLikeState = {this.handleLikeState}  
                         likeState = {this.state.likeState}
+                        savingState = {this.state.savingState}
                         loginUid = {this.state.loginUid}
                         likeCounter= {this.state.likeCounter}
+                        handleModal = {this.handleModal}
+                        handleLikeState = {this.handleLikeState} 
+                        handleSavingState = {this.handleSavingState} 
                         />
                 <FilterBar handleFilterBar={this.handleFilterBar}/>
                 <Content dataAry={this.state.dataAry} handleModal={this.handleModal}/>
@@ -146,47 +148,50 @@ class Container extends React.Component{
         this.setState(newState);
     }  
     handleModal = async(postid)=>{
-        const [postContent, postTag,userAccount,postComment,commentCounter,commentAccount,likeCounter,likeState] = await Promise.all([
+        const [postContent, postTag,postComment,
+              commentCounter,commentAccount,likeCounter,likeState,savingState] = await Promise.all([
+
             axios.get(`http://localhost:8000/viewPage/getModal?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getTag?postid=${postid}`),
-            axios.get(`http://localhost:8000/viewPage/getUserAccount?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getComment?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getCommentCouner?postid=${postid}`),        
             axios.get(`http://localhost:8000/viewPage/getCommentAccount?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getLikeCounter?postid=${postid}`),
-            axios.get(`http://localhost:8000/viewPage/getLikeState?uid=${this.state.loginUid}&postid=${postid}`)      
+            axios.get(`http://localhost:8000/viewPage/getLikeState?uid=${this.state.loginUid}&postid=${postid}`),
+            axios.get(`http://localhost:8000/viewPage/getSavingState?uid=${this.state.loginUid}&postid=${postid}`)       
         ]);
 
         let newState = {...this.state};
 
         newState.modalInfoAry = postContent.data;   
         newState.postTagAry = postTag.data;     
-        newState.userAccount = userAccount.data ; 
         newState.postCommentAry = postComment.data;
         newState.commentCounter = commentCounter.data ; 
         newState.commentAccount = commentAccount.data;
         newState.likeCounter = likeCounter.data[0].likeCounter;
         newState.likeState = likeState.data[0].state;
+        newState.savingState = savingState.data[0].state;
 
         console.log("change to newState:",newState);
         this.setState(newState);
     }
 
-    handleLikeState = (state)=>{
-      
+    handleLikeState = (state)=>{  
         let newState = {...this.state};
         newState.likeState = state ;     
         (state) ? newState.likeCounter+=1:newState.likeCounter-=1;        
+        this.setState(newState);
+    }
+    handleSavingState = (state)=>{   
+        let newState = {...this.state};
+        newState.savingState = state ;      
         this.setState(newState);
     }
 }
 
 //整頁viewPage
 class viewPage extends React.Component{
-    state = {
-        
-    };
-  
+    state = {};
     render(){ 
         return(
             <React.Fragment>
