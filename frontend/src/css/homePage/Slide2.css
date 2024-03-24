@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+    /*Button*/
+.btnSlide{
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    font-size: 16px;
+    margin: 0;
+}
+
+.btnSlide:hover{
+    background-color: white;
+    color: black;
+    transition: 0.5s;
+}
+
+    /* Slider */
+
+.slider-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100vw;
+    height: 500px;
+    margin: auto;
+    border-radius: 15px;
+}
+#container{
+    padding:50px;
+}
+.slide2 {
+        display: flex;
+        flex: 0 0 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; 
+        transition: transform 1s ease-in-out;
+        transform: translateX(100%);
+}
+
+.slide2.active {
+    transform: translateX(0);
+}
+
+.text-box {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    color: #fff;
+    padding: 4em;
+    box-sizing: border-box;
+    width: 30%;
+}
+
+img {
+    object-fit: cover;
+    flex: 7;
+    width: 70px;
+    height: auto;
+    box-sizing: border-box;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    font-size: 24px;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+#prevBtn {
+    left: 10px;
+}
+
+#nextBtn {
+    right: 10px;
+}
+
+    /* Background colors for each slide*/
+#slide5 { background-color: #405ea3; }
+#slide6 { background-color: #4c8f4d; }
+#slide7 { background-color: #d19857; }
+#slide8 { background-color: #aabac7; }
+
+
+
+
+    /* Tablet */
+@media screen and (max-width: 768px) {
+    .slide2 {
+        flex-direction: column;
+    }
+
+    .slider-container{
+        height:650px;
+    }
+    .text-box {
+        order: 2;
+        width: 100%;
+        padding: 2em;
+
+    }
+
+    img {
+        width: 100%;
+    }
+}
+
+    /* Mobile */
+@media screen and (max-width: 480px) {
+    .slide2 {
+        flex-direction: column;
+    }
+
+    .text-box {
+        order: 2;
+        width: 100%;
+        padding: 1em;
+    }
+
+    img {
+        width: 100%;
+    }
+}
+  

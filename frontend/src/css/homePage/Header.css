@@ -1,0 +1,11 @@
+.title{
+    color: #3C93D6;
+}
+.bb{
+    height:700px;
+}
+@media screen and (max-width: 768px) {
+    .bb{
+        height:300px;
+    }
+}
