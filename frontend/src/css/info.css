@@ -1,0 +1,231 @@
+:root {
+  --primary-color: #3c93d6;
+  --secondary-color: #ff914d;
+}
+
+.infoBox {
+  width: 900px;
+  margin-top: 40px;
+  border: 2px solid #3c93d6;
+  border-radius: 26px;
+  padding: 50px 50px;
+  background-color: white;
+  box-shadow: 3px 7px 26px rgba(0, 0, 0, 0.13);
+}
+.addcard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputButton {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 15px;
+}
+
+.inputButton-outline {
+  background: white; /* 按鈕背景顏色 */
+  color: var(--primary-color);
+  border: solid 1px var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 15px;
+}
+.inputButton-outline:hover {
+  background: var(--primary-color);
+  color: white;
+  border: solid 1px var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 15px;
+}
+
+.form-button-cancel {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 15px;
+}
+
+.form-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 15px;
+}
+
+.button-container {
+  display: flex;
+  margin-top: 25px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile-card {
+  margin-top: 20px;
+}
+
+.form-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.nameInput {
+  margin-right: 10px;
+  max-width: calc(50% - 20px);
+  padding: 5px 0px 5px 5px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.normalInput {
+  padding: 5px 0px 5px 5px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.nameInput:focus .normalInput:focus {
+  border: solid 1px;
+  border-radius: 4px;
+}
+.form-label {
+  font-size: 20px;
+  font-weight: bold;
+}
+.form-edit {
+  align-self: flex-start;
+  margin-left: auto;
+  cursor: pointer;
+  text-decoration: none;
+}
+.form-edit:hover {
+  text-decoration: underline;
+}
+
+.cardbox {
+  padding: 20px;
+}
+.cardbox img {
+  max-width: 100% !important; /* 限制图片的最大宽度，确保不会超过容器的宽度 */
+  max-height: 150px !important; /* 限制图片的最大高度，确保不会超过容器的高度 */
+  height: auto !important; /* 保持图片的原始宽高比 */
+  object-fit: contain !important;
+}
+
+.add-button {
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-button:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addText {
+  color: var(--primary-color);
+}
+
+.card-container {
+  border: 2px solid #000000;
+  border-radius: 26px;
+  width: 250px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  margin: 15px 10px 0px 0px;
+}
+
+.card-full-container {
+  border: 2px solid #000000;
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #000000;
+}
+
+.card-container img {
+  object-fit: cover;
+}
+
+.card-form-info {
+  margin-top: 13px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+}
+
+.contain-img {
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* 小型设备（手机） */
+@media (max-width: 767.98px) {
+  .infoBox {
+    width: 70%;
+    margin-top: 40px;
+    border: none;
+    border-radius: 26px;
+    padding: 50px 50px;
+  }
+  .outerBox {
+    padding: 10px 0px;
+  }
+  .profile-card-right {
+    margin-left: 0px;
+    margin-top: 20px;
+  }
+}
+
+/* 中型设备（平板电脑） */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .infoBox {
+    width: 99%;
+  }
+}
+
+/* 大型设备（桌面显示器） */
+@media (min-width: 992px) {
+}
+.follow-btn {
+  padding: 8px 16px; /* 按鈕內邊距 */
+  background: var(--primary-color); /* 按鈕背景顏色 */
+  color: white; /* 文字顏色 */
+  border: none; /* 去除邊框 */
+  border-radius: 4px; /* 圓角邊框 */
+
+  text-align: center; /* 文字居中 */
+}

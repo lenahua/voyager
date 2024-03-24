@@ -1,0 +1,186 @@
+nav {
+  border: solid 1px black;
+  height: 100px;
+}
+.filterBar {
+  height: 100vh;
+  overflow-y: hidden;
+}
+.filterBar:hover {
+  overflow-y: auto;
+}
+.filterBar li {
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.content img {
+  width: 100%;
+  object-fit: cover;
+}
+.content input:focus {
+  outline: none;
+}
+.searchBox input {
+  width: 100%;
+}
+.badge {
+  background-color: rgb(206, 206, 206);
+}
+.locationTitle {
+  height: 40px;
+}
+.searchBar {
+  width: 200px;
+  height: 40px;
+}
+.sortBox {
+  width: 150px;
+}
+.postbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.postbox::after {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+.postbox img {
+  position: absolute;
+  width: 100%;
+}
+
+/************************************************Modal of CSS**************************/
+
+@media screen and (min-width: 576px) {
+  .viewModalDialog {
+    height: 560px;
+    width: 700px;
+  }
+}
+@media screen and (min-width: 992px) {
+  .viewModalDialog {
+    width: 900px;
+
+    height: 560px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .viewModalDialog {
+    height: 90vh;
+    width: 1140px;
+  }
+}
+.viewModalDialog {
+  align-items: center;
+  display: flex;
+}
+.postArea {
+  background-color: rgb(255, 255, 255);
+}
+.imgArea {
+  background-color: rgb(0, 0, 0);
+  /* overflow-y: hidden; */
+}
+
+.imgArea img {
+  width: 100%;
+  max-height: 100%;
+}
+.postBody {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.userId {
+  font-size: 20px;
+}
+.iconBox {
+  width: 40px;
+}
+.postIconSpace {
+  width: 45px;
+}
+
+.carousel-inner,
+.carousel-item {
+  max-height: 100%;
+  height: 100%;
+  width: 100%;
+}
+.postIconSpace,
+.likeBtnSpace {
+  width: 50px;
+}
+.postContent {
+  flex-grow: 1;
+}
+
+textarea:focus {
+  outline: none;
+}
+.textAreaBox {
+  flex-grow: 1;
+}
+.postContent a {
+  color: black;
+  text-decoration: none;
+}
+.writeCommentBox a {
+  text-decoration: none;
+}
+.postComment span,
+.postTag a {
+  color: rgb(82, 131, 176);
+}
+.postComment span {
+  font-size: 14px;
+}
+.sendBtn {
+  width: 40px;
+}
+.postBody::-webkit-scrollbar {
+  display: none;
+}
+.carousel {
+  width: 100%;
+}
+#modalclosebtn {
+  color: rgb(255, 255, 255);
+}
+.likeBtn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+.bi-suit-heart-fill {
+  fill: rgb(226, 65, 65);
+}
+
+/*slider css*/
+.slick-slider {
+  width: 100%;
+}
+.slick-prev,
+.slick-next {
+  display: none !important; /* 隐藏箭头 */
+}
+.slick-dots {
+  bottom: 20px;
+}
+.slick-dots li button {
+  font-size: 26px;
+  height: 30px;
+  width: 30px;
+}
+.slick-dots li button:before {
+  color: rgb(207, 207, 207);
+  font-size: 12px;
+  opacity: 0.6;
+}
+.slick-dots li.slick-active button:before {
+  color: rgb(255, 255, 255);
+  opacity: 1;
+}

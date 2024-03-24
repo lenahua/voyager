@@ -1,0 +1,39 @@
+.post-outer-box {
+  padding: 20px 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.post-img {
+  transition: transform 500ms ease;
+  cursor: pointer;
+  height: auto;
+  flex: 1 1 22%; /* 弹性基础大小设为22%，留下一些空间用于间隔 */
+  width: calc(20% - 10px); /* 最大宽度也设置为22%，以避免图片变得太大 */
+  height: auto; /* 保持图片纵横比 */
+  cursor: pointer;
+  overflow: hidden;
+  margin: 5px;
+}
+
+.post-img:hover {
+  transform: scale(1.1);
+}
+.favorite-box {
+  position: relative;
+  margin: 50px 20px;
+  border: 2px solid #3c93d6;
+  border-radius: 23px;
+  padding: 25px 40px;
+  background-color: white;
+  box-shadow: 3px 7px 26px rgba(0, 0, 0, 0.13);
+}
+
+.follow-btn {
+  padding: 8px 16px; /* 按鈕內邊距 */
+  background: var(--primary-color); /* 按鈕背景顏色 */
+  color: white; /* 文字顏色 */
+  border: none; /* 去除邊框 */
+  border-radius: 4px; /* 圓角邊框 */
+
+  text-align: center; /* 文字居中 */
+}

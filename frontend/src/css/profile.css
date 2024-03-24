@@ -1,0 +1,275 @@
+:root {
+  --primary-color: #3c93d6;
+  --secondary-color: #ff914d;
+}
+
+.outerBackground {
+  background-color: rgb(219, 216, 216);
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-img-top {
+  position: relative;
+  height: 300px;
+  object-fit: cover;
+}
+
+.card {
+  border-color: #d7dfe3;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.pro-img {
+  position: relative;
+  z-index: 0;
+  margin-top: -80px;
+  margin-bottom: 20px;
+}
+
+.little-profile .pro-img img {
+  width: 128px;
+  height: 128px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.profile-button {
+  position: absolute;
+  right: 20px;
+  top: 240px;
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  z-index: 1000;
+}
+
+.global-box {
+  border-radius: 4px;
+  color: black;
+  border-color: #2b2828;
+  padding: 2rem;
+}
+
+.tabs {
+  display: flex;
+  position: relative;
+  /* background-color: #fff; */
+  box-shadow: 0 0 1px 0 rgba(#185ee0, 0.15), 0 6px 12px 0 rgba(#185ee0, 0.15);
+  padding: 0.75rem;
+  border-radius: 99px;
+  * {
+    z-index: 2;
+  }
+}
+
+input[type="radio"] {
+  display: none;
+}
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 160px;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: color 0.15s ease-in;
+}
+.follow-btn {
+  padding: 8px 16px; /* 按鈕內邊距 */
+  background: var(--primary-color); /* 按鈕背景顏色 */
+  color: white; /* 文字顏色 */
+  border: none; /* 去除邊框 */
+  border-radius: 4px; /* 圓角邊框 */
+
+  text-align: center; /* 文字居中 */
+}
+
+.tabContent {
+  min-height: 700px;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.75rem;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  transition: 0.15s ease-in;
+}
+
+input[type="radio"] {
+  &:checked {
+    & + label {
+      color: var(--primary-color);
+
+      & > .notification {
+        background-color: var(--primary-color);
+        color: #fff;
+      }
+    }
+  }
+}
+
+input[id="radio-1"] {
+  &:checked {
+    & ~ .glider {
+      transform: translateX(0);
+    }
+  }
+}
+
+input[id="radio-2"] {
+  &:checked {
+    & ~ .glider {
+      transform: translateX(100%);
+    }
+  }
+}
+
+input[id="radio-3"] {
+  &:checked {
+    & ~ .glider {
+      transform: translateX(200%);
+    }
+  }
+}
+input[id="radio-4"] {
+  &:checked {
+    & ~ .glider {
+      transform: translateX(300%);
+    }
+  }
+}
+
+.glider {
+  position: absolute;
+  display: flex;
+  height: 48px;
+  width: 160px;
+  background-color: #fff;
+
+  z-index: 1;
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--primary-color);
+  border-radius: 99px;
+  transition: 0.25s ease-out;
+}
+
+.edit-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.global-box {
+  border-radius: 4px;
+  color: black;
+  border-color: #cccccc;
+  padding: 2rem;
+}
+
+/* 小型设备（手机） */
+@media (max-width: 767.98px) {
+  .card-container,
+  .card-full-container {
+    width: 100%; /* 让容器在小屏幕上宽度为100% */
+    margin: 0 auto; /* 居中显示 */
+    margin-bottom: 20px; /* 增加底部间距 */
+  }
+
+  .tabs {
+    flex-direction: column; /* 将选项卡垂直堆叠 */
+    width: auto; /* 自动调整宽度 */
+  }
+
+  .tab {
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中对齐子元素 */
+    justify-content: center; /* 水平居中对齐子元素 */
+  }
+
+  .notification {
+    margin-left: 0.5rem; /* 减少与标签文字之间的间距 */
+    width: 1.5rem; /* 适当调整通知图标的大小 */
+    height: 1.5rem; /* 适当调整通知图标的大小 */
+    font-size: 0.8rem; /* 减小通知数字的字体大小 */
+  }
+
+  .tabContainer {
+    padding: 0 20px; /* 在小屏幕上增加一些内边距 */
+  }
+
+  .little-profile .pro-img img {
+    width: 80px; /* 缩小图片尺寸 */
+    height: 80px;
+  }
+
+  .image-container .image-button {
+    padding: 5px 10px; /* 调整按钮大小 */
+    font-size: 14px; /* 减小字体大小 */
+  }
+  .glider {
+    display: none;
+  }
+}
+
+/* 中型设备（平板电脑） */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .card-container,
+  .card-full-container {
+    width: 50%; /* 使容器在平板上占据一半宽度 */
+  }
+
+  .tabs {
+    flex-wrap: wrap; /* 允许选项卡换行 */
+  }
+  .glider {
+    display: none;
+  }
+}
+
+/* 大型设备（桌面显示器） */
+@media (min-width: 992px) {
+  .card-container,
+  .card-full-container {
+    width: 250px; /* 恢复到初始设置 */
+  }
+
+  .tab {
+    font-size: 1rem; /* 在大屏幕上减小字体大小，如果需要 */
+  }
+}
