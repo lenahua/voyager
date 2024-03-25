@@ -1,10 +1,22 @@
 var express = require("express");
 var cors = require("cors");
 var app = express();
+var cookieParser = require("cookie-parser");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcrypt");
+var saltRounds = 10;
+
 app.listen(8000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 var mysql = require("mysql");
 /* var connection = mysql.createConnection({
