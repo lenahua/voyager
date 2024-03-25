@@ -78,7 +78,7 @@ const Service = () => {
         
             
             <div className='serviceWrapper'>
-                <Slide className='title'>
+                <Slide className='Facititle'>
                     <h1>設施與服務</h1>
                 </Slide>
                 

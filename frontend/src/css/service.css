@@ -15,11 +15,11 @@
 .textNicon{
     display: flex;
     gap: 15px;
-    align-items: center;
+    /* align-items: center; */
     text-align: center;
     margin: 0 3rem;
 }
-.title{
+.Facititle{
     padding-bottom: 1rem;
     grid-column: 1 / -1;
 }
