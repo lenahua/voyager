@@ -68,31 +68,47 @@
 .intro{
     display: flex;
     flex-wrap: wrap;
-    gap:10px
+    gap:10px;
+    font-size: 20px;
+    margin-bottom: 20px;
 }
 .iconWithtext{
     display: flex;
     align-items: center;
     gap: 3px
 }
+.iconWithtext p{
+    margin: 0;
+}
+.nameBar{
+    font-weight: 800;
+}
 .shortDesc{
     width: auto;
     margin: 10px 0;
-
+    font-size: 20px;
 }
 .bathRoom{
     display: flex;
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     gap: 10px;
 }
 .bath{
     display: flex;
     align-items: center;
+    font-size: 20px;
+}
+.bath p{
+    margin: 0;
 }
 .service{
     display: flex;
     flex-wrap: wrap;
+    font-size: 20px;
+}
+.service p{
+    margin: 0;
 }
 .serviceDetailLeft{
     display: flex;

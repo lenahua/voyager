@@ -54,7 +54,7 @@ const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, handleBooking,
                     <div className='shortDesc'>
                         <p>{selectRoomData[0].room_desc}</p>
                     </div>
-                    <h5>私人衛浴提供：</h5>
+                    <h5 className='nameBar'> 私人衛浴提供：</h5>
                     <div className='bathRoom'>
                         <div className='bath'><FaCheck className='check'/><p>免費盥洗用品</p></div>
                         <div className='bath'><FaCheck className='check'/><p>吹風機</p></div>
@@ -62,7 +62,7 @@ const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, handleBooking,
                         <div className='bath'><FaCheck className='check'/><p>衛生紙</p></div>
                         <div className='bath'><FaCheck className='check'/><p>廁所</p></div>
                     </div>
-                    <h5>設施／服務：​</h5>
+                    <h5 className='nameBar'>設施／服務：​</h5>
                     <div className='service'>
                         <div className='serviceDetailLeft'>
                             <div className='serviceDetail'><FaCheck className='check'/><p>書桌</p></div>
