@@ -7,13 +7,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 var mysql = require("mysql");
-var connection = mysql.createConnection({
+/* var connection = mysql.createConnection({
   host: "127.0.0.1",
   port: 3306,
   user: "root",
   password: "",
   database: "voyager_dev",
   charset: "utf8mb4",
+}); */
+
+var connection = mysql.createConnection({
+  user: "root",
+  password: "",
+  host: "127.0.0.1",
+  database: "test",
 });
 
 connection.connect(function (err) {

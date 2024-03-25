@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "../App.css";
+//import "../App.css";
 import "../css/profile.css";
 import bg from "./images/bg.jpg";
 import profile from "./images/taylor.jpg";
 import ProfileInfo from "./Info";
 import Orders from "./Orders";
 import MyFavorites from "./MyFavorites";
-import MyPosts from "./MyPosts";
+import MyPosts from "./MyPost";
 
 function Member({ userId }) {
   const isLoggedInUser = userId === 10;

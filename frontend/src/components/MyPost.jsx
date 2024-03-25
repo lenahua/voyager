@@ -5,7 +5,7 @@ import { Drawer } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import "./css/viewPage.css";
+import "../css/viewPage.css";
 import { Modal } from "react-bootstrap";
 function MyPosts({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
