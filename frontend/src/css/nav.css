@@ -24,11 +24,11 @@ header{
     position: relative;
     margin: 20px 50px; 
     border-radius: 20px;
+    
 }
-.logo{
+.logoNav{
     width: 10rem;
     height: 10rem;
-    
 }
 nav{
     display: flex;

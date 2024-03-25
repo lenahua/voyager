@@ -81,7 +81,7 @@ class Slide extends Component {
                             <p>台中位於臺灣西半部的樞紐位置，四季氣候宜人。林立的百貨公司、各有特色的商圈、各色陳列的精品名店、濃濃歐式風味的精明商圈，以及美術園道的椰林餐廳，都讓台中市有如巴黎香榭大道的優雅浪漫，滿足所有追求時尚的品味饗宴。</p>
                             <a href="#" className="btnSlide">更多景點</a>
                         </div>
-                        <img src={Img1} alt="Slide 1" />
+                        <img src={Img1} alt="Slide 1" className="Imgxian"/>
                     </div>
                     <div className="slide" id="slide2">
                         <div className="text-box">
@@ -89,7 +89,7 @@ class Slide extends Component {
                             <p>台北市是台灣的首都，充滿現代與傳統魅力。從繁華的信義區到寧靜的國立故宮博物院，各式美食、文化景點和購物天堂等等，讓人流連忘返。著名景點包括象山、國立故宮博物院、台北101大樓和士林夜市等。台北以其多元的美食聞名，從道地的台灣小吃到高級餐廳應有盡有。</p>
                             <a href="#" className="btnSlide">更多景點</a>
                         </div>
-                        <img src={Img2} alt="Slide 2" />
+                        <img src={Img2} alt="Slide 2" className="Imgxian"/>
                     </div>
                     <div className="slide" id="slide3">
                         <div className="text-box">
@@ -97,7 +97,7 @@ class Slide extends Component {
                             <p>台南是台灣南部的文化古城，擁有悠久的歷史和豐富的文化底蘊。古老的建築、廟宇和街道充滿了古色古香的風情。代表性景點包括安平古堡、赤嵌樓和孔廟等。此外，台南也以其獨特的美食聞名，如台南小吃、鹽水擂茶等，讓遊客享受口腹之樂。</p>
                             <a href="#" className="btnSlide">更多景點</a>
                         </div>
-                        <img src={Img3} alt="Slide 3" />
+                        <img src={Img3} alt="Slide 3" className="Imgxian"/>
                     </div>
                     <div className="slide" id="slide4">
                         <div className="text-box">
@@ -105,7 +105,7 @@ class Slide extends Component {
                             <p>高雄擁有現代化的城市風貌和多樣化的文化特色。以高雄港為中心，擁有眾多購物中心、美食街和文化景點，如愛河、西子灣和旗津等。此外，高雄也以其豐富的美食文化聞名，如蓮池潭美食街和六合夜市，各式海鮮和小吃令人垂涎欲滴。</p>
                             <a href="#" className="btnSlide">更多景點</a>
                         </div>
-                        <img src={Img4} alt="Slide 3" />
+                        <img src={Img4} alt="Slide 3" className="Imgxian"/>
                     </div>  
                     <FontAwesomeIcon icon={faArrowLeft} id="prevBtn"  className="arrow" onClick={this.prevSlide}/>
                     <FontAwesomeIcon icon={faArrowRight} id="nextBtn"  className="arrow" onClick={this.nextSlide}/>

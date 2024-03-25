@@ -11,8 +11,7 @@ import Rule from '../components/hotelList/Rule';
 import {useParams} from "react-router-dom"
 import axios from 'axios';
 
-import Roompic from '../css/roompic.css';
-
+import Roompic from '../components/hotelList/Roompic';
 
 
 
@@ -70,7 +69,7 @@ function HotelInfo(){
 
     return(
         <>
-            <Hotel place={place} photos={photos}/>
+            <Hotel place={place} photos={photos} />
 
             <Room room={room} onClick={handleModalClick} handleBooking={handleBooking}/>
             {isModalVisible === true  ? <Roompic onClose={handleModalClose} 

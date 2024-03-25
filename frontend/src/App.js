@@ -14,6 +14,8 @@ import Nav from './components/nav'
  
 import axios from 'axios';
 
+
+
 axios.defaults.withCredentials = true;
 class App extends Component {
   //  auth=>是否在cookie中

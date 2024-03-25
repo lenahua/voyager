@@ -4,7 +4,7 @@ import { PiTelevision } from "react-icons/pi";
 import { IoIosBed,IoMdPeople,IoIosCloseCircleOutline } from "react-icons/io";
 
 
-import '../../../css/roompic.css'
+import '../../css/roompic.css'
 
 const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, handleBooking, selectRoom}) => {
     

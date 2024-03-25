@@ -81,7 +81,7 @@ class Slide2 extends Component {
                 </div>
                 <div className="slider-container" >
                     <div className="slide2 active" id="slide6">
-                        <img src={Bk2} alt="Slide 2" />
+                        <img src={Bk2} alt="Slide 2" className="Imgxian"/>
                         <div className="text-box">
                             <h1>台北</h1>
                             <h3>板橋凱撒大飯店</h3>
@@ -90,7 +90,7 @@ class Slide2 extends Component {
                         </div>
                     </div>
                     <div className="slide2" id="slide5">
-                        <img src={Bk1} alt="Slide 1" />
+                        <img src={Bk1} alt="Slide 1" className="Imgxian"/>
                         <div className="text-box">
                             <h1>台中</h1>
                             <h3>台中裕元花園酒店</h3>
@@ -100,7 +100,7 @@ class Slide2 extends Component {
                     </div>
                     
                     <div className="slide2" id="slide7">
-                        <img src={Bk3} alt="Slide 3" />
+                        <img src={Bk3} alt="Slide 3" className="Imgxian"/>
                         <div className="text-box">
                             <h1>台南</h1>
                             <h3>台南晶英酒店</h3>
@@ -109,7 +109,7 @@ class Slide2 extends Component {
                         </div>
                     </div>
                     <div className="slide2" id="slide8">
-                        <img src={Bk4} alt="Slide 3" />
+                        <img src={Bk4} alt="Slide 3" className="Imgxian"/>
                         <div className="text-box">
                             <h1>高雄</h1>
                             <h3>高雄洲際酒店</h3>

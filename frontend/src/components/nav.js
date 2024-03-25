@@ -69,7 +69,7 @@ function Nav({auth, message, account}){
     return(
         <>
             <header>
-                <img src={Logo} className="logo" alt=""></img>
+                <img src={Logo} className="logoNav" alt=""></img>
                 <nav ref={navRef}>
                     <Link to="/viewPage">景點</Link>
                     <Link to="/hotelList">住宿</Link>
