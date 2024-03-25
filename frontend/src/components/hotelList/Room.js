@@ -43,7 +43,7 @@ const Room = ({room, onClick, handleBooking}) => {
   return (
       <div className='outside' >
         
-        <Carousel responsive={responsive} className='card' >
+        <Carousel responsive={responsive} className='cardjing' >
         
             {room.map((roomdetail, i)=>(
               <div className='roomCard' key={i} >

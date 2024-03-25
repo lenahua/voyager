@@ -3,7 +3,7 @@
     width: 100%;
     height: 100%;
 }
-.card{
+.cardjing{
     display: flex;
     flex-wrap: wrap;
     padding: 3rem 0;
