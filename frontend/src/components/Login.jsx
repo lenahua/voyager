@@ -37,7 +37,7 @@ const Login = ({loginStatus}) => {
   
 
   return (
-    <div className='container'>
+    <div className='Logincontainer'>
       <div className='header'>
         <div className='text'>登入</div>
         <div className='underline'></div>

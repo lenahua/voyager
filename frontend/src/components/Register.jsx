@@ -34,7 +34,7 @@ const Register = () => {
     })
   }
   return (
-    <div className='container'>
+    <div className='Logincontainer'>
       <div className='header'>
         <div className='text'>註冊</div>
         <div className='underline'></div>
