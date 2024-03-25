@@ -1,5 +1,5 @@
 nav{
-    border: solid 1px black;
+
     height: 100px;
 }       
 .filterBar{
@@ -151,7 +151,7 @@ textarea:focus{
 #modalclosebtn{
     color: rgb(255, 255, 255);
 }
-.iconBtn{
+.likeBtn{
     background-color: transparent;
     border: none;
     outline: none;

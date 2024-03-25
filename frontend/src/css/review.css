@@ -1,0 +1,49 @@
+/* guestCard */
+
+.reviewWrapper{
+    max-width: 1024px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    margin: 0 auto;
+    /* background-color: aqua; */
+    position: relative;
+}
+.react-multiple-carousel__arrow--right{
+    position: absolute;
+    right: 0px;
+}
+.react-multiple-carousel__arrow--left{
+    position: absolute;
+    left: 0px;
+}
+.guestCard{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    background-color: #9c9c9c41;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 10px;
+    gap: 10px;
+    border-radius: 10px;
+    margin: 0 10px;
+}
+.guestCardTitle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.guestCardTitleName{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.guestImg{
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+}
+.guestCardSecond{
+    display: flex;
+    justify-content: space-between;
+}

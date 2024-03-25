@@ -1,0 +1,15 @@
+.ruleContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.ruleWrapper{
+    max-width: 1024px;
+    width: 100%;
+    margin: 3rem;
+}
+.ruleWrapper li{
+    padding: 3px;
+    margin: 0 25px;
+}

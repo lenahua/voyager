@@ -1,10 +1,20 @@
 var express = require("express");
 var cors = require("cors");
 var app = express();
+var cookieParser = require('cookie-parser');
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
+var saltRounds = 10;
+
 app.listen(8000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000"],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+app.use(cookieParser());
 
 var mysql = require("mysql");
 /* var connection = mysql.createConnection({
@@ -20,7 +30,7 @@ var connection = mysql.createConnection({
   user: "root",
   password: "",
   host: "127.0.0.1",
-  database: "test",
+  database: "voyager",
 });
 
 connection.connect(function (err) {
@@ -636,4 +646,136 @@ app.post('/checkout/hotel/order', function (req, res) {
             res.send (JSON.stringify( req.body ));
         }
     )
+})
+
+
+
+// 飯店詳細
+app.get("/hotelInfo/:id", function(req, res){
+    const hotelId = req.params.id
+    connection.query("select * from hotel where hotel_id = ?",
+        [hotelId],
+        function (err, hotelRows){
+            if (err){
+                return res.status(500).send("Error fetching hotel data")
+            }
+            connection.query("select * from hotel_photos where hotel_id = ?",
+                [hotelId], 
+                function(err, photoRows){
+                    if (err){
+                        return res.status(500).send("Error fetching hotel photo")
+                    }
+                    connection.query("select * from hotel_rooms where hotel_id = ?",
+                        [hotelId],
+                        function(err, roomRows){
+                            if(err){
+                                return res.status(500).send("Error fetching hotel rooms")
+                            }
+                            connection.query("select * from hotel_room_type where hotel_id = ?",
+                                [hotelId],
+                                function(err, roomPicRows){
+                                    if(err){
+                                        return res.status(500).send("Error fetching hotel rooms picture")
+                                    }
+                                    const responseData = {
+                                        hotel: hotelRows[0],
+                                        photos: photoRows,
+                                        room: roomRows,
+                                        roomPic: roomPicRows
+                                    };
+                                    res.send(responseData)
+                                }
+                                
+                            ) 
+                            
+                            
+                        }
+                    )
+            })
+    })
+})
+// login and registe
+const verifyUser = (req, res, next) =>{
+    const token = req.cookies.token;
+    console.log("Token received:", token);
+    if(!token){
+        return res.json({Error: "You are not authenticated"})
+    }else{
+        jwt.verify(token, "jwt-secret-key", (err, decoded)=>{
+            if(err){
+                return res.json({Error: "Token is not okay"});
+            }else{
+                req.account = decoded.account;
+                req.uid = decoded.uid
+                next();
+            }
+        })
+    }
+}
+
+app.get('/login', verifyUser, (req, res)=>{
+    return res.json({Status: "Success", account: req.account, uid: req.uid})
+})
+
+
+
+app.post('/login', (req, res)=>{
+    const account = req.body.account;
+    const password = req.body.password
+    connection.query("select * from userinfo where account = ?",
+            account,
+            // 先比對帳號是否一樣
+            (err, data)=>{
+                if(err){
+                    return res.json({Error: "Login error in server"});
+                }  
+                // 再使用bcrypt比較密碼
+                if (data.length > 0){
+                    console.log(data);
+                    bcrypt.compare(password.toString(), data[0].password, (err, result)=>{
+                        if(result){
+                            // 設定token資料
+                            const uid = data[0].Uid;
+                            const account = data[0].account;
+                            const token = jwt.sign({uid,account}, "jwt-secret-key", {expiresIn: '1d'})
+                            // console.log('uid'+uid);
+                            res.cookie('token', token)
+                            // req.session.user = data;
+                            // console.log(req.session.user)
+                            return res.json({Status: "Success"})
+                        }else{
+                            return res.json({Error: "密碼錯誤，請重新輸入"})
+                        }
+                    })
+                }else{
+                    return res.json({Error: "Account not exist"})
+                }
+                
+                
+            }
+    )
+})
+
+app.get('/logout', (req, res)=>{
+    const token = req.cookies.token;
+    // console.log("Token logout:", token)
+    // console.log(req.cookies);
+    res.clearCookie('token');
+    return res.json({Status: "Success"})
+})
+
+app.post('/register', (req, res)=>{
+    bcrypt.hash(req.body.password.toString(), saltRounds, (err, hash)=>{
+        if(err){
+            console.log(err)
+        }
+        connection.query("insert into userinfo(account, password, email) values (?, ?, ?)",
+        [req.body.account, hash, req.body.email],
+        function(err, data){
+            if(err) return res.json("registe failed")
+            return res.json({Status: "Success"})
+        }
+    )
+    })
+    
 })

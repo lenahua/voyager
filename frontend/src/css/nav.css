@@ -1,0 +1,199 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+:root{
+    --mainColor: #FFFFFF;
+    --mainColorDark: #CACBD5;
+    --secondaryColor: #666f88;
+    --thirdColor: #d35e35;
+    --textColor: #3d4251;
+    --textColorLight: #fff;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 2rem;
+    background-color: var(--mainColorDark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    margin: 20px 50px; 
+    border-radius: 20px;
+}
+.logo{
+    width: 10rem;
+    height: 10rem;
+    
+}
+nav{
+    display: flex;
+    align-items: center;
+}
+nav a{
+    text-decoration: none;
+    margin: 0 2rem;
+    color: var(--textColor);
+    font-size: 18px;
+    /* align-items: center; */
+}
+nav a:hover,
+.user a:hover{
+    color: var(--thirdColor);
+
+}
+header .nav-btn{
+    padding: 5px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--textColorLight);
+    visibility: hidden;
+    opacity: 0;
+    font-size: 1.8rem;
+}
+.user{
+    display: flex;
+    gap: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 32px;
+    color: var(--textColor);
+}
+.user span{
+    font-size: 20px;
+}
+
+.nav-small{
+    display: flex;
+
+    align-items: center;
+ 
+}
+.member{
+    display: flex;
+    flex-direction: column;
+}
+
+/* 在寬度小於1024px時 */
+@media only screen and (max-width: 1024px){
+    header .nav-btn{
+        visibility: visible;
+        opacity: 1;
+        color: var(--textColor);
+    }
+    header nav{
+        z-index: 9999;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        background-color: var(--secondaryColor);
+        transform: translateY(-100vh);
+        transition: transform 0.3s ease;
+        padding: 7rem 0;
+    }
+    header nav a{
+        color: var(--mainColor);
+        width: 100%;
+        height: 50px;
+        text-align: center;
+    }
+    header nav a:hover{
+        background-color: var(--mainColorDark);
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+        padding-left: 5px;
+    }
+    header .responsive_nav{
+        transform: none;
+    }
+    nav .nav-close-btn{
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        color: var(--mainColor);
+        font-size: 2.5rem;
+        border: none;
+        background-color: var(--secondaryColor);
+        cursor: pointer;
+    }
+    nav a{
+        font-size: 1.5rem;
+    }
+    .nav-small{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+}
+/* login後 */
+/* .drop{
+    position: absolute;
+    right: 3rem;
+    background-color: var(--secondaryColor);
+    width: auto;
+    height: auto;
+    border-radius: 0 0 20px 20px;
+    padding: 10px 30px;
+    margin-top: 10px;
+}
+.drop::before{
+    content: '';
+    position: absolute;
+    top: -5px;
+} */
+.dropdownContainer{
+    display: flex;
+    font-size: 18px;
+    position: absolute;
+    top: 7rem;
+    right: 7.5rem;
+    width: 120px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid var(--secondaryColor);
+    z-index: 9999;
+}
+.dropdownContainer ul{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.dropdownContainer li{
+    list-style-type: none;
+    color: var(--textColor);
+
+}
+.dropdownContainer::before{
+    content: '';
+    position: absolute;
+    top: -0.7rem;
+    right: 1.5rem;
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    background-color: #fff;
+    border-left: 1px solid var(--secondaryColor);
+    border-top: 1px solid var(--secondaryColor);
+}
+.logoutbtn{
+    cursor: pointer;
+    
+}
+.logoutbtn:hover{
+    background-color: #666f88;
+}
