@@ -5,7 +5,7 @@ import ViewPage from './components/viewPage/viewPage';
 import Home from './components/homePage/home';
 import HotelInfo from './components/hotelInfo';
 import HotelList from './components/hotelList';
-import HotelOrder from './components/hotelOrder';
+import HotelOrder from './components/hotelOrderPage/hotelOrder';
 import Member from './components/member';
 import Welcome from './components/welcomePage/welcome';
  

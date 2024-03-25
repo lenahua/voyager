@@ -218,4 +218,45 @@ app.post(`/viewPage/addSavingState`,function(req,res){
     })
 })
 //-------------------------------------------------------------------
-
+//結帳頁面
+//取得會員的個人資料
+app.get("/checkout/user/:id", function (req, res) {
+    conn.query("select * from userinfo where Uid = ? ", [req.params.id],
+        function (err, rows) {
+            res.send( JSON.stringify(rows) );
+        }
+    )
+})
+//取得該會員的信用卡資訊
+app.get("/checkout/creditCard/:id", function(req, res) {
+    conn.query("select * from creditcard where Uid = ? ", [req.params.id], 
+        function (err, rows) {
+            res.send( JSON.stringify(rows) );
+        }
+    )
+})
+//取得住宿資訊
+app.get("/checkout/hotel/:id", function(req, res ) {
+    conn.query("select * from hotel where hotel_id = ?",[req.params.id],
+        function(err, rows) {
+            res.send ( JSON.stringify(rows) );
+        }
+    )
+})
+//取得該住宿房型
+app.get("/checkout/hotel/:hotelId/:roomId", function(req, res ) {
+    conn.query("select * from hotel_rooms where hotel_id = ? and room_id = ?",[req.params.hotelId, req.params.roomId],
+        function(err, rows) {
+            res.send ( JSON.stringify(rows) );
+        }
+    )
+})
+//點擊完成訂單傳送訂單資訊到訂單記錄
+app.post('/checkout/hotel/order', function (req, res) {
+    conn.query("insert into `orderinfo` ( Uid, hotelId, startDate, endDate) values (?, ?, ?, ?)",
+        [req.body.Uid, req.body.hotelId, req.body.startDate, req.body.endDate],
+        function ( err, rows ) {
+            res.send (JSON.stringify( req.body ));
+        }
+    )
+})
