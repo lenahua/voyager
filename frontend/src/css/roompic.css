@@ -38,8 +38,8 @@
 .roomImg img{
     height: 70px;
     width: 100px;
-
     object-fit: cover;
+    margin: 5px 0;
 }
 .roomImg{
     padding: 0 5px;
