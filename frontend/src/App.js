@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
  
 import ViewPage from './components/viewPage/viewPage';
-import Home from './components/home';
+import Home from './components/homePage/home';
 import HotelInfo from './components/hotelInfo';
 import HotelList from './components/hotelList';
 import HotelOrder from './components/hotelOrder';
 import Member from './components/member';
-import Welcome from './components/welcome';
+import Welcome from './components/welcomePage/welcome';
  
 class App extends Component {
  

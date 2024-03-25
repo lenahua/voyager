@@ -1,19 +1,13 @@
-import Cloud from './cloud';
-import Logo from './yoyagerLogo';
-import Button from './button';
 import React, { Component } from 'react';
+import WelcomePage from './combine'
 
-class WelcomePage extends Component {
+class Welcome extends Component {
     state = {  } 
     render() { 
         return (
-            <>
-                <Cloud />
-                <Logo />
-                <Button />
-            </>
+            <WelcomePage />
         );
     }
 }
  
-export default WelcomePage;
+export default Welcome;

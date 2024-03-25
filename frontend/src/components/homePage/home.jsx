@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Header from './homePage/Header';
-import Slide from './homePage/Slide';
-import Slide2 from './homePage/Slide2';
+import Header from './Header';
+import Slide from './Slide';
+import Slide2 from './Slide2';
 
 
 class Home extends Component {
