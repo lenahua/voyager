@@ -175,3 +175,6 @@
 .room{
     margin-top: 5rem;
 }
+.mapMarker{
+    z-index: 999;
+}

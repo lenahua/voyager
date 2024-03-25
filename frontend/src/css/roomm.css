@@ -43,17 +43,28 @@
 .roomCardTitle{
     display: flex;
     flex-direction: column;
-    
+}
+.roomCardTitle p{
+    font-size: 20px;
 }
 .roomCardDesc{
     display: flex;
     align-items: center;
+    text-align: center;
     gap: 15px;
+    font-size: 22px;
+}
+.roomCardDesc p{
+    margin: 0;
 }
 .restRoom{
     display: flex;
     align-items: center;
     gap: 15px;
+    font-size: 22px;
+}
+.restRoom p{
+    margin: 0;
 }
 .roomCardRestroom{
     display: flex;

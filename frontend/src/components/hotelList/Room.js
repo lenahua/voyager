@@ -36,6 +36,7 @@ const Room = ({room, onClick, handleBooking}) => {
     const totalPrice = selectQty * parseFloat(priceNum);
     
     setTotalPrice(totalPrice);
+    console.log(totalPrice)
   }
   
  
