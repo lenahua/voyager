@@ -33,7 +33,7 @@ function DropDown ({auth, message, account, handleDrop}){
             {
                 auth ?
                 <ul>
-                    <Link to="/" style={{ textDecoration: 'none' }} onClick={handleDrop}><li>會員中心</li></Link>
+                    <Link to="/member" style={{ textDecoration: 'none' }} onClick={handleDrop}><li>會員中心</li></Link>
                     <li className="logoutbtn" onClick={()=>handleLogout(handleDrop)}>登出</li>
                 </ul>
                 :

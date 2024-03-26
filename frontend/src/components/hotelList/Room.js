@@ -5,7 +5,7 @@ import { FaBed, FaPaperclip } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import "../../css/roomm.css"
 
-const Room = ({room, onClick, handleBooking}) => {
+const Room = ({room, onClick, handleSelect}) => {
   
 
 
@@ -28,18 +28,9 @@ const Room = ({room, onClick, handleBooking}) => {
       items: 1
     }
   };
-  const [totalPrice, setTotalPrice] = useState();
-  const handleSelect = (event, price) =>{
-    const selectQty = parseInt(event.target.value);
-    // 把資料庫中的價錢移除逗號，並轉換成數值型態
-    const priceNum = price.replace(/,/g, '');
-    const totalPrice = selectQty * parseFloat(priceNum);
-    
-    setTotalPrice(totalPrice);
-    console.log(totalPrice)
-  }
   
- 
+  
+  
   
   return (
       <div className='outside' >
@@ -66,16 +57,18 @@ const Room = ({room, onClick, handleBooking}) => {
                       <p >剩餘房間數</p>
                     </div>
              
-                  <select onChange={(ev)=>handleSelect(ev, roomdetail.price)}>
-                    {[...Array(roomdetail.quantity)].map((_, optionIndex)=>(
-                        <option key={optionIndex +1} value={optionIndex +1}>{optionIndex +1}</option> 
-                    ))}
-                  </select>
+                    <select onChange={(ev)=>handleSelect(ev, roomdetail.price)}>
+                      {[...Array(roomdetail.quantity)].map((_, optionIndex)=>(
+                          <option key={optionIndex +1} value={optionIndex +1}>{optionIndex +1}</option> 
+                      ))}
+                    </select>
                 
                   </div>
-                    <button className='price' onClick={()=>handleBooking(roomdetail.room_id)}>立即預訂 ${roomdetail.price}</button>
-                    {/* <Link to={'/'}>
-                    </Link> */}
+
+                    
+                    <Link to={`/hotelOrder/${roomdetail.room_id}`}>
+                      <button className='price' >立即預訂 ${roomdetail.price}</button>
+                    </Link>
                 </div>
               </div>
             ))}

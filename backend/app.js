@@ -32,7 +32,7 @@ var connection = mysql.createConnection({
   user: "root",
   password: "",
   host: "127.0.0.1",
-  database: "voyager",
+  database: "test",
 });
 
 connection.connect(function (err) {

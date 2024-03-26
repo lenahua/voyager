@@ -59,23 +59,28 @@ function HotelInfo(){
     // console.log(selectRoomData)
     // console.log(selectRoomPic)
     // console.log("selectRoomPic:", selectRoomPic)
-    
-    // 設定booking接到id參數
-    const [bookingId, setBookingId] = useState(null)
-    const handleBooking = (roomID) =>{
-        setBookingId(roomID)
-        console.log(roomID)
+
+    const [totalPrice, setTotalPrice] = useState();
+    const handleSelect = (event, price) =>{
+        const selectQty = parseInt(event.target.value);
+        // 把資料庫中的價錢移除逗號，並轉換成數值型態
+        const priceNum = price.replace(/,/g, '');
+        const totalPrice = selectQty * parseFloat(priceNum);
+        
+        setTotalPrice(totalPrice);
+        console.log(totalPrice)
     }
+   
 
     return(
         <>
             <Hotel place={place} photos={photos} />
 
-            <Room room={room} onClick={handleModalClick} handleBooking={handleBooking}/>
+            <Room room={room} onClick={handleModalClick} 
+                            handleSelect={handleSelect}/>
             {isModalVisible === true  ? <Roompic onClose={handleModalClose} 
                                             selectRoomPic={selectRoomPic} 
                                             selectRoomData={selectRoomData}
-                                            handleBooking={handleBooking}
                                             selectRoom={selectRoom}/> : ""}
             <Service />
             <Rate/>

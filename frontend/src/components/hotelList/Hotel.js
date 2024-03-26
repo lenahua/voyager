@@ -30,7 +30,7 @@ const Hotel = ({place, photos}) => {
   if(!place){
     return null;
   }
-
+  console.log(place.lng)
   const handleOpen = (i)=>{
     setSlideNumber(i);
     setOpen(true)
@@ -53,11 +53,11 @@ const Hotel = ({place, photos}) => {
     disableDefaultUI: true
   };
 
-  const handleMarkerClick = () => {
-    const marker = markerRef.current;
-    console.log('Clicked marker:', marker);
-    console.log('Marker position:', marker.getPosition().toJSON());
-  };
+  // const handleMarkerClick = () => {
+  //   const marker = markerRef.current;
+  //   console.log('Clicked marker:', marker);
+  //   console.log('Marker position:', marker.getPosition().toJSON());
+  // };
  
 
   return (
@@ -109,11 +109,13 @@ const Hotel = ({place, photos}) => {
                   options={mapOptions}
                   onLoad={(map) => console.log('Map loaded!', map)}
                 >
-                <Marker position={mapOptions.center}
+                <Marker 
+                        position={mapOptions.center}
                         // onClick={handleMarkerClick}
                         options={{
                           icon: hotelIcon
-                        }}/>
+                        }}
+                        />
                 </GoogleMap>
             ) : <></>}
           </div>

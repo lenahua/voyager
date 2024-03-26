@@ -2,12 +2,11 @@ import React, {useState} from 'react'
 import { FaHome, FaCheck, FaCity, FaWater, FaRegSnowflake, FaBath, FaWifi } from "react-icons/fa";
 import { PiTelevision } from "react-icons/pi";
 import { IoIosBed,IoMdPeople,IoIosCloseCircleOutline } from "react-icons/io";
-
+import { Link } from 'react-router-dom';
 
 import '../../css/roompic.css'
 
-const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, handleBooking, selectRoom}) => {
-    
+const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, selectRoom}) => {
     const [sliderData, setSliderData] = useState(selectRoomPic[0])
     const biggerHandler = (index)=>{
         console.log(index);
@@ -96,7 +95,9 @@ const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, handleBooking,
                 <div className='bottomMiddle'>
                 {selectRoomData[0].bed_type}<IoIosBed/>
                 </div>
-                <button className='bookingButton' onClick={()=>handleBooking(selectRoom)}>立即預訂</button>
+                <Link to={`/hotelOrder/${selectRoom}`}>
+                <button className='bookingButton' >立即預訂</button>
+                </Link>
             </div>
         </div>
     </div>
