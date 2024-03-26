@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import Modal from './viewModal';
+import MyModal from './myModal.jsx';
 import '../../css/viewPage.css';
+
 
 //Header原件
 function Nav(prop){
@@ -12,6 +13,9 @@ function Nav(prop){
 //左側地區篩選欄
 function FilterBar(prop){
    
+    let [isClikedLocation, setLocation] = React.useState("所有");
+    let [keyWord,setKeyWord] = React.useState("");
+
     let locationData = [
         {area:'北部地區',
         location:['台北市','新北市','桃園市','基隆市','新竹市','新竹縣']},
@@ -22,23 +26,26 @@ function FilterBar(prop){
         {area:'東部地區',
          location:['宜蘭縣','花蓮縣','台東縣']}
     ]
+    
     //取得各地區內的縣市名稱
     const getlocationName = (locationAry) => {
         let newAry = locationAry.map(locationName => (
             <li key={locationName} 
-                onClick={()=>{locationClick(locationName)}}>
+                onClick={()=>{locationClick(locationName)}}
+                style={locationName===isClikedLocation?{backgroundColor:"rgb(201, 213, 223)"}:{}}>
             {locationName}</li>
         ))
         return newAry;
     };
     const locationClick = async(locationName)=>{
-        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}`);          
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&title=${keyWord}`);
+        setLocation(locationName)   ;               
         prop.handleFilterBar(result);
     }
     return(
         <div className="filterBar col-2 d-none d-lg-block position-sticky sticky-top vh-">
             <div className="locationTitle mb-1 border-bottom border-3 d-flex align-items-center w-75">
-                <h4 className="mb-0 mt-0 position-absolute">地區</h4>
+                <h4 className="mb-0 mt-0 position-absolute">地區{isClikedLocation}</h4>
             </div>
             <div>
             {
@@ -46,7 +53,7 @@ function FilterBar(prop){
                 return(
                     <React.Fragment>
                         <h5 >{locationObj.area}</h5>
-                        <ul className="nav flex-column">
+                        <ul className="nav flex-column w-75">
                             {getlocationName(locationObj.location)}
                         </ul>
                     </React.Fragment>
@@ -84,7 +91,6 @@ class Content extends React.Component{
                 {this.props.dataAry.map(post=>
                     <div className="col-4 col-md-4 postbox" id={post.postid}
                          onClick={()=>{this.changeModalContent(post.postid)}}
-                         data-bs-toggle="modal" data-bs-target="#myModal"
                     >
                         <img src={`data:image/jpeg;base64,${post.img}`} alt="img"/>
                     </div>
@@ -111,13 +117,14 @@ class Container extends React.Component{
         likeCounter:0,
         likeState:0,
         savingState:0,
-        loginUid:7
-        
+        loginUid:7,
+        modalIsOpen:false
+         
     }
     render(){
         return(  
             <div className="container max-width: 100% mt-3 d-flex gx-5 align-items-start">
-                <Modal  info={this.state.modalInfoAry} 
+                <MyModal  info={this.state.modalInfoAry} 
                         tag={this.state.postTagAry} 
                         comment = {this.state.postCommentAry}
                         commentCounter = {this.state.commentCounter}                   
@@ -128,17 +135,26 @@ class Container extends React.Component{
                         likeCounter= {this.state.likeCounter}
                         handleModal = {this.handleModal}
                         handleLikeState = {this.handleLikeState} 
-                        handleSavingState = {this.handleSavingState} 
+                        handleSavingState = {this.handleSavingState}
+                        modalIsOpen = {this.state.modalIsOpen}
+                        modalIsClose = {this.handleModalColse}
                         />
                 <FilterBar handleFilterBar={this.handleFilterBar}/>
                 <Content dataAry={this.state.dataAry} handleModal={this.handleModal}/>
             </div>
         );
     }
+    handleModalColse = ()=>{
+        let newState = {...this.state};
+        newState.modalIsOpen = false;
+        console.log("modal close!");
+        this.setState(newState);
+    }
     componentDidMount = async() =>{
         let result = await axios.get("http://localhost:8000/viewPage/imgList");
         let newState = {...this.state};
         newState.dataAry = result.data;
+        console.log(this.state.modalIsOpen);
         this.setState(newState);
     }
     handleFilterBar = (result) =>{
@@ -148,6 +164,7 @@ class Container extends React.Component{
         this.setState(newState);
     }  
     handleModal = async(postid)=>{
+        console.log("***************************");
         const [postContent, postTag,postComment,
               commentCounter,commentAccount,likeCounter,likeState,savingState] = await Promise.all([
 
@@ -171,11 +188,10 @@ class Container extends React.Component{
         newState.likeCounter = likeCounter.data[0].likeCounter;
         newState.likeState = likeState.data[0].state;
         newState.savingState = savingState.data[0].state;
-
+        newState.modalIsOpen = true ; 
         console.log("change to newState:",newState);
         this.setState(newState);
     }
-
     handleLikeState = (state)=>{  
         let newState = {...this.state};
         newState.likeState = state ;     
@@ -187,6 +203,7 @@ class Container extends React.Component{
         newState.savingState = state ;      
         this.setState(newState);
     }
+    hafle
 }
 
 //整頁viewPage
@@ -195,7 +212,6 @@ class viewPage extends React.Component{
     render(){ 
         return(
             <React.Fragment>
-                <Nav />
                 <Container />  
             </React.Fragment>
         );
