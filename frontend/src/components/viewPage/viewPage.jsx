@@ -190,6 +190,7 @@ class Container extends React.Component{
         newState.savingState = savingState.data[0].state;
         newState.modalIsOpen = true ; 
         console.log("change to newState:",newState);
+        
         this.setState(newState);
     }
     handleLikeState = (state)=>{  

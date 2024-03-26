@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","DELETE"],
     credentials: true,
   })
 );
@@ -32,7 +32,7 @@ var connection = mysql.createConnection({
   user: "root",
   password: "",
   host: "127.0.0.1",
-  database: "voyager",
+  database: "test",
 });
 
 connection.connect(function (err) {
@@ -210,6 +210,7 @@ app.delete(`/viewPage/cancelLike`, function (req, res) {
     }
   );
 });
+
 //對特定貼文點讚
 app.post(`/viewPage/addLike`, function (req, res) {
   connection.query(
@@ -221,6 +222,8 @@ app.post(`/viewPage/addLike`, function (req, res) {
     }
   );
 });
+
+
 //取得特定貼文讚數
 app.get(`/viewPage/getLikeCounter`, function (req, res) {
   connection.query(

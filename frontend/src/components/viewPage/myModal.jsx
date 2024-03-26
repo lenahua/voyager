@@ -67,7 +67,9 @@ class myModal extends React.Component {
 
         let isOpen = this.props.modalIsOpen ;
         let onClose = this.props.modalIsClose ;
-        console.log("????");
+      
+
+        
         return (
             <Modal show={isOpen} onHide={onClose} size="xl" centered>
              <div className="viewModalDialog modal-dialog modal-xl  modal-dialog-centered ">
@@ -169,7 +171,7 @@ class myModal extends React.Component {
                                                         </div>
 
                                                         <div class="postContent">
-                                                            <a href=""><b>{this.props.commentAccount[index].account}</b></a>
+                                                            <a href=""><b>{index ?this.props.commentAccount[0].account:""}</b></a>
                                                             <p> 
                                                                 {comment.comment}
                                                             </p>

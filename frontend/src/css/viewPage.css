@@ -1,3 +1,10 @@
+.modal-backdrop {
+    
+    z-index: 900 !important;
+    
+  }
+
+
 nav{
 
     height: 100px;
@@ -5,7 +12,7 @@ nav{
 .filterBar{
     height: 100vh;
     overflow-y: hidden;
- 
+    z-index: 700 !important;
 }
 .filterBar:hover {
     overflow-y: auto; 
