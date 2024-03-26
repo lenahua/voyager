@@ -792,3 +792,70 @@ app.post("/register", (req, res) => {
     );
   });
 });
+
+
+//旅館清單
+app.get("/", function (req, res) { 
+  res.send("hello world");
+});;
+
+app.get("/api/hotels", (req, res) => {  //第一條路徑
+  const queryParam = req.query.query;
+
+  let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
+  FROM hotel_table
+  JOIN (
+  SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+  FROM hotel_photos
+  GROUP BY hotel_id
+  ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+  JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+  JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
+
+  if (queryParam) {
+      sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
+     
+      db.query(sqlQuery, [`%${queryParam}%`, `%${queryParam}%`], (err, results) => {
+          // 處理查詢結果
+      });
+  } else {
+      // 沒填參數,就變回原始查詢
+      db.query(sqlQuery, (err, results) => {
+          // 查詢結果
+      });
+  }
+
+  // 搜尋清單
+  
+  db.query(sqlQuery, (err, results) => {
+      if (err) {
+          console.error('查詢失敗:', err);
+          res.status(500).send('服務器錯誤');
+          return;
+      }
+      res.json(results);
+  });
+});
+
+
+app.get("/api/roomtype", (req, res) => {   //房型種類路徑
+  const sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
+  FROM hotel_table
+  JOIN (
+  SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+  FROM hotel_photos
+  GROUP BY hotel_id
+  ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+  JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+  JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
+
+
+  db.query(sqlQuery, (err, results) => {
+      if (err) {
+          console.error('查詢失敗:', err);
+          res.status(500).send('服務器錯誤');
+          return;
+      }
+      res.json(results);
+  });
+});
