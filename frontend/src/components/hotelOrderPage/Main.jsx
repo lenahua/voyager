@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 class Main extends Component {
     state = { 
-        userInfo : [],
-        creditCard : [{},{},{},{},{}],
+        userInfo : [{account: '', email: '', name: '', telephone: ''}],
+        creditCard : [{cardType: '', cardNumber: '', name: '', valid: '', cvc: ''}, {}, {}, {}, {}],
         order : [],
         selectIndex : 0,
         date : [[],[],[],[]],
-        hotel : [{}],
-        roomType : [{}]
+        hotel : [{name: '', address: ''}],
+        roomType : [{room_type: '', price: ''}]
     } 
     render() { 
         return (
