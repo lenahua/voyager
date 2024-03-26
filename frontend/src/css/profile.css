@@ -11,9 +11,10 @@
   justify-content: center;
 }
 
-.card-img-top {
+.cit {
   position: relative;
   height: 300px;
+  width: 100%;
   object-fit: cover;
 }
 
