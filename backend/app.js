@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -660,77 +660,96 @@ app.post("/checkout/hotel/order", function (req, res) {
 });
 
 // 飯店詳細
-app.get("/hotelInfo/:id", function(req, res){
+app.get("/hotelInfo/:id", function (req, res) {
   const hotelId = req.params.id;
 
   // 定義各個資料庫查詢的函式
   const getHotelData = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel where hotel_id = ?", [hotelId], function (err, hotelRows) {
-              if (err) reject("Error fetching hotel data");
-              resolve(hotelRows[0]);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel where hotel_id = ?",
+        [hotelId],
+        function (err, hotelRows) {
+          if (err) reject("Error fetching hotel data");
+          resolve(hotelRows[0]);
+        }
+      );
+    });
   };
 
   const getHotelPhotos = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel_photos where hotel_id = ?", [hotelId], function(err, photoRows) {
-              if (err) reject("Error fetching hotel photos");
-              resolve(photoRows);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel_photos where hotel_id = ?",
+        [hotelId],
+        function (err, photoRows) {
+          if (err) reject("Error fetching hotel photos");
+          resolve(photoRows);
+        }
+      );
+    });
   };
 
   const getHotelRooms = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel_rooms where hotel_id = ?", [hotelId], function(err, roomRows) {
-              if (err) reject("Error fetching hotel rooms");
-              resolve(roomRows);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel_rooms where hotel_id = ?",
+        [hotelId],
+        function (err, roomRows) {
+          if (err) reject("Error fetching hotel rooms");
+          resolve(roomRows);
+        }
+      );
+    });
   };
 
   const getHotelRoomTypes = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel_room_type where hotel_id = ?", [hotelId], function(err, roomPicRows) {
-              if (err) reject("Error fetching hotel room types");
-              resolve(roomPicRows);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel_room_type where hotel_id = ?",
+        [hotelId],
+        function (err, roomPicRows) {
+          if (err) reject("Error fetching hotel room types");
+          resolve(roomPicRows);
+        }
+      );
+    });
   };
 
   const getUserReviews = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ?", 
-              [hotelId], function(err, reviewRows) {
-                  if (err) reject("Error fetching user reviews");
-                  resolve(reviewRows);
-              });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ?",
+        [hotelId],
+        function (err, reviewRows) {
+          if (err) reject("Error fetching user reviews");
+          resolve(reviewRows);
+        }
+      );
+    });
   };
 
   // 使用 Promise執行所有資料庫查詢
   Promise.all([
-      getHotelData(),
-      getHotelPhotos(),
-      getHotelRooms(),
-      getHotelRoomTypes(),
-      getUserReviews()
+    getHotelData(),
+    getHotelPhotos(),
+    getHotelRooms(),
+    getHotelRoomTypes(),
+    getUserReviews(),
   ])
-  .then(([hotelData, photoRows, roomRows, roomPicRows, reviewRows]) => {
+    .then(([hotelData, photoRows, roomRows, roomPicRows, reviewRows]) => {
       const responseData = {
-          hotel: hotelData,
-          photos: photoRows,
-          room: roomRows,
-          roomPic: roomPicRows,
-          reviews: reviewRows
+        hotel: hotelData,
+        photos: photoRows,
+        room: roomRows,
+        roomPic: roomPicRows,
+        reviews: reviewRows,
       };
       res.send(responseData);
-  })
-  .catch(error => {
+    })
+    .catch((error) => {
       res.status(500).send(error);
-  });
+    });
 });
 // login and registe
 const verifyUser = (req, res, next) => {
@@ -817,13 +836,13 @@ app.post("/register", (req, res) => {
   });
 });
 
-
 //旅館清單
-app.get("/", function (req, res) { 
+app.get("/", function (req, res) {
   res.send("hello world");
-});;
+});
 
-app.get("/api/hotels", (req, res) => {  //第一條路徑
+app.get("/api/hotels", (req, res) => {
+  //第一條路徑
   const queryParam = req.query.query;
 
   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
@@ -837,32 +856,36 @@ app.get("/api/hotels", (req, res) => {  //第一條路徑
   JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
 
   if (queryParam) {
-      sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
-     
-      db.query(sqlQuery, [`%${queryParam}%`, `%${queryParam}%`], (err, results) => {
-          // 處理查詢結果
-      });
+    sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
+
+    db.query(
+      sqlQuery,
+      [`%${queryParam}%`, `%${queryParam}%`],
+      (err, results) => {
+        // 處理查詢結果
+      }
+    );
   } else {
-      // 沒填參數,就變回原始查詢
-      db.query(sqlQuery, (err, results) => {
-          // 查詢結果
-      });
+    // 沒填參數,就變回原始查詢
+    db.query(sqlQuery, (err, results) => {
+      // 查詢結果
+    });
   }
 
   // 搜尋清單
-  
+
   db.query(sqlQuery, (err, results) => {
-      if (err) {
-          console.error('查詢失敗:', err);
-          res.status(500).send('服務器錯誤');
-          return;
-      }
-      res.json(results);
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
   });
 });
 
-
-app.get("/api/roomtype", (req, res) => {   //房型種類路徑
+app.get("/api/roomtype", (req, res) => {
+  //房型種類路徑
   const sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
   FROM hotel_table
   JOIN (
@@ -873,13 +896,12 @@ app.get("/api/roomtype", (req, res) => {   //房型種類路徑
   JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
   JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
 
-
   db.query(sqlQuery, (err, results) => {
-      if (err) {
-          console.error('查詢失敗:', err);
-          res.status(500).send('服務器錯誤');
-          return;
-      }
-      res.json(results);
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
   });
 });

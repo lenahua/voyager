@@ -128,7 +128,7 @@ function Member({ userId }) {
         <div className="innerBackground">
           <div>
             <div>
-              <img className="card-img-top" src={bg} alt="backgroundImage" />
+              <img className="cit" src={bg} alt="backgroundImage" />
               <button className="profile-button">更換背景圖片</button>
             </div>
             <div className="card-body little-profile text-center">
