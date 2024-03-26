@@ -21,8 +21,8 @@ class Slide extends Component {
         Aos.init({
             duration : 1000,
             easing: 'ease-out-quart',  
-            delay: 300,
-            offset: 400 //卷軸滾到多少px才觸發
+            delay: 150,
+            offset: 300 //卷軸滾到多少px才觸發
         });
     }
 
@@ -107,8 +107,8 @@ class Slide extends Component {
                         </div>
                         <img src={Img4} alt="Slide 3" className="Imgxian"/>
                     </div>  
-                    <FontAwesomeIcon icon={faArrowLeft} id="prevBtn"  className="arrow" onClick={this.prevSlide}/>
-                    <FontAwesomeIcon icon={faArrowRight} id="nextBtn"  className="arrow" onClick={this.nextSlide}/>
+                    <FontAwesomeIcon icon={faArrowLeft} id="prevBtn"  className="arrowXian" onClick={this.prevSlide}/>
+                    <FontAwesomeIcon icon={faArrowRight} id="nextBtn"  className="arrowXian" onClick={this.nextSlide}/>
                 </div>    
             </div>
         );
