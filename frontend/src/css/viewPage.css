@@ -66,34 +66,42 @@ nav{
 /************************************************Modal of CSS**************************/
 
 @media screen and (min-width: 576px){
-    .viewModalDialog{
+    .modal-dialog{
         height: 560px;
         width: 700px;
     }
  }
  @media screen and (min-width: 992px){
-    .viewModalDialog{
-        width: 900px;
-        
+    .modal-dialog{
+        width: 900px;     
         height: 560px;
     }
  }
  @media screen and (min-width: 1200px){
-    .viewModalDialog{
+    .modal-dialog{
         height: 90vh;
         width: 1140px;
     }
  }
-.viewModalDialog{      
-    align-items: center; 
+.modal-dialog{      
+    width: 100%;
     display: flex;
 }
 .postArea{
+    height: 100%;
     background-color: rgb(255, 255, 255); 
 }
 .imgArea{
+    height: 100% !important;
     background-color: rgb(0, 0, 0);
     overflow-y: hidden;
+}
+.modal-content{
+    height: 100%;
+}
+
+.viewModal {
+    width: unset;
 }
 
 .imgArea img{   
@@ -107,9 +115,19 @@ nav{
 .userId{
     font-size: 20px;
 }
-.iconBox{
+.postFoot .iconBox{
     width: 40px;
+    border: none;
 }   
+#viewLikeIcon{
+    background-color: transparent;
+    border-color: transparent;
+}
+#viewSavingIcon{
+    background-color: transparent;
+    border-color: transparent;
+}
+
 .postIconSpace{
     width: 45px;
 }

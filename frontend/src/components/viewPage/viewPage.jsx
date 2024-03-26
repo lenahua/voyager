@@ -38,7 +38,7 @@ function FilterBar(prop){
         return newAry;
     };
     const locationClick = async(locationName)=>{
-        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&title=${keyWord}`);
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}`);
         setLocation(locationName)   ;               
         prop.handleFilterBar(result);
     }

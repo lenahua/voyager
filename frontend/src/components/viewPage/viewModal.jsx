@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 
-class Modal extends React.Component{
+class viewModal extends React.Component{
     state = {
         commentText:"",
     };
@@ -230,4 +230,4 @@ class Modal extends React.Component{
     }
 }
 
-export default Modal;
+export default viewModal;
