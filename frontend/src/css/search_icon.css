@@ -1,0 +1,59 @@
+.icon-title {
+    position: relative;
+}
+
+.badge-position {
+    position: absolute;
+    padding-top: 13px;
+}
+
+.btn-width {
+    width: 160px;
+}
+
+.page-icon {
+    border: 1px solid #e7e7e7 ;
+    border-radius: 10px;
+}
+
+.page-item {
+    border: none;
+}
+
+.card-background {
+    background-color: rgba(163, 215, 252, 0.3);
+    border: 1px solid transparent; /* 定义一个透明边框 */
+    box-shadow: 0 0 8px rgba(163, 215, 252, 0.9); /* 使用之前提到的颜色作为阴影 */
+}
+.font-title {
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 10px;
+}
+
+
+.link-like-button {
+    background: none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .link-like-button:hover {
+    text-decoration: none;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .selected-result {
+    animation: fadeIn 2s ease-out;
+  }
+
+ 

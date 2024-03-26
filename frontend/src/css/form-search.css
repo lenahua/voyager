@@ -1,0 +1,191 @@
+body {
+   font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.search-form {
+  position: absolute;
+  left: 52%;
+  top: 140px;
+  transform: translate(-50%, -50%);
+  z-index: 1020; /* Ensure it's above other items */
+}
+.button-color {
+    background-color: white;
+    border-color: rgb(208, 196, 196);
+    border-left: none;
+  
+}
+
+.search-color {
+    border-color: rgb(208, 196, 196);
+    border-right: none;
+    border-radius: 30px;
+    height: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding-right: 40px;
+    border: 3px solid #e5e5e5;
+    width: 300px;
+    transition: transform 0.3s ease;
+    
+}
+
+
+  
+.search-color:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+
+}
+
+.search-color:hover {
+    background-color: #6c757d;
+}
+
+.search-left {
+    margin-top: 50px;
+    border-radius: 50px;
+}
+
+.search-result {
+    margin-top: 35px;
+}
+
+.page {
+    position: relative;
+    left: 730px;
+    margin-top: 20px;
+}
+
+.indate {
+    position: relative;
+    left: 40px;
+}
+
+.card-page {
+    padding: 10px;
+    padding-bottom: 40px;
+}
+
+.card-img-top {
+    width: 270px;
+    height: 240px;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.room-info {
+    position: relative;
+    left: 75%;
+
+    
+}
+
+.input-info {
+    border-radius: 30px;
+    width: 150px;
+    position: relative;
+    left: 30px;
+    top:100px
+}
+
+.hot {
+    position: relative;
+    right:115px ;
+    width: 200px;
+    background-color: white;
+    color: black;
+    animation: grow 2s infinite alternate ease-in-out;
+}
+
+
+@keyframes grow {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.2);
+      background-color: #a3d7fc;
+      border: 1px solid transparent;
+    }
+  }
+
+.button-radius {
+    border-radius: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.search-center {
+width: 800px;
+}
+
+.search-container {
+    position: relative;
+    
+  }
+
+.search-input {
+    padding-right: 50px; /* 為按鈕留出空間 */
+    
+  }
+
+ 
+
+.search-button {
+    position: absolute;
+    bottom: 5%;
+    left: 87%;
+    border: 0; 
+    background: transparent; 
+  }
+
+
+
+.search-button-date {
+    left: 78%;
+}
+
+.button-search {
+    position: absolute;
+    height: 50px;
+    width: 80px;
+    top: 25px;
+
+}
+
+.left-line {
+    position: relative;
+}
+.left-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px; 
+  background-color: #6c757d; 
+  opacity: 50%;
+}
+
+
+.introduce-title {
+    padding-left: 85px;
+    padding-top: 60px;
+    float: left;
+}
+
+.city-result {
+    margin-left: -10px;
+}
+
+
+
+.search-end {
+    margin-left: -5px;
+   
+}
+
+
+.rounded-pill {
+    background-color: white;
+}
