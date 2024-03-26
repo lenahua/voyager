@@ -72,7 +72,7 @@ class myModal extends React.Component {
         
         return (
             <Modal show={isOpen} onHide={onClose} size="xl" centered>
-             <div className="viewModalDialog modal-dialog modal-xl  modal-dialog-centered ">
+             <div className="viewModalDialog">
                         <div className="ViewModalContent modal-content d-flex flex-row h-100 bg-dark">
                            
                             <div id="mybox" className="mybox d-flex flex-row flex-wrap w-100 h-100">
