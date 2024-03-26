@@ -660,53 +660,77 @@ app.post("/checkout/hotel/order", function (req, res) {
 });
 
 // 飯店詳細
-app.get("/hotelInfo/:id", function (req, res) {
+app.get("/hotelInfo/:id", function(req, res){
   const hotelId = req.params.id;
-  connection.query(
-    "select * from hotel where hotel_id = ?",
-    [hotelId],
-    function (err, hotelRows) {
-      if (err) {
-        return res.status(500).send("Error fetching hotel data");
-      }
-      connection.query(
-        "select * from hotel_photos where hotel_id = ?",
-        [hotelId],
-        function (err, photoRows) {
-          if (err) {
-            return res.status(500).send("Error fetching hotel photo");
-          }
-          connection.query(
-            "select * from hotel_rooms where hotel_id = ?",
-            [hotelId],
-            function (err, roomRows) {
-              if (err) {
-                return res.status(500).send("Error fetching hotel rooms");
-              }
-              connection.query(
-                "select * from hotel_room_type where hotel_id = ?",
-                [hotelId],
-                function (err, roomPicRows) {
-                  if (err) {
-                    return res
-                      .status(500)
-                      .send("Error fetching hotel rooms picture");
-                  }
-                  const responseData = {
-                    hotel: hotelRows[0],
-                    photos: photoRows,
-                    room: roomRows,
-                    roomPic: roomPicRows,
-                  };
-                  res.send(responseData);
-                }
-              );
-            }
-          );
-        }
-      );
-    }
-  );
+
+  // 定義各個資料庫查詢的函式
+  const getHotelData = () => {
+      return new Promise((resolve, reject) => {
+        connection.query("select * from hotel where hotel_id = ?", [hotelId], function (err, hotelRows) {
+              if (err) reject("Error fetching hotel data");
+              resolve(hotelRows[0]);
+          });
+      });
+  };
+
+  const getHotelPhotos = () => {
+      return new Promise((resolve, reject) => {
+        connection.query("select * from hotel_photos where hotel_id = ?", [hotelId], function(err, photoRows) {
+              if (err) reject("Error fetching hotel photos");
+              resolve(photoRows);
+          });
+      });
+  };
+
+  const getHotelRooms = () => {
+      return new Promise((resolve, reject) => {
+        connection.query("select * from hotel_rooms where hotel_id = ?", [hotelId], function(err, roomRows) {
+              if (err) reject("Error fetching hotel rooms");
+              resolve(roomRows);
+          });
+      });
+  };
+
+  const getHotelRoomTypes = () => {
+      return new Promise((resolve, reject) => {
+        connection.query("select * from hotel_room_type where hotel_id = ?", [hotelId], function(err, roomPicRows) {
+              if (err) reject("Error fetching hotel room types");
+              resolve(roomPicRows);
+          });
+      });
+  };
+
+  const getUserReviews = () => {
+      return new Promise((resolve, reject) => {
+        connection.query("SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ?", 
+              [hotelId], function(err, reviewRows) {
+                  if (err) reject("Error fetching user reviews");
+                  resolve(reviewRows);
+              });
+      });
+  };
+
+  // 使用 Promise執行所有資料庫查詢
+  Promise.all([
+      getHotelData(),
+      getHotelPhotos(),
+      getHotelRooms(),
+      getHotelRoomTypes(),
+      getUserReviews()
+  ])
+  .then(([hotelData, photoRows, roomRows, roomPicRows, reviewRows]) => {
+      const responseData = {
+          hotel: hotelData,
+          photos: photoRows,
+          room: roomRows,
+          roomPic: roomPicRows,
+          reviews: reviewRows
+      };
+      res.send(responseData);
+  })
+  .catch(error => {
+      res.status(500).send(error);
+  });
 });
 // login and registe
 const verifyUser = (req, res, next) => {

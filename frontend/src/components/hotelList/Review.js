@@ -55,29 +55,38 @@ const responsive = {
     },
 };
 
-const Review = () => {
+const Review = ({review}) => {
+  
   return (
     <div >
       <Carousel responsive={responsive} className='reviewWrapper'>
-                {guests.map((data, index) => (
+                {review.map((data, index) => (
                     <div key={index} className='guestCard'>
                         <div className='guestCardTitle'>
                         <div className='guestCardTitleName'>
-                            <img src={data.img} alt='' className='guestImg' />
+                            {/* <img src={data.img} alt='' className='guestImg' /> */}
                             <span>{data.name}</span>
                         </div>
-                        <span>{data.date}</span>
+                        <span>{formateDate(data.endDate)}</span>
                         </div>
                         <div className='guestCardSecond'>
-                        <h4>非常棒的住宿體驗</h4>
+                        <h4>{data.title}</h4>
                         <span>{data.stars}</span>
                         </div>
-                        <div className='guestCardisc'>{data.disc}</div>
+                        <div className='guestCardisc'>{data.content}</div>
                     </div>
                 ))}
         </Carousel>
     </div>
   )
+}
+
+const formateDate = (endDate)=>{
+  const date = new Date(endDate);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() +1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 export default Review

@@ -21,6 +21,7 @@ function HotelInfo(){
     const [photos, setPhotos] = useState([]);
     const [room, setRoom] = useState([]);
     const [roomPics, setRoomPic] = useState([]);
+    const [review, setReview] = useState([])
     useEffect(()=>{
         if(!id){
             return;
@@ -32,6 +33,7 @@ function HotelInfo(){
                 setPhotos(response.data.photos)
                 setRoom(response.data.room)
                 setRoomPic(response.data.roomPic)
+                setReview(response.data.reviews)
             })
             .catch(error=>{
                 console.error('error fetching data: ', error)
@@ -84,7 +86,7 @@ function HotelInfo(){
                                             selectRoom={selectRoom}/> : ""}
             <Service />
             <Rate/>
-            <Review/>
+            <Review review={review}/>
             <Rule/>
         </>
     )
