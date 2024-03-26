@@ -844,8 +844,7 @@ app.get("/", function (req, res) {
   res.send("hello world");
 });
 
-app.get("/hotelList/hotels", (req, res) => {
-  //第一條路徑
+app.get("/hotelList/hotels", (req, res) => {  //第一條路徑
   const queryParam = req.query.query;
 
   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price

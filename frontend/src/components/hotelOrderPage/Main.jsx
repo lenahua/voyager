@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 class Main extends Component {
     state = { 
-        userInfo : [],
-        creditCard : [{},{},{},{},{}],
+        userInfo : [{account: '', email: '', name: '', telephone: ''}],
+        creditCard : [{cardType: '', cardNumber: '', name: '', valid: '', cvc: ''}, {}, {}, {}, {}],
         order : [],
         selectIndex : 0,
         date : [[],[],[],[]],
-        hotel : [{}],
-        roomType : [{}]
+        hotel : [{name: '', address: ''}],
+        roomType : [{room_type: '', price: ''}]
     } 
     render() { 
         return (
@@ -248,8 +248,8 @@ class Main extends Component {
         }
         console.log(dataToServer);
         await axios.post('http://localhost:8000/checkout/hotel/order', dataToServer);
-        alert("已完成訂單");
-        // window.location = "/";
+        alert("已完成訂單 點擊確定探索更多景點");
+        window.location = "/viewPage";
         
     }
     changeSelectedCard = (e) => {
