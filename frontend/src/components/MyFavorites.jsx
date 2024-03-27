@@ -90,7 +90,7 @@ function MyFavorites({ userId }) {
       alert("收藏狀態已更改");
     } catch (error) {
       console.error("刪除收藏錯誤:", error);
-2      alert("删除收藏失败");
+      alert("删除收藏失败");
     }
   };
 
