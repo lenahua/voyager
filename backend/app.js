@@ -223,7 +223,6 @@ app.post(`/viewPage/addLike`, function (req, res) {
   );
 });
 
-
 //取得特定貼文讚數
 app.get(`/viewPage/getLikeCounter`, function (req, res) {
   connection.query(
@@ -298,6 +297,55 @@ app.post(`/viewPage/addSavingState`, function (req, res) {
     }
   );
 }); */
+app.get("/viewPage/getModallily", function (req, res) {
+  connection.query(
+    `SELECT 
+    post.postid,
+    imgdata.img,
+    post.title,
+    post.postdate,
+    post.postcontent,
+    post.likecounter, 
+    userinfo.account
+FROM 
+    imgdata
+INNER JOIN post ON imgdata.postid = post.postid
+INNER JOIN userinfo ON post.uid = userinfo.uid
+WHERE 
+    post.postid = ?;
+`,
+    [req.query.postid],
+    function (err, result) {
+      let newResult = changeToBase64(result);
+      console.log(result);
+      res.send(newResult);
+    }
+  );
+});
+
+app.get(`/viewPage/getCommentlily`, function (req, res) {
+  connection.query(
+    `SELECT 
+    postcomment.comment, 
+    postcomment.likecounter, 
+    postcomment.commenttime, 
+    postcomment.uid, 
+    userinfo.account
+FROM 
+    postcomment
+INNER JOIN userinfo ON postcomment.uid = userinfo.uid
+WHERE 
+    postcomment.postid = ?
+ORDER BY 
+    postcomment.commenttime DESC;
+;`,
+    [req.query.postid],
+    function (err, result) {
+      res.send(result);
+    }
+  );
+});
+
 app.get("/member/order/:id", function (req, res) {
   const sql = `
     SELECT 
@@ -810,8 +858,9 @@ app.post('/login', (req, res)=>{
                   return res.json({Error: "Login error in server"});
               }  
               if (data.length > 0){
+                  const uid = data[0].Uid;
                   const account = data[0].account;
-                  const token = jwt.sign({account}, "jwt-secret-key", {expiresIn: '1d'})
+                  const token = jwt.sign({uid,account}, "jwt-secret-key", {expiresIn: '1d'})
                   res.cookie('token', token)
                   // req.session.user = data;
                   // console.log(req.session.user)
@@ -847,7 +896,8 @@ app.get("/", function (req, res) {
   res.send("hello world");
 });
 
-app.get("/hotelList/hotels", (req, res) => {  //第一條路徑
+app.get("/hotelList/hotels", (req, res) => {
+  //第一條路徑
   const queryParam = req.query.query;
 
   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
@@ -861,32 +911,36 @@ app.get("/hotelList/hotels", (req, res) => {  //第一條路徑
   JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
 
   if (queryParam) {
-      sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
-     
-      connection.query(sqlQuery, [`%${queryParam}%`, `%${queryParam}%`], (err, results) => {
-          // 處理查詢結果
-      });
+    sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
+
+    connection.query(
+      sqlQuery,
+      [`%${queryParam}%`, `%${queryParam}%`],
+      (err, results) => {
+        // 處理查詢結果
+      }
+    );
   } else {
-      // 沒填參數,就變回原始查詢
-      connection.query(sqlQuery, (err, results) => {
-          // 查詢結果
-      });
+    // 沒填參數,就變回原始查詢
+    connection.query(sqlQuery, (err, results) => {
+      // 查詢結果
+    });
   }
 
   // 搜尋清單
-  
+
   connection.query(sqlQuery, (err, results) => {
-      if (err) {
-          console.error('查詢失敗:', err);
-          res.status(500).send('服務器錯誤');
-          return;
-      }
-      res.json(results);
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
   });
 });
 
-
-app.get("/hotelList/roomtype", (req, res) => {   //房型種類路徑
+app.get("/hotelList/roomtype", (req, res) => {
+  //房型種類路徑
   const sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
   FROM hotel_table
   JOIN (
@@ -897,13 +951,12 @@ app.get("/hotelList/roomtype", (req, res) => {   //房型種類路徑
   JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
   JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
 
-
   connection.query(sqlQuery, (err, results) => {
-      if (err) {
-          console.error('查詢失敗:', err);
-          res.status(500).send('服務器錯誤');
-          return;
-      }
-      res.json(results);
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
   });
 });
