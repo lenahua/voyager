@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "../css/info.css";
-import VisaImage from "./images/Visa.png";
-import MasterCardImage from "./images/MasterCard.png";
-import AmericanExpressImage from "./images/AmericanExpress.png";
+import "../../css/info.css";
+import VisaImage from "../images/Visa.png";
+import MasterCardImage from "../images/MasterCard.png";
+import AmericanExpressImage from "../images/AmericanExpress.png";
 import { Modal, TextField } from "@mui/material";
 import axios from "axios";
 

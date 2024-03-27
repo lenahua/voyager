@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../css/order.css";
+import "../../css/order.css";
 import "@fontsource/inter";
 import { Modal, TextField, Rating, Popover } from "@mui/material";
 import { Link } from "react-router-dom";

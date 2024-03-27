@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../css/myFavorite.css";
+import "../../css/myFavorite.css";
 import axios from "axios";
 
 function MyFavorites({ userId }) {

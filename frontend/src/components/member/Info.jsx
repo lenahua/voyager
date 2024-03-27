@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "../css/info.css";
-import PaymentInfo from "./payment"; //payment元件切出去了
+import "../../css/info.css";
+import PaymentInfo from "./Payment"; //payment元件切出去了
 import axios from "axios";
 
 localStorage.setItem("Uid", "10");
