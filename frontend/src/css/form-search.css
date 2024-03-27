@@ -58,7 +58,7 @@ body {
 
 .indate {
     position: relative;
-    left: 40px;
+    
 }
 
 .card-page {
@@ -214,3 +214,4 @@ width: 800px;
 .rounded-pill {
     background-color: white;
 }
+

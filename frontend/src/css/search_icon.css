@@ -20,6 +20,7 @@
     border: none;
 }
 
+
 .card-background {
     background-color: rgba(163, 215, 252, 0.3);
     border: 1px solid transparent; /* 定义一个透明边框 */
@@ -57,5 +58,8 @@
   };
 
 
-  
+  .fixed-sidebar {
+    position: fixed;
+
+}
  
