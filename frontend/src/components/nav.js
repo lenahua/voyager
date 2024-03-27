@@ -72,12 +72,10 @@ function Nav({auth, message, account}){
     return(
         <>
             <header>
-                <img src={Logo} className="logoNav" alt=""></img>
+                <a href="/"><img src={Logo} className="logoNav" alt=""/></a>
                 <nav ref={navRef}>
                     <Link to="/viewPage">景點</Link>
                     <Link to="/hotelList">住宿</Link>
-                    <Link to="/info">通知</Link>
-                    <Link to="/message">訊息</Link>
                     <button className="nav-btn nav-close-btn" onClick={showNavbar}>
                         <IoIosCloseCircleOutline />
                     </button>

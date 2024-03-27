@@ -29,6 +29,10 @@ header{
 .logoNav{
     width: 10rem;
     height: 10rem;
+    cursor: pointer;
+}
+.logoNav:hover{
+    transform: scale(1.2);
 }
 nav{
     display: flex;
@@ -38,12 +42,14 @@ nav a{
     text-decoration: none;
     margin: 0 2rem;
     color: var(--textColor);
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 800;
     /* align-items: center; */
 }
 nav a:hover,
 .user a:hover{
     color: var(--thirdColor);
+    transform: scale(1.2);
 
 }
 header .nav-btn{
@@ -160,9 +166,9 @@ header .nav-btn{
     font-size: 18px;
     position: absolute;
     top: 7rem;
-    right: 7.5rem;
-    width: 120px;
-    padding: 20px;
+    right: 7rem;
+    width: 150px;
+    padding: 20px 0;
     border-radius: 8px;
     background-color: #fff;
     border: 1px solid var(--secondaryColor);
@@ -171,6 +177,7 @@ header .nav-btn{
 .dropdownContainer ul{
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 15px;
 }
 .dropdownContainer li{
@@ -182,7 +189,7 @@ header .nav-btn{
     content: '';
     position: absolute;
     top: -0.7rem;
-    right: 1.5rem;
+    right: 1.9rem;
     width: 20px;
     height: 20px;
     transform: rotate(45deg);
