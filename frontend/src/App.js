@@ -67,7 +67,7 @@ class App extends Component {
             <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/viewPage" component={ViewPage} />
+            <Route path="/viewPage" render={(props) => <ViewPage {...props} userId={this.state.uid} />} />
             <Route path="/hotelList" component={HotelList} />
             <Route path="/hotelInfo/:id" component={HotelInfo} />
             <Route path="/hotelOrder" component={HotelOrder} />

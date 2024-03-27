@@ -171,7 +171,7 @@ class myModal extends React.Component {
                                             </div>
 
                                             <div class="postContent">
-                                                <a href=""><b>{index ?this.props.commentAccount[0].account:""}</b></a>
+                                                <a href=""><b>{this.props.commentAccount[index].account}</b></a>
                                                 <p> 
                                                     {comment.comment}
                                                 </p>

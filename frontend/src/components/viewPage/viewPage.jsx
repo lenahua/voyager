@@ -92,8 +92,11 @@ class Content extends React.Component{
                     <div className="col-4 col-md-4 postbox" id={post.postid}
                          onClick={()=>{this.changeModalContent(post.postid)}}
                     >
+                        
                         <img src={`data:image/jpeg;base64,${post.img}`} alt="img"/>
+                       <h2>{post.postid}</h2>
                     </div>
+                    
                 )}                
             </div>
         );
@@ -117,7 +120,7 @@ class Container extends React.Component{
         likeCounter:0,
         likeState:0,
         savingState:0,
-        loginUid:7,
+        loginUid:this.props.loginUid,
         modalIsOpen:false
          
     }
@@ -154,7 +157,8 @@ class Container extends React.Component{
         let result = await axios.get("http://localhost:8000/viewPage/imgList");
         let newState = {...this.state};
         newState.dataAry = result.data;
-        console.log(this.state.modalIsOpen);
+        console.log("************************");
+        console.log(this.state);
         this.setState(newState);
     }
     handleFilterBar = (result) =>{
@@ -210,10 +214,12 @@ class Container extends React.Component{
 //整頁viewPage
 class viewPage extends React.Component{
     state = {};
+    
     render(){ 
         return(
             <React.Fragment>
-                <Container />  
+                <h1>{this.props.userId}</h1>
+                <Container loginUid={this.props.userId}/>  
             </React.Fragment>
         );
     }   
