@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CiUser, CiLock } from "react-icons/ci";
 import axios from 'axios';
 import "../css/login.css"
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 const Login = ({loginStatus}) => {
   // 取得輸入的使用者資料，判斷輸入的資料是否吻合資料庫的資料，吻合跳轉至首頁
@@ -12,9 +12,12 @@ const Login = ({loginStatus}) => {
   axios.defaults.withCredentials = true
 
   const history = useHistory();
+  const location = useLocation();
 
   const handleSubmit=(event)=>{
     event.preventDefault();
+    
+    // console.log("path"+window.location.pathname)
     // console.log("okkk")
     axios.post('http://localhost:8000/login',{
       account: account,
@@ -23,8 +26,11 @@ const Login = ({loginStatus}) => {
       .then(res=>{
         if(res.data.Status === "Success"){
           alert("登入成功");
-          history.push('/');
-          window.location.reload('/')
+          
+          const previouspath = localStorage.getItem("previouspath")
+          history.push(previouspath || '/');
+          // console.log("previouspath"+previouspath)
+          window.location.reload(previouspath || '/')
         }else{
             alert(res.data.Error)
         }       

@@ -48,6 +48,7 @@ import "../css/form-search.css";
 
 
      componentDidMount() {
+      localStorage.setItem("previouspath", window.location.pathname)
       Promise.all([
          fetch('http://localhost:8000/hotelList/hotels'),
          fetch('http://localhost:8000/hotelList/roomtype')

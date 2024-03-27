@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 import ViewPage from "./components/viewPage/viewPage";
 import Home from "./components/homePage/home";
@@ -30,6 +30,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    
     axios
       .get("http://localhost:8000/login")
       .then((res) => {
