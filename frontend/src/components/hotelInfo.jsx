@@ -21,7 +21,8 @@ function HotelInfo(){
     const [photos, setPhotos] = useState([]);
     const [room, setRoom] = useState([]);
     const [roomPics, setRoomPic] = useState([]);
-    const [review, setReview] = useState([])
+    const [review, setReview] = useState([]);
+    const [viewPic, setViewPic] = useState([])
     useEffect(()=>{
         if(!id){
             return;
@@ -34,6 +35,8 @@ function HotelInfo(){
                 setRoom(response.data.room)
                 setRoomPic(response.data.roomPic)
                 setReview(response.data.reviews)
+                setViewPic(response.data.viewpics)
+                // console.log(response.data.viewpics)
             })
             .catch(error=>{
                 console.error('error fetching data: ', error)
@@ -80,11 +83,12 @@ function HotelInfo(){
 
             <Room room={room} onClick={handleModalClick} 
                             handleSelect={handleSelect}/>
-            {isModalVisible === true  ? <Roompic onClose={handleModalClose} 
+            {isModalVisible === true  ? <Roompic id={id}
+                                            onClose={handleModalClose} 
                                             selectRoomPic={selectRoomPic} 
                                             selectRoomData={selectRoomData}
                                             selectRoom={selectRoom}/> : ""}
-            <Service />
+            <Service viewPic={viewPic}/>
             <Rate/>
             <Review review={review}/>
             <Rule/>

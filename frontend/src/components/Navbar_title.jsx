@@ -17,7 +17,7 @@ function Navbartitle( {} ) {
   const [startDate, endDate] = dates;
 
   useEffect(() => { //抓取後端資料庫
-    fetch('http://localhost:4000/api/hotels')
+    fetch('http://localhost:8000/hotels')
       .then(response => response.json())
       .then(data => setHotels(data))
       .catch(error => console.error('Error fetching hotels:', error));

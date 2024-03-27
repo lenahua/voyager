@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import "../css/search_icon.css";
@@ -49,8 +49,8 @@ import "../css/form-search.css";
 
      componentDidMount() {
       Promise.all([
-         fetch('http://localhost:4000/api/hotels'),
-         fetch('http://localhost:4000/api/roomtype')
+         fetch('http://localhost:8000/hotelList/hotels'),
+         fetch('http://localhost:8000/hotelList/roomtype')
       ])
         .then(responses => Promise.all(responses.map(res => res.json())))
         .then(([hotelsData, roomsData]) => {
@@ -252,6 +252,7 @@ import "../css/form-search.css";
              <div ref={this.wrapperRef} className="custom-dropdown" show={this.state.showDropdown} onToggle={this.toggleDropdown} >
                 <button onClick={this.toggleDropdown} className="dropdown-toggle hot">
                   熱門度
+
                 </button>
                 {this.state.showDropdown && (
                   <div className="dropdown-menu hot-option">
@@ -260,6 +261,8 @@ import "../css/form-search.css";
                   </div>
                 )}
                 </div>
+
+               
 
             </h4>
             <div className="d-flex arrangement">
@@ -306,7 +309,8 @@ import "../css/form-search.css";
                     城市 
                   </Dropdown.Toggle>
                
-                  <span className="badge badge-position text-black rounded-pill">(17)</span>
+                  <span className="badge badge-position text-black rounded-pill">
+                    (4)</span>
                   </div>
 
                   <Dropdown.Menu className="w-50 text-center dropdown-menu">
@@ -389,7 +393,7 @@ import "../css/form-search.css";
                
                   
 
-                  <span className="badge badge-position text-black rounded-pill">(17)</span>
+                  <span className="badge badge-position text-black rounded-pill">(7)</span>
                   </div>
                   <Dropdown.Menu className="w-50 text-center">
                   <div>
@@ -441,7 +445,7 @@ import "../css/form-search.css";
                
                   
 
-                  <span className="badge badge-position text-black rounded-pill">(17)</span>
+                  <span className="badge badge-position text-black rounded-pill">(3)</span>
                   </div>
 
                   <Dropdown.Menu className="w-50 text-center">
@@ -487,7 +491,7 @@ import "../css/form-search.css";
                
                   
 
-                  <span className="badge badge-position text-black rounded-pill">(17)</span>
+                  <span className="badge badge-position text-black rounded-pill">(3)</span>
                   </div>
 
                   <Dropdown.Menu className="w-50 text-center">
@@ -531,7 +535,7 @@ import "../css/form-search.css";
                   </Dropdown.Toggle>
                
                 
-                  <span className="badge badge-position text-black rounded-pill">(17)</span>
+                  <span className="badge badge-position text-black rounded-pill">()</span>
                   </div>
 
                   <Dropdown.Menu className="w-50 text-center ">

@@ -7,10 +7,8 @@ class HotelOrderPage extends Component {
     state = {  } 
     render() { 
         return (
-            <div className="container">
-                <Header />
+            <div className="container pb-4">
                 <Main />
-                <Footer />
             </div>
         );
     }

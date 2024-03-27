@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -210,6 +210,7 @@ app.delete(`/viewPage/cancelLike`, function (req, res) {
     }
   );
 });
+
 //對特定貼文點讚
 app.post(`/viewPage/addLike`, function (req, res) {
   connection.query(
@@ -221,6 +222,8 @@ app.post(`/viewPage/addLike`, function (req, res) {
     }
   );
 });
+
+
 //取得特定貼文讚數
 app.get(`/viewPage/getLikeCounter`, function (req, res) {
   connection.query(
@@ -659,83 +662,124 @@ app.post("/checkout/hotel/order", function (req, res) {
   );
 });
 
+
+
+// ------------------------------------------------------------------------------
+
 // 飯店詳細
-app.get("/hotelInfo/:id", function(req, res){
+app.get("/hotelInfo/:id", function (req, res) {
   const hotelId = req.params.id;
 
   // 定義各個資料庫查詢的函式
   const getHotelData = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel where hotel_id = ?", [hotelId], function (err, hotelRows) {
-              if (err) reject("Error fetching hotel data");
-              resolve(hotelRows[0]);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel where hotel_id = ?",
+        [hotelId],
+        function (err, hotelRows) {
+          if (err) reject("Error fetching hotel data");
+          resolve(hotelRows[0]);
+        }
+      );
+    });
   };
 
   const getHotelPhotos = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel_photos where hotel_id = ?", [hotelId], function(err, photoRows) {
-              if (err) reject("Error fetching hotel photos");
-              resolve(photoRows);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel_photos where hotel_id = ?",
+        [hotelId],
+        function (err, photoRows) {
+          if (err) reject("Error fetching hotel photos");
+          resolve(photoRows);
+        }
+      );
+    });
   };
 
   const getHotelRooms = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel_rooms where hotel_id = ?", [hotelId], function(err, roomRows) {
-              if (err) reject("Error fetching hotel rooms");
-              resolve(roomRows);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel_rooms where hotel_id = ?",
+        [hotelId],
+        function (err, roomRows) {
+          if (err) reject("Error fetching hotel rooms");
+          resolve(roomRows);
+        }
+      );
+    });
   };
 
   const getHotelRoomTypes = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("select * from hotel_room_type where hotel_id = ?", [hotelId], function(err, roomPicRows) {
-              if (err) reject("Error fetching hotel room types");
-              resolve(roomPicRows);
-          });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "select * from hotel_room_type where hotel_id = ?",
+        [hotelId],
+        function (err, roomPicRows) {
+          if (err) reject("Error fetching hotel room types");
+          resolve(roomPicRows);
+        }
+      );
+    });
   };
 
   const getUserReviews = () => {
-      return new Promise((resolve, reject) => {
-        connection.query("SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ?", 
-              [hotelId], function(err, reviewRows) {
-                  if (err) reject("Error fetching user reviews");
-                  resolve(reviewRows);
-              });
-      });
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ?",
+        [hotelId],
+        function (err, reviewRows) {
+          if (err) reject("Error fetching user reviews");
+          resolve(reviewRows);
+        }
+      );
+    });
   };
+
+  const getViewPage = ()=>{
+    return new Promise((resolve, reject)=>{
+      connection.query(
+        "SELECT DISTINCT post.title, imgdata.img from hotel INNER JOIN post on hotel.city = post.location INNER JOIN imgdata on post.postid = imgdata.postid WHERE hotel.hotel_id = ?",
+        [hotelId],
+        function(err, viewPicsRows){
+          if(err) reject("Error fetching view picture");
+          let newViewPics = changeToBase64(viewPicsRows);
+          // console.log(newViewPics);
+          resolve(newViewPics);
+        }
+      )
+    })
+  }
 
   // 使用 Promise執行所有資料庫查詢
   Promise.all([
-      getHotelData(),
-      getHotelPhotos(),
-      getHotelRooms(),
-      getHotelRoomTypes(),
-      getUserReviews()
+    getHotelData(),
+    getHotelPhotos(),
+    getHotelRooms(),
+    getHotelRoomTypes(),
+    getUserReviews(),
+    getViewPage()
   ])
-  .then(([hotelData, photoRows, roomRows, roomPicRows, reviewRows]) => {
+    .then(([hotelData, photoRows, roomRows, roomPicRows, reviewRows, newViewPics]) => {
       const responseData = {
-          hotel: hotelData,
-          photos: photoRows,
-          room: roomRows,
-          roomPic: roomPicRows,
-          reviews: reviewRows
+        hotel: hotelData,
+        photos: photoRows,
+        room: roomRows,
+        roomPic: roomPicRows,
+        reviews: reviewRows,
+        viewpics: newViewPics
       };
+      // console.log(viewPicsRows)
       res.send(responseData);
-  })
-  .catch(error => {
+    })
+    .catch((error) => {
       res.status(500).send(error);
-  });
+    });
 });
 // login and registe
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
-  console.log("Token received:", token);
+  // console.log("Token received:", token);
   if (!token) {
     return res.json({ Error: "You are not authenticated" });
   } else {
@@ -755,43 +799,29 @@ app.get("/login", verifyUser, (req, res) => {
   return res.json({ Status: "Success", account: req.account, uid: req.uid });
 });
 
-app.post("/login", (req, res) => {
+app.post('/login', (req, res)=>{
   const account = req.body.account;
-  const password = req.body.password;
-  connection.query(
-    "select * from userinfo where account = ?",
-    account,
-    // 先比對帳號是否一樣
-    (err, data) => {
-      if (err) {
-        return res.json({ Error: "Login error in server" });
-      }
-      // 再使用bcrypt比較密碼
-      if (data.length > 0) {
-        console.log(data);
-        bcrypt.compare(password.toString(), data[0].password, (err, result) => {
-          if (result) {
-            // 設定token資料
-            const uid = data[0].Uid;
-            const account = data[0].account;
-            const token = jwt.sign({ uid, account }, "jwt-secret-key", {
-              expiresIn: "1d",
-            });
-            // console.log('uid'+uid);
-            res.cookie("token", token);
-            // req.session.user = data;
-            // console.log(req.session.user)
-            return res.json({ Status: "Success" });
-          } else {
-            return res.json({ Error: "密碼錯誤，請重新輸入" });
+  const password = req.body.password
+  connection.query("select * from userinfo where account = ? and password = ?",
+          [account, password],
+          // 先比對帳號是否一樣
+          (err, data)=>{
+              if(err){
+                  return res.json({Error: "Login error in server"});
+              }  
+              if (data.length > 0){
+                  const account = data[0].account;
+                  const token = jwt.sign({account}, "jwt-secret-key", {expiresIn: '1d'})
+                  res.cookie('token', token)
+                  // req.session.user = data;
+                  // console.log(req.session.user)
+                  return res.json({Status: "Success"})
+              }else{
+                  return res.json({Error: "密碼錯誤，請重新輸入"})
+              }
           }
-        });
-      } else {
-        return res.json({ Error: "Account not exist" });
-      }
-    }
-  );
-});
+  )
+})
 
 app.get("/logout", (req, res) => {
   const token = req.cookies.token;
@@ -801,22 +831,21 @@ app.get("/logout", (req, res) => {
   return res.json({ Status: "Success" });
 });
 
-app.post("/register", (req, res) => {
-  bcrypt.hash(req.body.password.toString(), saltRounds, (err, hash) => {
-    if (err) {
-      console.log(err);
-    }
-    connection.query(
-      "insert into userinfo(account, password, email) values (?, ?, ?)",
-      [req.body.account, hash, req.body.email],
-      function (err, data) {
-        if (err) return res.json("registe failed");
-        return res.json({ Status: "Success" });
+app.post('/register', (req, res)=>{
+  connection.query("insert into userinfo(account, password, email) values (?, ?, ?)",
+      [req.body.account, req.body.password, req.body.email],
+      function(err, data){
+          if(err) return res.json("registe failed")
+          return res.json({Status: "Success"})
       }
-    );
-  });
-});
+  )
+})
 
+
+//旅館清單
+app.get("/", function (req, res) {
+  res.send("hello world");
+});
 
 app.get("/hotelList/hotels", (req, res) => {  //第一條路徑
   const queryParam = req.query.query;
@@ -834,19 +863,19 @@ app.get("/hotelList/hotels", (req, res) => {  //第一條路徑
   if (queryParam) {
       sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
      
-      db.query(sqlQuery, [`%${queryParam}%`, `%${queryParam}%`], (err, results) => {
+      connection.query(sqlQuery, [`%${queryParam}%`, `%${queryParam}%`], (err, results) => {
           // 處理查詢結果
       });
   } else {
       // 沒填參數,就變回原始查詢
-      db.query(sqlQuery, (err, results) => {
+      connection.query(sqlQuery, (err, results) => {
           // 查詢結果
       });
   }
 
   // 搜尋清單
   
-  db.query(sqlQuery, (err, results) => {
+  connection.query(sqlQuery, (err, results) => {
       if (err) {
           console.error('查詢失敗:', err);
           res.status(500).send('服務器錯誤');
@@ -869,7 +898,7 @@ app.get("/hotelList/roomtype", (req, res) => {   //房型種類路徑
   JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
 
 
-  db.query(sqlQuery, (err, results) => {
+  connection.query(sqlQuery, (err, results) => {
       if (err) {
           console.error('查詢失敗:', err);
           res.status(500).send('服務器錯誤');

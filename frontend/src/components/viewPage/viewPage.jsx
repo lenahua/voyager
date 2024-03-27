@@ -38,7 +38,7 @@ function FilterBar(prop){
         return newAry;
     };
     const locationClick = async(locationName)=>{
-        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&title=${keyWord}`);
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}`);
         setLocation(locationName)   ;               
         prop.handleFilterBar(result);
     }
@@ -190,6 +190,7 @@ class Container extends React.Component{
         newState.savingState = savingState.data[0].state;
         newState.modalIsOpen = true ; 
         console.log("change to newState:",newState);
+        
         this.setState(newState);
     }
     handleLikeState = (state)=>{  

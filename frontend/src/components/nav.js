@@ -5,7 +5,7 @@ import { CiLogout } from "react-icons/ci";
 import { useRef, useState } from "react"; 
 //創建一個navRef
 
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../img/Logo.svg'
 
@@ -55,7 +55,7 @@ function DropDown ({auth, message, account, handleDrop}){
 
 function Nav({auth, message, account}){
     const navRef = useRef();
-
+    const location = useLocation();
     //在點擊按鈕時顯示或隱藏nav
     const showNavbar = ()=>{
         navRef.current.classList.toggle("responsive_nav")
@@ -65,7 +65,10 @@ function Nav({auth, message, account}){
     const handleDrop = ()=>{
         setOpenDrop(false)
     }
-
+    // 判斷是否為歡迎頁面，如果是則不顯示 Nav
+    if (location.pathname === '/welcome') {
+        return null;
+    }
     return(
         <>
             <header>

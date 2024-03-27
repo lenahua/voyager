@@ -25,7 +25,7 @@ class Slide2 extends Component {
         Aos.init({
             duration : 1000,
             easing: 'ease-out-quart',  
-            delay: 300,
+            delay: 150,
             // offset: 500
         });
     }
@@ -114,11 +114,11 @@ class Slide2 extends Component {
                             <h1>高雄</h1>
                             <h3>高雄洲際酒店</h3>
                             <p>高雄洲際酒店提供住宿、餐廳、健身中心和酒吧。這間住宿提供的設施與服務包括禮賓服務、旅遊諮詢台服務以及全館 WiFi（免費）。住宿有 24 小時接待櫃檯、客房服務和外幣兌換服務。</p>
-                            <a href="#" className="btnSlide">更多景點</a>
+                            <a href="#" className="btnSlide">查看更多高雄飯店</a>
                         </div>
                     </div>  
-                    <FontAwesomeIcon icon={faArrowLeft} id="prevBtn"  className="arrow" onClick={this.prevSlide}/>
-                    <FontAwesomeIcon icon={faArrowRight} id="nextBtn"  className="arrow" onClick={this.nextSlide}/>
+                    <FontAwesomeIcon icon={faArrowLeft} id="prevBtn"  className="arrowXian" onClick={this.prevSlide}/>
+                    <FontAwesomeIcon icon={faArrowRight} id="nextBtn"  className="arrowXian" onClick={this.nextSlide}/>
                 </div>    
             </div>
         );
