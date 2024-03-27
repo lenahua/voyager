@@ -22,7 +22,7 @@ const Roompic = ({id, isOpen, onClose, selectRoomPic, selectRoomData, selectRoom
             //     ))}
             // </div>
 
-    <div className='modal'>
+    <div className='modaljjj'>
         <div className='roomInfo'>
             <IoIosCloseCircleOutline className='close' onClick={onClose}/>
             <div className='roomInfoTop'>
