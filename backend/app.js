@@ -841,6 +841,7 @@ app.post('/register', (req, res)=>{
   )
 })
 
+
 //旅館清單
 app.get("/", function (req, res) {
   res.send("hello world");
