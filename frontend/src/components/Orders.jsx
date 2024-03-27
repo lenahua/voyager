@@ -44,7 +44,7 @@ function Orders({ userId }) {
       const startDateB = new Date(b.startDate);
       return startDateB - startDateA;
     });
-
+  console.log("FilterOrders:", orders);
   useEffect(() => {
     localStorage.setItem("Uid", "10");
     const Uid = localStorage.getItem("Uid");
@@ -64,7 +64,6 @@ function Orders({ userId }) {
         //訂單已轉換時區，更新orders
         setOrders(ordersWithTZ);
         console.log(response.data);
-        console.log(orders);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -72,6 +71,8 @@ function Orders({ userId }) {
 
     fetchOrders();
   }, []);
+  console.log("ordersWithTZ", orders);
+
   function convertToTz(dateStr, tzString) {
     const date = new Date(dateStr);
     const utcDate = new Date(date.toISOString());
@@ -90,7 +91,11 @@ function Orders({ userId }) {
         handleFilterChange={handleFilterChange}
         isFilterSide={isFilterSide}
       />
-      <OrdersList filterOrders={filterOrders} filterOption={filterOption} />
+      <OrdersList
+        filterOrders={filterOrders}
+        filterOption={filterOption}
+        hotelId={orders.hotelId}
+      />
     </div>
   );
 }

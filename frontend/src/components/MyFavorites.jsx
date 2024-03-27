@@ -58,7 +58,7 @@ function MyFavorites({ userId }) {
         }))
       );
 
-      alert("收藏已更改");
+      alert("已取消收藏");
     } catch (error) {
       console.error("error happens:", error);
       alert("toggle failed");
@@ -87,10 +87,10 @@ function MyFavorites({ userId }) {
         })
       );
 
-      alert("收藏已删除");
+      alert("收藏狀態已更改");
     } catch (error) {
-      console.error("删除收藏时发生错误:", error);
-      alert("删除收藏失败");
+      console.error("刪除收藏錯誤:", error);
+2      alert("删除收藏失败");
     }
   };
 

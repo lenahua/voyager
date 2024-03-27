@@ -136,8 +136,8 @@ function Member({ userId }) {
               <div className="pro-img">
                 <img src={profile} alt="profile" />
               </div>
-              <h3>Lily CHU</h3>
-              <span>@lilychu23</span>
+              <h3>楊怡臻</h3>
+              <span>@jelly1122</span>
               <div>
                 <button style={{ marginTop: "20px" }} className="follow-btn">
                   Follow

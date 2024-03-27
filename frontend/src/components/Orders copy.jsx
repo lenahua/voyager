@@ -3,6 +3,7 @@ import axios from "axios";
 import "../css/order.css";
 import "@fontsource/inter";
 import { Modal, TextField, Rating, Popover } from "@mui/material";
+import { Link } from "react-router-dom";
 
 /* {
   "orderId": 5,
@@ -15,7 +16,8 @@ import { Modal, TextField, Rating, Popover } from "@mui/material";
   "photo_urls": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/250509585.jpg?k=045b1c581ca6faa9c656dae02f404decd7fec21845fcdbe7e8cd21f3e8d74221&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/179241673.jpg?k=bbd696940a0974e0c5bb9a65011a400b018423ee333c1f6081a44130dd73de34&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/182105364.jpg?k=9b0ba142d9a5a8fd14dcc1fb3bf0704c99c0cabfc1a4b1356f01bd1903a039c3&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/256677827.jpg?k=3eb3c25bee1f776eda991c404d309d5b739c1fe59ca86a07a00406c40b420ac3&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/182105495.jpg?k=0d69f4a7973e1d9db55066b57077a7e887f2a4b1ab9652a78d7ee91ce26f6d47&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/182105411.jpg?k=303a5d976bbd7821f659613d4bce0fbb5d0da00c09c5479dd61ebb33677ad54d&o=&hp=1"
 }, */
 
-function OrdersList({ filterOrders, filterOption }) {
+function OrdersList({ filterOrders, filterOption, hotelId }) {
+  console.log(filterOrders);
   return (
     <div className="mt-3 mb-5 ">
       {filterOrders.map((order) => (
@@ -27,7 +29,7 @@ function OrdersList({ filterOrders, filterOption }) {
           image={order.photo_url}
           price={order.price}
           filterOption={filterOption}
-          hotelId={order.hoteId}
+          hotelId={order.hotelId}
           orderId={order.orderId}
         />
       ))}
@@ -37,6 +39,7 @@ function OrdersList({ filterOrders, filterOption }) {
 
 function Order({
   hotelName,
+  hotelId,
   startDate,
   endDate,
   price,
@@ -44,7 +47,6 @@ function Order({
   orderId,
   image,
 }) {
-  //date
   const today = new Date();
   const end = new Date(endDate);
   const start = new Date(startDate);
@@ -169,6 +171,7 @@ function Order({
   const handleOpenForm = () => {
     setFormOpen(true);
     console.log("Opening form");
+    console.log(hotelId);
   };
   const handleCloseForm = () => {
     setFormOpen(false);
@@ -214,7 +217,8 @@ function Order({
         }
       );
       console.log("Ratings submitted successfully", response.data);
-      setFormOpen(false); // 关闭模态框
+      setFormOpen(false);
+      setIsRated(true);
     } catch (error) {
       console.error("Error submitting ratings:", error);
     }
@@ -245,8 +249,10 @@ function Order({
           <img className="order-photo" src={image} alt="profile" />
         </div>
         <div className="order-info">
-          <div className="hotelName">{chineseName}</div>
-          <div className="hotelName-eng">{englishName}</div>
+          <Link to={`/hotelInfo/${hotelId}`}>
+            <div className="hotelName">{chineseName}</div>
+            <div className="hotelName-eng">{englishName}</div>
+          </Link>
           <div>
             {formatDate(startDate)} - {formatDate(endDate)}
           </div>
