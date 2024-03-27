@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 //import "../App.css";
-import "../css/profile.css";
-import bg from "./images/bg.jpg";
-import profile from "./images/taylor.jpg";
+
+import "../../css/profile.css";
+import bg from "../images/bg.jpg";
+import profile from "../images/taylor.jpg";
 import ProfileInfo from "./Info";
 import Orders from "./Orders";
 import MyFavorites from "./MyFavorites";
 import MyPosts from "./MyPost";
 
 function Member({ userId }) {
-  localStorage.setItem("previouspath", window.location.pathname)
+  localStorage.setItem("previouspath", window.location.pathname);
   const isLoggedInUser = userId === 10;
   const [selectedTab, setSelectedTab] = useState("radio-1");
 
