@@ -23,7 +23,8 @@ class myModal extends React.Component {
     postComment = async()=>{
         let dataToServer = {
             commentText:this.state.commentText,
-            postid:this.props.info[0].postid
+            postid:this.props.info[0].postid,
+            uid:this.props.loginUid
         }
         let result = await axios.post(`http://localhost:8000/viewPage/postComment`,dataToServer);
         this.setState({commentText:""});

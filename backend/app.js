@@ -33,6 +33,7 @@ var connection = mysql.createConnection({
   password: "",
   host: "127.0.0.1",
   database: "test",
+  charset: "utf8mb4"
 });
 
 connection.connect(function (err) {
@@ -130,8 +131,8 @@ app.post(`/viewPage/postComment`, function (req, res) {
   connection.query(
     `
         INSERT INTO postcomment( postid, Uid,comment, likecounter, commenttime) 
-        VALUES (?,3,?,0,NOW());`,
-    [req.body.postid, req.body.commentText],
+        VALUES (?,?,?,0,NOW());`,
+    [req.body.postid,req.body.uid ,req.body.commentText],
     function (err, result) {
       console.log(result);
       res.send(result);

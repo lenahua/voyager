@@ -94,7 +94,7 @@ class Content extends React.Component{
                     >
                         
                         <img src={`data:image/jpeg;base64,${post.img}`} alt="img"/>
-                       <h2>{post.postid}</h2>
+                    
                     </div>
                     
                 )}                
@@ -120,7 +120,7 @@ class Container extends React.Component{
         likeCounter:0,
         likeState:0,
         savingState:0,
-        loginUid:this.props.loginUid,
+        loginUid:0,
         modalIsOpen:false
          
     }
@@ -157,8 +157,7 @@ class Container extends React.Component{
         let result = await axios.get("http://localhost:8000/viewPage/imgList");
         let newState = {...this.state};
         newState.dataAry = result.data;
-        console.log("************************");
-        console.log(this.state);
+        newState.loginUid = this.props.loginUid ; 
         this.setState(newState);
     }
     handleFilterBar = (result) =>{
@@ -218,7 +217,7 @@ class viewPage extends React.Component{
     render(){ 
         return(
             <React.Fragment>
-                <h1>{this.props.userId}</h1>
+
                 <Container loginUid={this.props.userId}/>  
             </React.Fragment>
         );
