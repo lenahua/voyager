@@ -4,19 +4,13 @@ import MyModal from './myModal.jsx';
 import '../../css/viewPage.css';
 
 
-//Header原件
-function Nav(prop){
-    return <nav className="text-center fs-2 bg-secondary"><h1>Voyager</h1></nav>;
-}
-
-
 //左側地區篩選欄
-function FilterBar(prop){
-   
-    let [isClikedLocation, setLocation] = React.useState("所有");
-    let [keyWord,setKeyWord] = React.useState("");
+class FilterBar extends React.Component{
 
-    let locationData = [
+    state = {
+        
+    }
+    locationData = [
         {area:'北部地區',
         location:['台北市','新北市','桃園市','基隆市','新竹市','新竹縣']},
         {area:'中部地區',
@@ -26,48 +20,55 @@ function FilterBar(prop){
         {area:'東部地區',
          location:['宜蘭縣','花蓮縣','台東縣']}
     ]
-    
+
     //取得各地區內的縣市名稱
-    const getlocationName = (locationAry) => {
+    getlocationName = (locationAry) => {
+
+        let isClikedLocation = this.props.location;
         let newAry = locationAry.map(locationName => (
             <li key={locationName} 
-                onClick={()=>{locationClick(locationName)}}
+                onClick={()=>{this.clickLocation(locationName)}}
                 style={locationName===isClikedLocation?{backgroundColor:"rgb(201, 213, 223)"}:{}}>
             {locationName}</li>
         ))
         return newAry;
     };
-    const locationClick = async(locationName)=>{
-        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}`);
-        setLocation(locationName)   ;               
-        prop.handleFilterBar(result);
+    clickLocation= async(locationName)=>{
+        this.props.handleLocation(locationName);
     }
-    return(
-        <div className="filterBar col-2 d-none d-lg-block position-sticky sticky-top vh-">
-            <div className="locationTitle mb-1 border-bottom border-3 d-flex align-items-center w-75">
-                <h4 className="mb-0 mt-0 position-absolute">地區{isClikedLocation}</h4>
+
+    render(){
+        return(
+            <div className="filterBar col-2 d-none d-lg-block position-sticky sticky-top vh-">
+                <div className="locationTitle mb-1 border-bottom border-3 d-flex align-items-center w-75">
+                    <h4 className="mb-0 mt-0 position-absolute">地區{this.isClikedLocation}</h4>
+                </div>
+                <div>
+                {
+                this.locationData.map((locationObj,index) =>{
+                    return(
+                        <React.Fragment key={index}>
+                            <h5 >{locationObj.area}</h5>
+                            <ul className="nav flex-column w-75">
+                                {this.getlocationName(locationObj.location)}
+                            </ul>
+                        </React.Fragment>
+                    )
+                })
+                } 
+                </div>     
             </div>
-            <div>
-            {
-            locationData.map(locationObj =>{
-                return(
-                    <React.Fragment>
-                        <h5 >{locationObj.area}</h5>
-                        <ul className="nav flex-column w-75">
-                            {getlocationName(locationObj.location)}
-                        </ul>
-                    </React.Fragment>
-                )
-            })
-            } 
-            </div>     
-        </div>
-    );
+        );
+    }
+    
 }
     
 //圖牆內容+搜尋排序
 class Content extends React.Component{
     
+    state={
+        inputText:""
+    }
     
     render(){
         return(
@@ -75,8 +76,10 @@ class Content extends React.Component{
                 <div className=" col-12 d-flex align-items-center justify-content-between">
                     
                     <div className="searchBox mb-1 ps-3 border border-3 rounded-pill d-flex align-items-center">
-                        <input className="inline-block h-100 border-0" type="text" placeholder="請輸入關鍵字:" />
-                        <button className="btn ">
+                        <input className="inline-block h-100 border-0" type="text" placeholder="請輸入關鍵字:" 
+                               onChange={(e)=>{this.setState({inputText:e.target.value})}} 
+                        />
+                        <button className="btn " onClick={()=>this.sarchClick(this.state.inputText)}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
@@ -105,6 +108,10 @@ class Content extends React.Component{
     changeModalContent = (postid)=>{
         this.props.handleModal(postid);
     }
+    sarchClick = (sarchText)=>{
+        this.props.handleSarchText(sarchText);
+    }
+
 }
 
 //網站內容容器
@@ -121,10 +128,13 @@ class Container extends React.Component{
         likeState:0,
         savingState:0,
         loginUid:0,
-        modalIsOpen:false
+        modalIsOpen:false,
+        sarchText:'',
+        location:'台中市'
          
     }
-    render(){
+    render() {
+
         return(  
             <div className="container max-width: 100% mt-3 d-flex gx-5 align-items-start">
                 <MyModal  info={this.state.modalInfoAry} 
@@ -142,8 +152,14 @@ class Container extends React.Component{
                         modalIsOpen = {this.state.modalIsOpen}
                         modalIsClose = {this.handleModalColse}
                         />
-                <FilterBar handleFilterBar={this.handleFilterBar}/>
-                <Content dataAry={this.state.dataAry} handleModal={this.handleModal}/>
+                <FilterBar handleLocation={this.handleLocation} 
+                           sarchText={this.state.sarchText}
+                           location={this.state.location} 
+                           />
+
+                <Content dataAry={this.state.dataAry} handleModal={this.handleModal}
+                         handleSarchText={this.handleSarchText} 
+                />
             </div>
         );
     }
@@ -160,12 +176,12 @@ class Container extends React.Component{
         newState.loginUid = this.props.loginUid ; 
         this.setState(newState);
     }
-    handleFilterBar = (result) =>{
-        let newState = {...this.state};
-        newState.dataAry = result.data;
-        console.log("newState:",newState);
-        this.setState(newState);
-    }  
+    // handleFilterBar = (result) =>{
+    //     let newState = {...this.state};
+    //     newState.dataAry = result.data;
+    //     console.log("newState:",newState);
+    //     this.setState(newState);
+    // }  
     handleModal = async(postid)=>{
         console.log("***************************");
         const [postContent, postTag,postComment,
@@ -207,7 +223,22 @@ class Container extends React.Component{
         newState.savingState = state ;      
         this.setState(newState);
     }
-    hafle
+    handleLocation = async(locationName) =>{
+        
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&title=${this.state.sarchText}`);
+        let newState = {...this.state};
+        newState.dataAry = result.data;
+        newState.location = locationName ; 
+        this.setState(newState);
+    } 
+    handleSarchText = async(sarchText) =>{
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&title=${sarchText}`);
+        let newState = {...this.state};
+        newState.dataAry = result.data;
+        newState.sarchText = sarchText;   
+        console.log("關鍵字:",sarchText);
+        this.setState(newState);
+    }
 }
 
 //整頁viewPage

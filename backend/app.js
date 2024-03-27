@@ -109,24 +109,66 @@ app.get("/viewPage/imgList", function (req, res) {
   );
 });
 //取得指定縣市的所有不同貼文的第一張圖片及該貼文的相關資訊
-app.get("/viewPage/locationFilter", function (req, res) {
-  connection.query(
-    `
-        SELECT *,min(imgdata.id) as firstPicId 
-        FROM post,imgdata 
-        WHERE location = ? AND
-        post.postid = imgdata.postid
-        GROUP BY imgdata.postid
-        ORDER BY imgdata.postid DESC`,
-    [req.query.lname],
-    function (err, result) {
+// app.get("/viewPage/locationFilter", function (req, res) {
+//   connection.query(
+//     `
+//         SELECT *,min(imgdata.id) as firstPicId 
+//         FROM post,imgdata 
+//         WHERE location = ? AND
+//         post.postid = imgdata.postid
+//         GROUP BY imgdata.postid
+//         ORDER BY imgdata.postid DESC`,
+//     [req.query.lname],
+//     function (err, result) {
+//       result = changeToBase64(result);
+//       res.send(result);
+//     }
+//   );
+// });
+
+app.get("/viewPage/locationFilter",function(req,res){
+  let title = req.query.title?`%${req.query.title}%`:`%`;
+  console.log(req.query.lname);
+  console.log(title);
+
+  if(req.query.lname){
+    connection.query(`
+    SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
+    FROM post,imgdata
+    WHERE post.postid = imgdata.postid AND 
+        post.title like ? AND
+        post.location = ? 
+    GROUP BY imgdata.postid
+    ORDER BY imgdata.postid DESC`
+  ,[title,req.query.lname], 
+  function(err,result){      
+      console.log(result);
       result = changeToBase64(result);
       res.send(result);
-    }
-  );
+  });
+  }else{
+    connection.query(
+      `SELECT MIN(id), postid, img 
+          FROM imgdata 
+          GROUP BY postid 
+          ORDER BY postid DESC `,
+      [],
+      function (err, result) {
+        result = changeToBase64(result);
+        res.send(result);
+      }
+    );
+  }
 });
 
-//發布貼文留言=> 目前寫死留言都會是UID 3在留言 =>等登入功能
+
+
+
+
+
+
+
+//發布貼文留言
 app.post(`/viewPage/postComment`, function (req, res) {
   connection.query(
     `

@@ -424,9 +424,9 @@ function Modalll({ isOpen, onClose, postid }) {
                       style={{ resize: "none" }}
                     ></textarea>
                   </div>
-                  <Link to="" class="text-primary sendBtn flex-shrink-0">
+                  <link to="" class="text-primary sendBtn flex-shrink-0">
                     發布
-                  </Link>
+                  </link>
                 </div>
               </div>
             </div>
