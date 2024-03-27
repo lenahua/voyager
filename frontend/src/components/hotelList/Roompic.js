@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import '../../css/roompic.css'
 
-const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, selectRoom}) => {
+const Roompic = ({id, isOpen, onClose, selectRoomPic, selectRoomData, selectRoom}) => {
     const [sliderData, setSliderData] = useState(selectRoomPic[0])
     const biggerHandler = (index)=>{
         console.log(index);
@@ -95,7 +95,7 @@ const Roompic = ({isOpen, onClose, selectRoomPic, selectRoomData, selectRoom}) =
                 <div className='bottomMiddle'>
                 {selectRoomData[0].bed_type}<IoIosBed/>
                 </div>
-                <Link to={`/hotelOrder/${selectRoom}`}>
+                <Link to={`/hotelOrder/${id}/${selectRoom}`}>
                 <button className='bookingButton' >立即預訂</button>
                 </Link>
             </div>

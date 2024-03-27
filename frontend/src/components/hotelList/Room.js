@@ -66,7 +66,7 @@ const Room = ({room, onClick, handleSelect}) => {
                   </div>
 
                     
-                    <Link to={`/hotelOrder/${roomdetail.room_id}`}>
+                    <Link to={`/hotelOrder/${roomdetail.hotel_id}/${roomdetail.room_id}`}>
                       <button className='price' >立即預訂 ${roomdetail.price}</button>
                     </Link>
                 </div>

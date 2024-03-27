@@ -80,7 +80,8 @@ function HotelInfo(){
 
             <Room room={room} onClick={handleModalClick} 
                             handleSelect={handleSelect}/>
-            {isModalVisible === true  ? <Roompic onClose={handleModalClose} 
+            {isModalVisible === true  ? <Roompic id={id}
+                                            onClose={handleModalClose} 
                                             selectRoomPic={selectRoomPic} 
                                             selectRoomData={selectRoomData}
                                             selectRoom={selectRoom}/> : ""}
