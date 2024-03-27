@@ -15,8 +15,8 @@ import  { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 import "../../css/service.css";
 
-const Service = () => {
-
+const Service = ({viewPic}) => {
+    console.log(viewPic)
     const service = [
         {
             icon: <FaWifi/>,
@@ -78,7 +78,7 @@ const Service = () => {
         
             
             <div className='serviceWrapper'>
-                <Slide className='Facititle'>
+                <Slide className='title'>
                     <h1>設施與服務</h1>
                 </Slide>
                 
@@ -117,9 +117,9 @@ const Service = () => {
                     modules={[EffectCoverflow, Pagination, Navigation]}
                     className='swiperContainer'
                 >
-                    {photo.map((d, i) => (
+                    {viewPic.map((d, i) => (
                         <SwiperSlide className="horizontalSlide" key={i}>
-                        <img src={d.src} alt={i} className='swiperImg'></img>
+                        <img src={`data:image/jpeg;base64,${d.img}`} alt={i} className='swiperImg'></img>
                         <h3 className='imgTitlle'>{d.title}</h3>
                         <a href='/#'><FaLongArrowAltRight className='imgLink'/></a>
                         </SwiperSlide>
@@ -133,7 +133,7 @@ const Service = () => {
                             <div className='swiperButtonNext sliderArrow'>
                                 <FaArrowAltCircleRight/>
                             </div>
-                            <a href='/#'><h5>查看更多</h5></a>
+                            <a href='/viewPage'><h5>查看更多</h5></a>
                     </div>
                     
                 </Swiper>
