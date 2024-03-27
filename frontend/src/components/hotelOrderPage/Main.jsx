@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 class Main extends Component {
+    
     state = { 
         userInfo : [{account: '', email: '', name: '', telephone: ''}],
         creditCard : [{cardType: '', cardNumber: '', name: '', valid: '', cvc: ''}, {}, {}, {}, {}],
@@ -205,6 +206,7 @@ class Main extends Component {
         );
     }
     componentDidMount = async () => { 
+        localStorage.setItem("previouspath", window.location.pathname)
         var result = await axios('http://localhost:8000/checkout/user/3'); 
         var newState = {...this.state}; 
         newState.userInfo = result.data;

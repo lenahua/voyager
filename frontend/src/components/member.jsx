@@ -9,6 +9,7 @@ import MyFavorites from "./MyFavorites";
 import MyPosts from "./MyPost";
 
 function Member({ userId }) {
+  localStorage.setItem("previouspath", window.location.pathname)
   const isLoggedInUser = userId === 10;
   const [selectedTab, setSelectedTab] = useState("radio-1");
 

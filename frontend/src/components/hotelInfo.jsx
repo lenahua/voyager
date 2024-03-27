@@ -8,7 +8,7 @@ import Rate from '../components/hotelList/Rate';
 import Review from '../components/hotelList/Review';
 import Rule from '../components/hotelList/Rule';
 
-import {useParams} from "react-router-dom"
+import {useParams, useLocation} from "react-router-dom"
 import axios from 'axios';
 
 import Roompic from '../components/hotelList/Roompic';
@@ -22,11 +22,14 @@ function HotelInfo(){
     const [room, setRoom] = useState([]);
     const [roomPics, setRoomPic] = useState([]);
     const [review, setReview] = useState([]);
-    const [viewPic, setViewPic] = useState([])
+    const [viewPic, setViewPic] = useState([]);
+    const location = useLocation();
     useEffect(()=>{
         if(!id){
             return;
         }
+    localStorage.setItem("previouspath", window.location.pathname)   
+    console.log("path"+location.pathname)
         axios.get(`http://localhost:8000/hotelInfo/${id}`)
             .then(response=>{
                 console.log(response.data)
