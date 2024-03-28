@@ -126,7 +126,6 @@ app.get("/viewPage/imgList", function (req, res) {
 //   );
 // });
 
-<<<<<<< HEAD
 app.get("/viewPage/locationFilter",function(req,res){
   let tag = req.query.tag?`%${req.query.tag}%`:'';
   let lname = req.query.lname==='所有地區'?`%`:`${req.query.lname}`;
@@ -140,46 +139,15 @@ app.get("/viewPage/locationFilter",function(req,res){
     connection.query(`
     SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
     FROM post,imgdata,posttag
-=======
-app.get("/viewPage/locationFilter", function (req, res) {
-  let title = req.query.title ? `%${req.query.title}%` : `%`;
-  console.log(req.query.lname);
-  console.log(title);
-
-  if (req.query.lname) {
-    connection.query(
-      `
-    SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
-    FROM post,imgdata
->>>>>>> e68accc50035f23b803e764783c22b07cd8afa27
     WHERE post.postid = imgdata.postid AND 
     post.postid = posttag.postid AND	
     posttag.tag like ? AND
     post.location like ? 
     GROUP BY imgdata.postid
-<<<<<<< HEAD
     ORDER BY post.postdate DESC`
   ,[tag,lname], 
     function(err,result){      
         
-=======
-    ORDER BY imgdata.postid DESC`,
-      [title, req.query.lname],
-      function (err, result) {
-        console.log(result);
-        result = changeToBase64(result);
-        res.send(result);
-      }
-    );
-  } else {
-    connection.query(
-      `SELECT MIN(id), postid, img 
-          FROM imgdata 
-          GROUP BY postid 
-          ORDER BY postid DESC `,
-      [],
-      function (err, result) {
->>>>>>> e68accc50035f23b803e764783c22b07cd8afa27
         result = changeToBase64(result);
         res.send(result);
     });
