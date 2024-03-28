@@ -69,7 +69,7 @@ function Order({
     const names = separateName(hotelName);
     setChineseName(names.chinese);
     setEnglishName(names.english);
-  }, [hotelName]); // 确保依赖于hotelName，当它改变时重新计算
+  }, [hotelName]);
 
   //rating and title
   const labels = {
@@ -229,6 +229,7 @@ function Order({
     return date.toLocaleDateString("en-CA"); // 加拿大英語格式會返回 YYYY-MM-DD 格式
   }
   const [isRated, setIsRated] = useState(false);
+  //透過localstorage的
   useEffect(() => {
     // 创建一个检查函数来看看localStorage中是否存有该订单的评分信息
     const checkIfRated = () => {

@@ -4,7 +4,7 @@
 }
 
 .outerBackground {
-  background-color: rgb(219, 216, 216);
+  background-color: #cacbd5;
   min-height: 600px;
   display: flex;
   align-items: center;
@@ -19,7 +19,7 @@
 }
 
 .card {
-  border-color: #d7dfe3;
+  border-color: #cacbd5;
   border-radius: 4px;
   margin-bottom: 30px;
 }
@@ -50,7 +50,7 @@ img {
 .profile-button {
   position: absolute;
   right: 20px;
-  top: 240px;
+  top: 650px;
   padding: 8px 16px;
   background: var(--primary-color);
   color: white;

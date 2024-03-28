@@ -60,7 +60,14 @@
   cursor: pointer;
   padding: 5px 15px;
 }
+.tab {
+  font-size: 20px;
+  font-weight: bold;
+}
 
+.tabs {
+  padding: 40px;
+}
 .button-container {
   display: flex;
   margin-top: 25px;
