@@ -47,6 +47,7 @@ function Order({
   orderId,
   image,
 }) {
+  console.log(filterOption);
   const today = new Date();
   const end = new Date(endDate);
   const start = new Date(startDate);
@@ -159,7 +160,7 @@ function Order({
   //popover
   const [anchor, setAnchor] = useState(null);
   const handleOpen = (event) => {
-    setAnchor(event.currentTarget); // 这里设置anchor状态
+    setAnchor(event.currentTarget);
   };
   const handleClose = () => {
     setAnchor(null);
@@ -232,22 +233,17 @@ function Order({
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-CA"); // 加拿大英語格式會返回 YYYY-MM-DD 格式
+    return date.toLocaleDateString("en-CA");
   }
   const [isRated, setIsRated] = useState(false);
-  //透過localstorage的
+  //透過localstorage是否有訂單評分改變按鈕狀態
   useEffect(() => {
-    // 创建一个检查函数来看看localStorage中是否存有该订单的评分信息
     const checkIfRated = () => {
-      // 例如，我们检查一下"rateClean"是否已经为该orderId评分
       const rated = localStorage.getItem(`rateClean-${orderId}`) !== null;
-      // 设置isRated状态
       setIsRated(rated);
     };
-
-    // 调用checkIfRated函数来更新状态
     checkIfRated();
-  }, [orderId]); // 依赖数组里的orderId确保当orderId变化时，重新检查
+  }, [orderId]);
 
   return (
     <div className="order-card mb-3 " style={{ padding: "20px" }}>
@@ -256,18 +252,28 @@ function Order({
           <img className="order-photo" src={image} alt="profile" />
         </div>
         <div className="order-info">
-          <Link to={`/hotelInfo/${hotelId}`}>
-            <div className="hotelName">{chineseName}</div>
-            <div className="hotelName-eng">{englishName}</div>
+          <Link to={`/hotelInfo/${hotelId}`} style={{ textDecoration: "none" }}>
+            <div className="hotelName" style={{ fontFamily: "Inter" }}>
+              {chineseName}
+            </div>
+            <div
+              className="hotelName-eng"
+              style={{ fontFamily: "Inter", fontWeight: "bold" }}
+            >
+              {englishName}
+            </div>
           </Link>
-          <div>
+          <div style={{ marginTop: "5px", fontFamily: "Inter" }}>
             {formatDate(startDate)} - {formatDate(endDate)}
           </div>
         </div>
       </div>
       <div className="orderBox">
         <div className="price-and-button">
-          <div className="order-price">TWD {price}</div>
+          <div className="order-price" style={{ fontFamily: "Inter" }}>
+            TWD {price}
+          </div>
+
           <div className="orderstatus">
             <div>
               {(orderStatus === "past" || orderStatus === "future") && (
@@ -379,7 +385,7 @@ function Order({
                                           }
                                           onChangeActive={(event, newHover) =>
                                             setHover1(newHover)
-                                          } // 使用setHover1来更新悬停状态
+                                          } //set hover for star rates
                                           className="startIcon"
                                         />
                                         <div style={{ fontSize: "20px" }}>
@@ -402,7 +408,7 @@ function Order({
                                           }
                                           onChangeActive={(event, newHover) =>
                                             setHover2(newHover)
-                                          } // 使用setHover1来更新悬停状态
+                                          }
                                           className="startIcon"
                                         />
                                         <div style={{ fontSize: "20px" }}>
@@ -430,7 +436,7 @@ function Order({
                                           }
                                           onChangeActive={(event, newHover) =>
                                             setHover3(newHover)
-                                          } // 使用setHover1来更新悬停状态
+                                          }
                                           className="startIcon"
                                         />
                                         <div style={{ fontSize: "20px" }}>
@@ -458,7 +464,7 @@ function Order({
                                           }
                                           onChangeActive={(event, newHover) =>
                                             setHover4(newHover)
-                                          } // 使用setHover1来更新悬停状态
+                                          }
                                           className="startIcon"
                                         />
                                         <div style={{ fontSize: "20px" }}>
@@ -488,7 +494,7 @@ function Order({
                             <div style={{ flexGrow: 1 }}></div>
                             <button
                               className="form-button"
-                              type="button" // 注意这里改为 type="button"，防止触发表单提交
+                              type="button"
                               style={{ float: "right" }}
                               onClick={submitRatings}
                             >
@@ -520,6 +526,15 @@ function Order({
             )}
           </div>
         )}
+        {/* {orderStatus === "future" && (
+          <div>
+            {dayLeft ? (
+              <div className="form-button-rated">已評分</div>
+            ) : (
+              <div className="form-button-not-rated">未評分</div>
+            )}
+          </div>
+        )} */}
       </div>
     </div>
   );

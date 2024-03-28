@@ -102,13 +102,12 @@ input[type="radio"] {
   transition: color 0.15s ease-in;
 }
 .follow-btn {
-  padding: 8px 16px; /* 按鈕內邊距 */
-  background: var(--primary-color); /* 按鈕背景顏色 */
-  color: white; /* 文字顏色 */
-  border: none; /* 去除邊框 */
-  border-radius: 4px; /* 圓角邊框 */
-
-  text-align: center; /* 文字居中 */
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
 }
 
 .tabContent {
@@ -207,41 +206,41 @@ input[id="radio-4"] {
 @media (max-width: 767.98px) {
   .card-container,
   .card-full-container {
-    width: 100%; /* 让容器在小屏幕上宽度为100% */
-    margin: 0 auto; /* 居中显示 */
-    margin-bottom: 20px; /* 增加底部间距 */
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 20px;
   }
 
   .tabs {
-    flex-direction: column; /* 将选项卡垂直堆叠 */
-    width: auto; /* 自动调整宽度 */
+    flex-direction: column;
+    width: auto;
   }
 
   .tab {
-    display: flex; /* 使用 Flexbox 布局 */
-    align-items: center; /* 垂直居中对齐子元素 */
-    justify-content: center; /* 水平居中对齐子元素 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .notification {
-    margin-left: 0.5rem; /* 减少与标签文字之间的间距 */
-    width: 1.5rem; /* 适当调整通知图标的大小 */
-    height: 1.5rem; /* 适当调整通知图标的大小 */
-    font-size: 0.8rem; /* 减小通知数字的字体大小 */
+    margin-left: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8rem;
   }
 
   .tabContainer {
-    padding: 0 20px; /* 在小屏幕上增加一些内边距 */
+    padding: 0 20px;
   }
 
   .little-profile .pro-img img {
-    width: 80px; /* 缩小图片尺寸 */
+    width: 80px;
     height: 80px;
   }
 
   .image-container .image-button {
-    padding: 5px 10px; /* 调整按钮大小 */
-    font-size: 14px; /* 减小字体大小 */
+    padding: 5px 10px;
+    font-size: 14px;
   }
   .glider {
     display: none;
@@ -252,11 +251,11 @@ input[id="radio-4"] {
 @media (min-width: 768px) and (max-width: 991.98px) {
   .card-container,
   .card-full-container {
-    width: 50%; /* 使容器在平板上占据一半宽度 */
+    width: 50%;
   }
 
   .tabs {
-    flex-wrap: wrap; /* 允许选项卡换行 */
+    flex-wrap: wrap;
   }
   .glider {
     display: none;
@@ -267,10 +266,10 @@ input[id="radio-4"] {
 @media (min-width: 992px) {
   .card-container,
   .card-full-container {
-    width: 250px; /* 恢复到初始设置 */
+    width: 250px;
   }
 
   .tab {
-    font-size: 1rem; /* 在大屏幕上减小字体大小，如果需要 */
+    font-size: 1rem;
   }
 }
