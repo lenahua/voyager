@@ -201,7 +201,12 @@ function Order({
       Number(localStorage.getItem(`rateFacility-${orderId}`)) || 0;
     const title = localStorage.getItem(`title-${orderId}`) || "";
     const content = localStorage.getItem(`content-${orderId}`) || "";
-
+    const now = new Date();
+    //轉成台灣時區
+    const taiwanTime = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const ratetime = taiwanTime.toISOString().slice(0, 19).replace("T", " ");
+    localStorage.setItem(`ratetime-${orderId}`, ratetime);
+    console.log(ratetime);
     try {
       console.log("Sending rating submission request");
       const response = await axios.put(
@@ -214,6 +219,7 @@ function Order({
           rateFacility,
           title,
           content,
+          ratetime,
         }
       );
       console.log("Ratings submitted successfully", response.data);
