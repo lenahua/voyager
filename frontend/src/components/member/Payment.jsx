@@ -3,7 +3,7 @@ import "../../css/info.css";
 import VisaImage from "../images/Visa.png";
 import MasterCardImage from "../images/MasterCard.png";
 import AmericanExpressImage from "../images/AmericanExpress.png";
-import { Modal, TextField } from "@mui/material";
+import { Modal, TextField, MenuItem } from "@mui/material";
 import axios from "axios";
 
 function PaymentInfo() {
@@ -149,6 +149,57 @@ function PaymentInfo() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [selectedCountry, setSelectedCountry] = useState("台灣");
+  const country = [
+    {
+      value: "美國",
+      label: "美國",
+    },
+    {
+      value: "日本",
+      label: "日本",
+    },
+    {
+      value: "英國",
+      label: "英國",
+    },
+    {
+      value: "韓國",
+      label: "韓國",
+    },
+    {
+      value: "台灣",
+      label: "台灣",
+    },
+    {
+      value: "新加坡",
+      label: "新加坡",
+    },
+
+    {
+      value: "德國",
+      label: "德國",
+    },
+    {
+      value: "荷蘭",
+      label: "荷蘭",
+    },
+    {
+      value: "冰島",
+      label: "冰島",
+    },
+    {
+      value: "巴西",
+      label: "巴西",
+    },
+    {
+      value: "阿根廷",
+      label: "阿根廷",
+    },
+  ];
+  const handleChangecountry = (event) => {
+    setSelectedCountry(event.target.value);
+  };
 
   return (
     <div className="infoBox" style={{ marginBottom: "150px" }}>
@@ -285,11 +336,19 @@ function PaymentInfo() {
                   </div>
                   <div className="card-form-info">
                     <TextField
-                      id="outlined-basic"
+                      id="outlined-select-currency"
+                      select
                       label="國家"
-                      variant="outlined"
                       style={{ width: "100%" }}
-                    />
+                      value={selectedCountry}
+                      onChange={handleChangecountry}
+                    >
+                      {country.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </div>
                 </div>
                 <div className="card-form-info">
