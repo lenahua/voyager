@@ -34,6 +34,7 @@ class FilterBar extends React.Component{
         return newAry;
     };
     clickLocation= async(locationName)=>{
+        console.log(locationName);
         this.props.handleLocation(locationName);
     }
 
@@ -77,9 +78,12 @@ class Content extends React.Component{
                     
                     <div className="searchBox mb-1 ps-3 border border-3 rounded-pill d-flex align-items-center">
                         <input className="inline-block h-100 border-0" type="text" placeholder="請輸入關鍵字:" 
-                               onChange={(e)=>{this.setState({inputText:e.target.value})}} 
+                               onChange={(e)=>{
+                                    this.setState({inputText:e.target.value},
+                                    ()=>{this.sarchClick(this.state.inputText)});                  
+                               }} 
                         />
-                        <button className="btn " onClick={()=>this.sarchClick(this.state.inputText)}>
+                        <button className="btn ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
@@ -130,7 +134,7 @@ class Container extends React.Component{
         loginUid:0,
         modalIsOpen:false,
         sarchText:'',
-        location:'台中市'
+        location:'所有地區'
          
     }
     render() {
@@ -224,20 +228,22 @@ class Container extends React.Component{
         this.setState(newState);
     }
     handleLocation = async(locationName) =>{
-        
-        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&title=${this.state.sarchText}`);
+        console.log("h location",locationName);
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&tag=${this.state.sarchText}`);
         let newState = {...this.state};
         newState.dataAry = result.data;
         newState.location = locationName ; 
         this.setState(newState);
     } 
     handleSarchText = async(sarchText) =>{
-        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&title=${sarchText}`);
+        console.log("關鍵字:",sarchText);
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&tag=${sarchText}`);
         let newState = {...this.state};
         newState.dataAry = result.data;
         newState.sarchText = sarchText;   
-        console.log("關鍵字:",sarchText);
+        
         this.setState(newState);
+        
     }
 }
 

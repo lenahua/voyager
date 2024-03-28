@@ -127,38 +127,45 @@ app.get("/viewPage/imgList", function (req, res) {
 // });
 
 app.get("/viewPage/locationFilter",function(req,res){
-  let title = req.query.title?`%${req.query.title}%`:`%`;
-  console.log(req.query.lname);
-  console.log(title);
+  let tag = req.query.tag?`%${req.query.tag}%`:'';
+  let lname = req.query.lname==='所有地區'?`%`:`${req.query.lname}`;
 
-  if(req.query.lname){
+  console.log("tag:",tag);
+  console.log("lname:",lname);
+
+
+  
+  if(tag){
     connection.query(`
-    SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
-    FROM post,imgdata
+    SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
+    FROM post,imgdata,posttag
     WHERE post.postid = imgdata.postid AND 
-        post.title like ? AND
-        post.location = ? 
+    post.postid = posttag.postid AND	
+    posttag.tag like ? AND
+    post.location like ? 
     GROUP BY imgdata.postid
-    ORDER BY imgdata.postid DESC`
-  ,[title,req.query.lname], 
-  function(err,result){      
-      console.log(result);
-      result = changeToBase64(result);
-      res.send(result);
-  });
-  }else{
-    connection.query(
-      `SELECT MIN(id), postid, img 
-          FROM imgdata 
-          GROUP BY postid 
-          ORDER BY postid DESC `,
-      [],
-      function (err, result) {
+    ORDER BY post.postdate DESC`
+  ,[tag,lname], 
+    function(err,result){      
+        
         result = changeToBase64(result);
         res.send(result);
-      }
-    );
+    });
+  }else{
+    connection.query(`
+    SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
+    FROM post,imgdata
+    WHERE post.postid = imgdata.postid AND 
+    post.location like ? 
+    GROUP BY imgdata.postid
+    ORDER BY imgdata.postid DESC`
+  ,[lname], 
+    function(err,result){      
+        result = changeToBase64(result);
+        res.send(result);
+    });
   }
+  
 });
 
 
