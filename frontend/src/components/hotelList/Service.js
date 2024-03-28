@@ -2,6 +2,8 @@ import React from 'react';
 import { FaWifi, FaBell, FaDumbbell, FaCar,
      FaSmokingBan, FaLuggageCart, FaSwimmingPool,
       FaArrowAltCircleLeft, FaArrowAltCircleRight, FaLongArrowAltRight } from "react-icons/fa";
+import { RiSafeFill } from "react-icons/ri";
+import { AiFillSafetyCertificate } from "react-icons/ai";
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Slide } from "react-awesome-reveal";
 
@@ -46,6 +48,14 @@ const Service = ({viewPic}) => {
             icon: <FaSwimmingPool/>,
             title: "游泳池"
         },
+        {
+            icon: <RiSafeFill />,
+            title: "保險箱"
+        },
+        {
+            icon: <AiFillSafetyCertificate />,
+            title: "房卡進出"
+        }
     ]
 
     const photo = [
@@ -78,7 +88,7 @@ const Service = ({viewPic}) => {
         
             
             <div className='serviceWrapper'>
-                <Slide className='title'>
+                <Slide className='Facititle'>
                     <h1>設施與服務</h1>
                 </Slide>
                 

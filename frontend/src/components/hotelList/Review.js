@@ -1,42 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { FaUserCircle } from "react-icons/fa";
 
 import '../../css/review.css'
 
 
-
-
-const guests = [
-    {
-        name: "李小龍",
-        img: "https://images.pexels.com/photos/1716835/pexels-photo-1716835.jpeg?auto=compress&cs=tinysrgb&w=1200",
-        stars: 3,
-        disc: "住宿環境優雅，房間整潔舒適，服務人員態度親切，提供了美味的早餐。位置方便，附近有各種餐廳和景點，是一次愉快的住宿體驗。",
-        date: "2023年6月19日"
-    },
-    {
-        name: "陳小美",
-        img: "https://images.pexels.com/photos/1716835/pexels-photo-1716835.jpeg?auto=compress&cs=tinysrgb&w=1200",
-        stars: 4,
-        disc: "住宿環境優雅，房間整潔舒適，服務人員態度親切，提供了美味的早餐。位置方便，附近有各種餐廳和景點，是一次愉快的住宿體驗。",
-        date: "2023年7月19日"
-    },
-    {
-        name: "Amber Chang",
-        img: "https://images.pexels.com/photos/1716835/pexels-photo-1716835.jpeg?auto=compress&cs=tinysrgb&w=1200",
-        stars: 4,
-        disc: "住宿環境優雅，房間整潔舒適，服務人員態度親切，提供了美味的早餐。位置方便，附近有各種餐廳和景點，是一次愉快的住宿體驗。",
-        date: "2022年9月28日"
-    },
-    {
-        name: "張先生",
-        img: "https://images.pexels.com/photos/1716835/pexels-photo-1716835.jpeg?auto=compress&cs=tinysrgb&w=1200",
-        stars: 5,
-        disc: "住宿環境優雅，房間整潔舒適，服務人員態度親切，提供了美味的早餐。位置方便，附近有各種餐廳和景點，是一次愉快的住宿體驗。",
-        date: "2023年12月31日"
-    },
-]
 const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -56,6 +25,12 @@ const responsive = {
 };
 
 const Review = ({review}) => {
+
+  const [expandCard, setEcpandCard]= useState(null);
+  // 設定卡片的展開狀態
+  const toggleExpand = (index)=>{
+    setEcpandCard(expandCard === index ? null : index)
+  }
   
   return (
     <div >
@@ -64,16 +39,29 @@ const Review = ({review}) => {
                     <div key={index} className='guestCard'>
                         <div className='guestCardTitle'>
                         <div className='guestCardTitleName'>
-                            {/* <img src={data.img} alt='' className='guestImg' /> */}
+                            <FaUserCircle />
                             <span>{data.name}</span>
                         </div>
-                        <span>{formateDate(data.endDate)}</span>
+                        <span>{formateDate(data.ratetime)}</span>
                         </div>
                         <div className='guestCardSecond'>
-                        <h4>{data.title}</h4>
+                        <h4 className='dataTitle'>{data.title}</h4>
                         <span>{data.stars}</span>
                         </div>
-                        <div className='guestCardisc'>{data.content}</div>
+                        {/* 如果點擊看更多 或是 內容是空的 直接顯示原始內容 */}
+                        {expandCard === index || !data.content ? (
+                                data.content
+                            ) : (
+                              // 如果沒有被點擊，就擷取50個字，超過的顯示...，設置一個按鈕查看完整內容
+                              // 按鈕設點擊事件，點擊要傳index給function，並判斷>>非點擊顯示查看完整訊息
+                                <>
+                                    {data.content.substring(0, 50)}
+                                    {data.content.length > 50 && '... '}
+                                    <button onClick={() => toggleExpand(index)} className='wholeBtn'>
+                                        {expandCard === index ? '收起!!!!!' : '查看完整訊息'}
+                                    </button>
+                                </>
+                            )}
                     </div>
                 ))}
         </Carousel>

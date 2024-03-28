@@ -41,14 +41,17 @@ const Room = ({room, onClick, handleSelect}) => {
               <div className='roomCard' key={i} >
                 <div className='innerCard' >
                   <img src={roomdetail.room_pic} alt='' className='roomImages' onClick={()=>onClick(roomdetail.room_id)}></img>
+                  
                   <div className='roomCardTitle' >
                     <h2 className='roomName' onClick={()=>onClick(roomdetail.room_id)} >{roomdetail.room_type}</h2>
                     <p>每晚價錢${roomdetail.price}</p>
                   </div>
+                 
                   <div className='roomCardDesc' >
                     <FaBed/>
                     <p>{roomdetail.bed_type}</p>
                   </div>
+                  
                   
                   
                   <div className='roomCardRestroom'>
@@ -67,7 +70,7 @@ const Room = ({room, onClick, handleSelect}) => {
 
                     
                     <Link to={`/hotelOrder/${roomdetail.hotel_id}/${roomdetail.room_id}`}>
-                      <button className='price' >立即預訂 ${roomdetail.price}</button>
+                      <button className='price' >立即預訂</button>
                     </Link>
                 </div>
               </div>
