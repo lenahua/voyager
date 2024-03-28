@@ -5,7 +5,7 @@ import ViewPage from "./components/viewPage/viewPage";
 import Home from "./components/homePage/home";
 import HotelInfo from "./components/hotelInfo";
 import HotelList from "./components/hotelList";
-import HotelOrder from "./components/hotelOrderPage/hotelOrder";
+import HotelOrder from "./components/hotelOrderPage/Main";
 import Member from "./components/member/Member";
 import Welcome from "./components/welcomePage/welcome";
 import Login from "./components/Login";
@@ -75,7 +75,10 @@ class App extends Component {
             />
             <Route path="/hotelList" component={HotelList} />
             <Route path="/hotelInfo/:id" component={HotelInfo} />
-            <Route path="/hotelOrder" component={HotelOrder} />
+            <Route
+              path="/hotelOrder"
+              render={(props) => <HotelOrder {...props} userId={this.state.uid} />}
+            />
             <Route
               path="/member"
               render={(props) => <Member {...props} userId={this.state.uid} />}

@@ -113,8 +113,6 @@ function MyFavorites({ userId }) {
     }, []);
   }
   console.log("Render userId:", userId, "Type:", typeof userId);
-
-  // 根据userId条件渲染的测试
   console.log(
     Number(userId) === 10,
     "<-- should be true if userId is 10 and a number"
@@ -131,7 +129,6 @@ function MyFavorites({ userId }) {
   console.log(visibleCategories);
   console.log("Render userId:", userId, "Type:", typeof userId);
 
-  // 根据userId条件渲染的测试
   console.log(
     Number(userId) === 10,
     "<-- should be true if userId is 10 and a number"

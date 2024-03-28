@@ -12,7 +12,9 @@ import MyPosts from "./MyPost";
 function Member({ userId }) {
   localStorage.setItem("previouspath", window.location.pathname);
   const isLoggedInUser = userId === 10;
-  const [selectedTab, setSelectedTab] = useState("radio-1");
+  const [selectedTab, setSelectedTab] = useState(
+    isLoggedInUser ? "radio-1" : "radio-3"
+  );
 
   const handleTabChange = (Tab) => setSelectedTab(Tab);
 
@@ -85,16 +87,15 @@ function Member({ userId }) {
     );
   };
   const calculateGliderTransform = () => {
-    // 假设每个选项卡的宽度固定为160px，这个值根据你的实际布局调整
+    //每個tab都是160px，根據登陸狀態計算glider位移量
     const tabWidth = 160;
-    // 根据用户的登录状态和选中的Tab来计算glider的位移
-    let index = 0; // 默认情况下假设选中的是第一个选项卡
+    let index = 0; //默認從index=0開始
     if (!isLoggedInUser) {
-      // 如果用户未登录，调整index以反映剩余选项卡的实际位置
+      // 如果用户未登錄，從radio-3開始算
       if (selectedTab === "radio-3") index = 0;
       if (selectedTab === "radio-4") index = 1;
     } else {
-      // 如果用户已登录，根据选项卡的ID来确定index
+      // 如果用户已登陸
       if (selectedTab === "radio-1") index = 0;
       if (selectedTab === "radio-2") index = 1;
       if (selectedTab === "radio-3") index = 2;
@@ -131,19 +132,25 @@ function Member({ userId }) {
           <div>
             <div>
               <img className="cit" src={bg} alt="backgroundImage" />
-              <button className="profile-button">更換背景圖片</button>
+              {isLoggedInUser ? (
+                <button className="profile-button">更換背景圖片</button>
+              ) : null}
             </div>
             <div className="card-body little-profile text-center">
               <div className="pro-img">
-                <img src={profile} alt="profile" />
+                <img
+                  src={profile}
+                  alt="profile"
+                  style={{ marginBottom: "5px" }}
+                />
               </div>
               <h3>楊怡臻</h3>
-              <span>@jelly1122</span>
-              <div>
+              <h5 style={{ fontWeight: "bold" }}>@jelly1122</h5>
+              {/*  <div>
                 <button style={{ marginTop: "20px" }} className="follow-btn">
                   Follow
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="tabContainer">

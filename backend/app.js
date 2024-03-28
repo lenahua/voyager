@@ -33,7 +33,7 @@ var connection = mysql.createConnection({
   password: "",
   host: "127.0.0.1",
   database: "test",
-  charset: "utf8mb4"
+  charset: "utf8mb4",
 });
 
 connection.connect(function (err) {
@@ -112,8 +112,8 @@ app.get("/viewPage/imgList", function (req, res) {
 // app.get("/viewPage/locationFilter", function (req, res) {
 //   connection.query(
 //     `
-//         SELECT *,min(imgdata.id) as firstPicId 
-//         FROM post,imgdata 
+//         SELECT *,min(imgdata.id) as firstPicId
+//         FROM post,imgdata
 //         WHERE location = ? AND
 //         post.postid = imgdata.postid
 //         GROUP BY imgdata.postid
@@ -126,6 +126,7 @@ app.get("/viewPage/imgList", function (req, res) {
 //   );
 // });
 
+<<<<<<< HEAD
 app.get("/viewPage/locationFilter",function(req,res){
   let tag = req.query.tag?`%${req.query.tag}%`:'';
   let lname = req.query.lname==='所有地區'?`%`:`${req.query.lname}`;
@@ -139,15 +140,46 @@ app.get("/viewPage/locationFilter",function(req,res){
     connection.query(`
     SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
     FROM post,imgdata,posttag
+=======
+app.get("/viewPage/locationFilter", function (req, res) {
+  let title = req.query.title ? `%${req.query.title}%` : `%`;
+  console.log(req.query.lname);
+  console.log(title);
+
+  if (req.query.lname) {
+    connection.query(
+      `
+    SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
+    FROM post,imgdata
+>>>>>>> e68accc50035f23b803e764783c22b07cd8afa27
     WHERE post.postid = imgdata.postid AND 
     post.postid = posttag.postid AND	
     posttag.tag like ? AND
     post.location like ? 
     GROUP BY imgdata.postid
+<<<<<<< HEAD
     ORDER BY post.postdate DESC`
   ,[tag,lname], 
     function(err,result){      
         
+=======
+    ORDER BY imgdata.postid DESC`,
+      [title, req.query.lname],
+      function (err, result) {
+        console.log(result);
+        result = changeToBase64(result);
+        res.send(result);
+      }
+    );
+  } else {
+    connection.query(
+      `SELECT MIN(id), postid, img 
+          FROM imgdata 
+          GROUP BY postid 
+          ORDER BY postid DESC `,
+      [],
+      function (err, result) {
+>>>>>>> e68accc50035f23b803e764783c22b07cd8afa27
         result = changeToBase64(result);
         res.send(result);
     });
@@ -168,20 +200,13 @@ app.get("/viewPage/locationFilter",function(req,res){
   
 });
 
-
-
-
-
-
-
-
 //發布貼文留言
 app.post(`/viewPage/postComment`, function (req, res) {
   connection.query(
     `
         INSERT INTO postcomment( postid, Uid,comment, likecounter, commenttime) 
         VALUES (?,?,?,0,NOW());`,
-    [req.body.postid,req.body.uid ,req.body.commentText],
+    [req.body.postid, req.body.uid, req.body.commentText],
     function (err, result) {
       console.log(result);
       res.send(result);
@@ -534,12 +559,13 @@ app.put("/member/order/rating", (req, res) => {
     rateFacility,
     title,
     content,
+    ratetime,
   } = req.body;
   console.log("Received rating data:", req.body);
   const sql = `
     UPDATE orderinfo
     SET rateClean = ?, ratePosition = ?, rateService = ?, rateFacility = ?, title = ?, content = ?
-    WHERE orderId = ?
+    ,ratetime=? WHERE orderId = ?
   `;
 
   connection.query(
@@ -551,6 +577,7 @@ app.put("/member/order/rating", (req, res) => {
       rateFacility,
       title,
       content,
+      ratetime,
       orderId,
     ],
     (error, results) => {
@@ -760,8 +787,6 @@ app.post("/checkout/hotel/order", function (req, res) {
   );
 });
 
-
-
 // ------------------------------------------------------------------------------
 
 // 飯店詳細
@@ -834,20 +859,20 @@ app.get("/hotelInfo/:id", function (req, res) {
     });
   };
 
-  const getViewPage = ()=>{
-    return new Promise((resolve, reject)=>{
+  const getViewPage = () => {
+    return new Promise((resolve, reject) => {
       connection.query(
         "SELECT DISTINCT post.title, imgdata.img from hotel INNER JOIN post on hotel.city = post.location INNER JOIN imgdata on post.postid = imgdata.postid WHERE hotel.hotel_id = ?",
         [hotelId],
-        function(err, viewPicsRows){
-          if(err) reject("Error fetching view picture");
+        function (err, viewPicsRows) {
+          if (err) reject("Error fetching view picture");
           let newViewPics = changeToBase64(viewPicsRows);
           // console.log(newViewPics);
           resolve(newViewPics);
         }
-      )
-    })
-  }
+      );
+    });
+  };
 
   // 使用 Promise執行所有資料庫查詢
   Promise.all([
@@ -856,20 +881,29 @@ app.get("/hotelInfo/:id", function (req, res) {
     getHotelRooms(),
     getHotelRoomTypes(),
     getUserReviews(),
-    getViewPage()
+    getViewPage(),
   ])
-    .then(([hotelData, photoRows, roomRows, roomPicRows, reviewRows, newViewPics]) => {
-      const responseData = {
-        hotel: hotelData,
-        photos: photoRows,
-        room: roomRows,
-        roomPic: roomPicRows,
-        reviews: reviewRows,
-        viewpics: newViewPics
-      };
-      // console.log(viewPicsRows)
-      res.send(responseData);
-    })
+    .then(
+      ([
+        hotelData,
+        photoRows,
+        roomRows,
+        roomPicRows,
+        reviewRows,
+        newViewPics,
+      ]) => {
+        const responseData = {
+          hotel: hotelData,
+          photos: photoRows,
+          room: roomRows,
+          roomPic: roomPicRows,
+          reviews: reviewRows,
+          viewpics: newViewPics,
+        };
+        // console.log(viewPicsRows)
+        res.send(responseData);
+      }
+    )
     .catch((error) => {
       res.status(500).send(error);
     });
@@ -897,30 +931,33 @@ app.get("/login", verifyUser, (req, res) => {
   return res.json({ Status: "Success", account: req.account, uid: req.uid });
 });
 
-app.post('/login', (req, res)=>{
+app.post("/login", (req, res) => {
   const account = req.body.account;
-  const password = req.body.password
-  connection.query("select * from userinfo where account = ? and password = ?",
-          [account, password],
-          // 先比對帳號是否一樣
-          (err, data)=>{
-              if(err){
-                  return res.json({Error: "Login error in server"});
-              }  
-              if (data.length > 0){
-                  const uid = data[0].Uid;
-                  const account = data[0].account;
-                  const token = jwt.sign({uid,account}, "jwt-secret-key", {expiresIn: '1d'})
-                  res.cookie('token', token)
-                  // req.session.user = data;
-                  // console.log(req.session.user)
-                  return res.json({Status: "Success"})
-              }else{
-                  return res.json({Error: "密碼錯誤，請重新輸入"})
-              }
-          }
-  )
-})
+  const password = req.body.password;
+  connection.query(
+    "select * from userinfo where account = ? and password = ?",
+    [account, password],
+    // 先比對帳號是否一樣
+    (err, data) => {
+      if (err) {
+        return res.json({ Error: "Login error in server" });
+      }
+      if (data.length > 0) {
+        const uid = data[0].Uid;
+        const account = data[0].account;
+        const token = jwt.sign({ uid, account }, "jwt-secret-key", {
+          expiresIn: "1d",
+        });
+        res.cookie("token", token);
+        // req.session.user = data;
+        // console.log(req.session.user)
+        return res.json({ Status: "Success" });
+      } else {
+        return res.json({ Error: "密碼錯誤，請重新輸入" });
+      }
+    }
+  );
+});
 
 app.get("/logout", (req, res) => {
   const token = req.cookies.token;
@@ -930,16 +967,16 @@ app.get("/logout", (req, res) => {
   return res.json({ Status: "Success" });
 });
 
-app.post('/register', (req, res)=>{
-  connection.query("insert into userinfo(account, password, email) values (?, ?, ?)",
-      [req.body.account, req.body.password, req.body.email],
-      function(err, data){
-          if(err) return res.json("registe failed")
-          return res.json({Status: "Success"})
-      }
-  )
-})
-
+app.post("/register", (req, res) => {
+  connection.query(
+    "insert into userinfo(account, password, email) values (?, ?, ?)",
+    [req.body.account, req.body.password, req.body.email],
+    function (err, data) {
+      if (err) return res.json("registe failed");
+      return res.json({ Status: "Success" });
+    }
+  );
+});
 
 //旅館清單
 app.get("/", function (req, res) {

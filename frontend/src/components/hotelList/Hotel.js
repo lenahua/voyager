@@ -82,7 +82,7 @@ const Hotel = ({place, photos}) => {
             ))
             }
           </div>
-          <div className='rating'>5.0</div>
+          <div className='rating'>4.3</div>
           <h1 className='hotelTitle'>{place.name}</h1>
           <div className='hotelAddress'>
             <FaLocationArrow/>

@@ -7,6 +7,7 @@
     place-items: center;
     margin: 0 auto;
     /* background-color: aqua; */
+    height: auto;
     position: relative;
 }
 .react-multiple-carousel__arrow--right{
@@ -37,13 +38,24 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-weight: 700;
+    font-size: 20px;
 }
-.guestImg{
-    border-radius: 50px;
-    width: 30px;
-    height: 30px;
-}
+
 .guestCardSecond{
     display: flex;
     justify-content: space-between;
+}
+.dataTitle{
+    font-weight: 800;
+}
+.wholeBtn{
+    background: none;
+    border: none;
+    color: #3a64c5;
+    display: flex;
+    justify-content: flex-end;
+}
+.wholeBtn:hover{
+    color: #2c4b92;
 }

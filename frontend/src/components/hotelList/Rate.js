@@ -34,27 +34,27 @@ const Rate = () => {
                 </Slide>
                 <div className='rateBlock'>
                     <h3>整體評分</h3>
-                    <div>4.8</div>
+                    <p>4.3</p>
                     <FaStar className='icon'/>
                 </div>
                 <div className='rateBlock'>
                     <h3>整體清潔度</h3>
-                    <p>5.0</p>
+                    <p>4.6</p>
                     <FaBroom className='icon'/>     
                 </div>
                 <div className='rateBlock'>
                     <h3>飯店服務</h3>
-                    <p>5.0</p>
+                    <p>4.8</p>
                     <MdRoomService className='icon'/>
                 </div>
                 <div className='rateBlock'>
                     <h3>設施與設備</h3>
-                    <p>5.0</p>
+                    <p>4.5</p>
                     <FaTools className='icon'/>
                 </div>
                 <div className='rateBlock'>
                     <h3>地理位置</h3>
-                    <p>5.0</p>
+                    <p>4.6</p>
                     <FaSearchLocation className='icon'/>
                 </div>
             </div>
