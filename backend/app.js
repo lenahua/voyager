@@ -126,17 +126,16 @@ app.get("/viewPage/imgList", function (req, res) {
 //   );
 // });
 
-app.get("/viewPage/locationFilter",function(req,res){
-  let tag = req.query.tag?`%${req.query.tag}%`:'';
-  let lname = req.query.lname==='所有地區'?`%`:`${req.query.lname}`;
+app.get("/viewPage/locationFilter", function (req, res) {
+  let tag = req.query.tag ? `%${req.query.tag}%` : "";
+  let lname = req.query.lname === "所有地區" ? `%` : `${req.query.lname}`;
 
-  console.log("tag:",tag);
-  console.log("lname:",lname);
+  console.log("tag:", tag);
+  console.log("lname:", lname);
 
-
-  
-  if(tag){
-    connection.query(`
+  if (tag) {
+    connection.query(
+      `
     SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
     FROM post,imgdata,posttag
     WHERE post.postid = imgdata.postid AND 
@@ -144,28 +143,29 @@ app.get("/viewPage/locationFilter",function(req,res){
     posttag.tag like ? AND
     post.location like ? 
     GROUP BY imgdata.postid
-    ORDER BY post.postdate DESC`
-  ,[tag,lname], 
-    function(err,result){      
-        
+    ORDER BY post.postdate DESC`,
+      [tag, lname],
+      function (err, result) {
         result = changeToBase64(result);
         res.send(result);
-    });
-  }else{
-    connection.query(`
+      }
+    );
+  } else {
+    connection.query(
+      `
     SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
     FROM post,imgdata
     WHERE post.postid = imgdata.postid AND 
     post.location like ? 
     GROUP BY imgdata.postid
-    ORDER BY imgdata.postid DESC`
-  ,[lname], 
-    function(err,result){      
+    ORDER BY imgdata.postid DESC`,
+      [lname],
+      function (err, result) {
         result = changeToBase64(result);
         res.send(result);
-    });
+      }
+    );
   }
-  
 });
 
 //發布貼文留言
@@ -517,7 +517,25 @@ app.post("/member/info/card/:id", (req, res) => {
     }
   );
 });
+app.delete("/member/info/card/:uid/:creditId", function (req, res) {
+  const { uid, creditId } = req.params;
+  if (!uid || !creditId) {
+    return res.status(400).send("UID and creditId are required");
+  }
+  const sql = `DELETE FROM creditcard WHERE uid = ? AND creditid = ?`;
+  connection.query(sql, [uid, creditId], (err, result) => {
+    if (err) {
+      console.error("An error occurred:", err);
+      return res.status(500).send("An error occurred while deleting the card.");
+    }
 
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Card not found.");
+    }
+
+    res.send("Post deleted successfully.");
+  });
+});
 app.put("/member/order/rating", (req, res) => {
   const {
     orderId,

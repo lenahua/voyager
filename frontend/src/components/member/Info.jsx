@@ -145,7 +145,7 @@ function ProfileInfo({ userId }) {
     <React.Fragment>
       {userInfo.length > 0 && (
         <div className="infoBox">
-          <h2>個人資訊</h2>
+          <h2 style={{ fontWeight: "bold" }}>個人資訊</h2>
           <div className="profile-box">
             <div className="row">
               <div

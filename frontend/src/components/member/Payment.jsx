@@ -8,6 +8,7 @@ import axios from "axios";
 
 function PaymentInfo() {
   const [creditCardInfo, setCreditCardInfo] = useState([]);
+  console.log(creditCardInfo);
   const Uid = localStorage.getItem("Uid") || "10";
   const fetchCreditCardInfo = async () => {
     try {
@@ -31,6 +32,18 @@ function PaymentInfo() {
     valid: "", // 有效期限
     cvv: "",
   });
+  const deletecard = async (creditId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/member/info/card/${Uid}/${creditId}`
+      );
+      alert(`已刪除信用卡！`);
+      fetchCreditCardInfo();
+    } catch (error) {
+      console.error("Error deleting card:", error);
+      alert("刪除失敗");
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -140,19 +153,35 @@ function PaymentInfo() {
   return (
     <div className="infoBox" style={{ marginBottom: "150px" }}>
       <div className="addcard">
-        <h2>付款資訊</h2>
-        {creditCardInfo.length < 3 && (
-          <h6 className="inputButton-outline" onClick={handleOpen}>
+        <h2 style={{ fontWeight: "bold" }}>付款資訊</h2>
+        {creditCardInfo.length < 3 ? (
+          <h6
+            className="inputButton-outline"
+            onClick={handleOpen}
+            style={{ fontWeight: "bold" }}
+          >
             新增信用卡
+          </h6>
+        ) : (
+          <h6
+            className="inputButton-outline-delete"
+            style={{ fontWeight: "bold" }}
+          >
+            最多新增三張信用卡，點擊刪除
           </h6>
         )}
       </div>
 
-      <div className="d-flex cardbox" style={{ alignItems: "start" }}>
+      <div className="d-flex cardbox" style={{ alignItems: "center" }}>
         {creditCardInfo.map((card, index) => (
           <div key={index} style={{ margin: "10px" }}>
             {getCardImage(card.cardType) && (
-              <img src={getCardImage(card.cardType)} alt={card.cardType} />
+              <img
+                src={getCardImage(card.cardType)}
+                alt={card.cardType}
+                style={{ cursor: "pointer" }}
+                onClick={() => deletecard(card.creditId)}
+              />
             )}
           </div>
         ))}
@@ -174,7 +203,12 @@ function PaymentInfo() {
             <div style={style}>
               <form>
                 <div>
-                  <h2 className="addText text-center">新增信用卡</h2>
+                  <h2
+                    className="addText text-center"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    新增信用卡
+                  </h2>
                 </div>
                 <div style={{ marginTop: "25px" }}>
                   <div
