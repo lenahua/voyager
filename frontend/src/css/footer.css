@@ -1,0 +1,53 @@
+.footerContain{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #3f3f3f;
+    color: #fff;
+}
+.footerTop{
+    /* background-color: #ddb3b3; */
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1024px;
+    justify-content: space-around;
+    text-align: center;
+    /* gap: 150px; */
+    margin-top: 50px;
+}
+.footerSection{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.footerSection h3{
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 13px;
+}
+.footerSection p{
+    margin: 3px 0;
+}
+.footerSection p:hover{
+    cursor: pointer;
+    color: #d35e35;
+}
+.footerLine{
+    width: 70%;
+    height: 3px;
+    background-color: rgb(91, 91, 91);
+    margin: 30px;
+}
+.footerLogo{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.twitterLogo{
+    font-size: 26px;
+}

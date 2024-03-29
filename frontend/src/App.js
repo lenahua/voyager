@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 import ViewPage from "./components/viewPage/viewPage";
 import Home from "./components/homePage/home";
@@ -11,6 +11,7 @@ import Welcome from "./components/welcomePage/welcome";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Nav from "./components/nav";
+import Footer from './components/homePage/Footer'
 
 import axios from "axios";
 
@@ -30,6 +31,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    
     axios
       .get("http://localhost:8000/login")
       .then((res) => {
@@ -67,23 +69,16 @@ class App extends Component {
             <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route
-              path="/viewPage"
-              render={(props) => (
-                <ViewPage {...props} userId={this.state.uid} />
-              )}
-            />
+            <Route path="/viewPage" component={ViewPage} />
             <Route path="/hotelList" component={HotelList} />
             <Route path="/hotelInfo/:id" component={HotelInfo} />
-            <Route
-              path="/hotelOrder"
-              render={(props) => <HotelOrder {...props} userId={this.state.uid} />}
-            />
+            <Route path="/hotelOrder" component={HotelOrder} />
             <Route
               path="/member"
               render={(props) => <Member {...props} userId={this.state.uid} />}
             />
           </Switch>
+        <Footer/>
         </div>
       </BrowserRouter>
     );

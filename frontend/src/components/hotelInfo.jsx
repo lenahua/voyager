@@ -8,6 +8,7 @@ import Rate from '../components/hotelList/Rate';
 import Review from '../components/hotelList/Review';
 import Rule from '../components/hotelList/Rule';
 
+
 import {useParams, useLocation} from "react-router-dom"
 import axios from 'axios';
 
