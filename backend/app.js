@@ -5,7 +5,9 @@ var cookieParser = require("cookie-parser");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 var saltRounds = 10;
-
+const fileUpload = require("express-fileupload");
+const morgan = require("morgan");
+const fs = require("fs").promises;
 app.listen(8000);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +19,12 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(
+  fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    createParentPath: true,
+  })
+);
 
 var mysql = require("mysql");
 /* var connection = mysql.createConnection({
@@ -340,6 +348,86 @@ app.post(`/viewPage/addSavingState`, function (req, res) {
     }
   );
 }); */
+app.post("/picture", async (req, res) => {
+  try {
+    console.log("Received a request to /picture");
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      console.log("No files were uploaded.");
+      return res.status(400).send({
+        status: false,
+        message: "No files were uploaded.",
+      });
+    }
+
+    const { picture } = req.files;
+    console.log(`Received file: ${picture.name}`);
+
+    // 移動圖片到server目錄
+    const uploadPath = "./uploads/" + picture.name;
+    await picture.mv(uploadPath);
+    console.log(`File moved to: ${uploadPath}`);
+
+    const { title, description, Uid, location } = req.body;
+    console.log(
+      `Received title: ${title}, description: ${description}, uid:${Uid}, location: ${location}`
+    );
+
+    var postQuery =
+      "INSERT INTO post (uid, title, postcontent, location, postdate) VALUES (?, ?, ?, ?, NOW())";
+    connection.query(
+      postQuery,
+      [Uid, title, description, location],
+      async function (err, postResult) {
+        if (err) {
+          console.error("Insert Error", err);
+          return res.status(500).send({
+            status: false,
+            message: "Error inserting post data into DB.",
+            error: err.message,
+          });
+        }
+
+        console.log("Post Stored with ID:", postResult.insertId);
+
+        // 讀取文件數據
+        const fileData = await fs.readFile(uploadPath);
+        console.log(`File data read for: ${picture.name}`);
+
+        var imgQuery = "INSERT INTO imgdata (postid, img) VALUES (?, ?)";
+        connection.query(
+          imgQuery,
+          [postResult.insertId, fileData],
+          function (imgErr, imgResult) {
+            if (imgErr) {
+              console.error("Insert Error", imgErr);
+              return res.status(500).send({
+                status: false,
+                message: "Error inserting image data into DB.",
+                error: imgErr.message,
+              });
+            }
+
+            console.log("Image linked to Post ID:", postResult.insertId);
+            res.send({
+              status: true,
+              message: "Post and Image are uploaded and stored in DB",
+              postId: postResult.insertId,
+            });
+          }
+        );
+      }
+    );
+  } catch (e) {
+    console.error("Error handling /picture request:", e);
+    res.status(500).send({
+      status: false,
+      message: "Server error handling /picture request.",
+      error: e.message,
+    });
+  }
+});
+
 app.get("/viewPage/getModallily", function (req, res) {
   connection.query(
     `SELECT 

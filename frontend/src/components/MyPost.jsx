@@ -8,10 +8,23 @@ import Slider from "react-slick";
 import "../css/viewPage.css";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 function MyPosts({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);
-
+  const [posts, setPost] = React.useState([]);
+  const [isRotated, setIsRotated] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const handleClick = () => {
+    setIsDrawerOpen(true);
+    setIsRotated((prevIsRotated) => !prevIsRotated);
+  };
+  const toggleDrawer = (open) => (e) => {
+    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
+      return;
+    }
+    setIsDrawerOpen(open);
+  };
   //指定postid。相同圖片=>重置postId。不同圖片=>設置selectedPostId
   const handleImageClick = (postid) => {
     if (selectedPostId === postid) {
@@ -51,45 +64,67 @@ function MyPosts({ userId }) {
     };
 
     fetchPosts();
-  }, []); // 空依赖数组意味着这个effect只会在组件挂载时运行一次
-  const [posts, setPost] = React.useState([]);
-  const [isRotated, setIsRotated] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const handleClick = () => {
-    setIsDrawerOpen(true);
-    setIsRotated((prevIsRotated) => !prevIsRotated);
-  };
-  const toggleDrawer = (open) => (e) => {
-    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
-      return;
-    }
-    setIsDrawerOpen(open);
-  };
+  }, []);
+  const { register, handleSubmit } = useForm();
 
+  const onSubmit = async (data) => {
+    const Uid = "10";
+    const formData = new FormData();
+    if (data.picture.length > 0) {
+      formData.append("picture", data.picture[0]);
+    }
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("location", data.location);
+    formData.append("Uid", Uid);
+
+    try {
+      const response = await fetch("http://localhost:8000/picture", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const res = await response.json();
+      alert(JSON.stringify(res));
+    } catch (error) {
+      console.error("An error occurred:", error);
+      alert("An error occurred: " + error.message);
+    }
+  };
   const drawerContent = (
     <React.Fragment>
-      <div style={{ textAlign: "center" }}>
-        <h3>上傳照片</h3>
-      </div>
-      <div className="modal-body">
-        <h4>Upload image:</h4>
-        <form action="">
-          <input className="form-control" type="file" id="uploadImg" multiple />
-        </form>
-      </div>
-      <div className="modal-header border-top">
-        <h3>貼文說明</h3>
-      </div>
-      <div className="modal-body">
-        <form>
-          <textarea className="form-control" id="textBox" rows="5"></textarea>
-        </form>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-outline-success">
-          確認上傳貼文
-        </button>
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="modal-body">
+          <h4>Upload image:</h4>
+          <input {...register("picture")} type="file" name="picture" />
+        </div>
+        <div className="modal-header border-top">
+          <h3>貼文標題</h3>
+          <input {...register("title")} type="text" placeholder="Enter title" />
+          <h3>貼文說明</h3>
+          <input
+            {...register("description")}
+            type="text"
+            placeholder="Enter description"
+          />
+
+          <h3>位置</h3>
+          <select {...register("location")}>
+            <option value="">Select a location</option>
+            <option value="Taipei">Taipei</option>
+            <option value="Taichung">Taichung</option>
+            <option value="Kaohsiung">Kaohsiung</option>
+          </select>
+        </div>
+        <div className="modal-body">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
     </React.Fragment>
   );
   return (

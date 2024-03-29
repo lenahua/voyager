@@ -7,12 +7,18 @@
   transition: transform 500ms ease;
   cursor: pointer;
   height: auto;
-  flex: 1 1 22%; /* 弹性基础大小设为22%，留下一些空间用于间隔 */
-  width: calc(20% - 10px); /* 最大宽度也设置为22%，以避免图片变得太大 */
-  height: auto; /* 保持图片纵横比 */
+  flex: 1 1 22%;
+  width: calc(20% - 10px);
+  height: auto;
   cursor: pointer;
   overflow: hidden;
   margin: 5px;
+}
+.drawertitle {
+  text-align: center;
+  padding: 10px 10px 30px 10px;
+  margin-bottom: "30px";
+  color: #3c93d6;
 }
 
 .post-img:hover {
@@ -36,4 +42,12 @@
   border-radius: 4px; /* 圓角邊框 */
 
   text-align: center; /* 文字居中 */
+}
+
+.upload-body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }

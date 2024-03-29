@@ -8,6 +8,9 @@ import Slider from "react-slick";
 import "../../css/viewPage.css";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import Button from "@mui/material/Button";
+
 function MyPosts({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);
@@ -22,36 +25,36 @@ function MyPosts({ userId }) {
     }
     setIsModalOpen(true);
   };
-  useEffect(() => {
+
+  const fetchPosts = async () => {
     const Uid = localStorage.getItem("Uid") || "10";
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/member/post/${Uid}`
-        );
-        console.log("Original data:", response.data);
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/member/post/${Uid}`
+      );
+      console.log("Original data:", response.data);
 
-        // merge new object => if postid 存在
-        const mergedPosts = response.data.reduce((accumulator, current) => {
-          if (!accumulator[current.postid]) {
-            accumulator[current.postid] = { ...current, img: [current.img] };
-          } else {
-            accumulator[current.postid].img.push(current.img);
-          }
-          return accumulator;
-        }, {});
+      // merge new object => if postid 存在
+      const mergedPosts = response.data.reduce((accumulator, current) => {
+        if (!accumulator[current.postid]) {
+          accumulator[current.postid] = { ...current, img: [current.img] };
+        } else {
+          accumulator[current.postid].img.push(current.img);
+        }
+        return accumulator;
+      }, {});
 
-        // object to array，然後更新posts
-        const mergedPostsArray = Object.values(mergedPosts);
-        console.log("Merged posts:", mergedPostsArray);
-        setPost(mergedPostsArray);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    };
-
+      // object to array，然後更新posts
+      const mergedPostsArray = Object.values(mergedPosts);
+      console.log("Merged posts:", mergedPostsArray);
+      setPost(mergedPostsArray);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
+  useEffect(() => {
     fetchPosts();
-  }, []); // 空依赖数组意味着这个effect只会在组件挂载时运行一次
+  }, []);
   const [posts, setPost] = React.useState([]);
   const [isRotated, setIsRotated] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -59,37 +62,103 @@ function MyPosts({ userId }) {
     setIsDrawerOpen(true);
     setIsRotated((prevIsRotated) => !prevIsRotated);
   };
-  const toggleDrawer = (open) => (e) => {
-    if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
-      return;
-    }
-    setIsDrawerOpen(open);
+  const toggleDrawer = (open) => (e) => setIsDrawerOpen(open);
+  const { register, handleSubmit } = useForm();
+  const VisuallyHiddenInputstyle = {
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
   };
 
+  const onSubmit = async (data) => {
+    const Uid = "10";
+    const formData = new FormData();
+    if (data.picture.length > 0) {
+      formData.append("picture", data.picture[0]);
+    }
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("location", data.location);
+    formData.append("Uid", Uid);
+
+    try {
+      const response = await fetch("http://localhost:8000/picture", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      await fetchPosts();
+      const res = await response.json();
+      alert(JSON.stringify(res));
+    } catch (error) {
+      console.error("An error occurred:", error);
+      alert("An error occurred: " + error.message);
+    }
+  };
   const drawerContent = (
     <React.Fragment>
-      <div style={{ textAlign: "center" }}>
-        <h3>上傳照片</h3>
+      <div className="drawertitle">
+        <h2 style={{ fontWeight: "bold" }}>新增貼文</h2>
       </div>
-      <div className="modal-body">
-        <h4>Upload image:</h4>
-        <form action="">
-          <input className="form-control" type="file" id="uploadImg" multiple />
-        </form>
-      </div>
-      <div className="modal-header border-top">
-        <h3>貼文說明</h3>
-      </div>
-      <div className="modal-body">
-        <form>
-          <textarea className="form-control" id="textBox" rows="5"></textarea>
-        </form>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-outline-success">
-          確認上傳貼文
-        </button>
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="upload-body">
+          <div style={{ marginBottom: "25px" }}>
+            <h4 style={{ marginBottom: "15px" }}>貼文標題</h4>
+            <input
+              {...register("title")}
+              type="text"
+              placeholder="Enter title"
+            />
+            <h4 style={{ marginBottom: "15px" }}>貼文說明</h4>
+            <input
+              {...register("description")}
+              type="text"
+              placeholder="Enter description"
+            />
+
+            <h4>地點</h4>
+            <select {...register("location")}>
+              <option value="">Select a location</option>
+              <option value="台北">台北</option>
+              <option value="台中">台中</option>
+              <option value="高雄">高雄</option>
+              <option value="新竹">新竹</option>
+              <option value="花蓮">花蓮</option>
+              <option value="台東">台東</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            type="submit"
+            fullWidth
+            style={{ backgroundColor: " #3c93d6" }}
+          >
+            <span style={{ fontSize: "20px" }}>上傳照片</span>
+            <input
+              {...register("picture")}
+              type="file"
+              name="picture"
+              style={{ display: "none" }}
+            />
+          </Button>
+        </div>
+      </form>
     </React.Fragment>
   );
   return (
@@ -141,7 +210,7 @@ function MyPosts({ userId }) {
             "& .MuiDrawer-paper": {
               borderRadius: "16px 16px 0 0",
               maxHeight: "100%",
-              width: 1000,
+              width: 800,
               my: "auto",
               mx: "auto",
               position: "fixed",
