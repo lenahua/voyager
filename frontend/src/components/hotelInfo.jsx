@@ -23,13 +23,14 @@ function HotelInfo(){
     const [roomPics, setRoomPic] = useState([]);
     const [review, setReview] = useState([]);
     const [viewPic, setViewPic] = useState([]);
+    const [rate, setRate] = useState([])
     const location = useLocation();
     useEffect(()=>{
         if(!id){
             return;
         }
     localStorage.setItem("previouspath", window.location.pathname)   
-    console.log("path"+location.pathname)
+    // console.log("path"+location.pathname)
         axios.get(`http://localhost:8000/hotelInfo/${id}`)
             .then(response=>{
                 console.log(response.data)
@@ -39,7 +40,8 @@ function HotelInfo(){
                 setRoomPic(response.data.roomPic)
                 setReview(response.data.reviews)
                 setViewPic(response.data.viewpics)
-                // console.log(response.data.viewpics)
+                setRate(response.data.avgRates)
+                console.log(response.data.avgRates)
             })
             .catch(error=>{
                 console.error('error fetching data: ', error)
@@ -82,7 +84,7 @@ function HotelInfo(){
 
     return(
         <>
-            <Hotel place={place} photos={photos} />
+            <Hotel place={place} photos={photos} rate={rate}/>
 
             <Room room={room} onClick={handleModalClick} 
                             handleSelect={handleSelect}/>
@@ -91,8 +93,8 @@ function HotelInfo(){
                                             selectRoomPic={selectRoomPic} 
                                             selectRoomData={selectRoomData}
                                             selectRoom={selectRoom}/> : ""}
-            <Service viewPic={viewPic}/>
-            <Rate/>
+            <Service place={place} viewPic={viewPic}/>
+            <Rate rate={rate}/>
             <Review review={review}/>
             <Rule/>
         </>

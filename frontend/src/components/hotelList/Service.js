@@ -17,8 +17,8 @@ import  { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 import "../../css/service.css";
 
-const Service = ({viewPic}) => {
-    console.log(viewPic)
+const Service = ({place,viewPic}) => {
+    // console.log(place)
     const service = [
         {
             icon: <FaWifi/>,
@@ -58,29 +58,6 @@ const Service = ({viewPic}) => {
         }
     ]
 
-    const photo = [
-        {
-            title: "台北101",
-            src: "https://images.pexels.com/photos/1717937/pexels-photo-1717937.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        },
-        {
-            title: "高雄",
-            src: "https://images.pexels.com/photos/5182194/pexels-photo-5182194.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        },
-        {
-            title: "台南",
-            src: "https://images.pexels.com/photos/12134077/pexels-photo-12134077.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        },
-        {
-            title: "南投",
-            src: "https://images.pexels.com/photos/6865354/pexels-photo-6865354.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        },
-        {
-            title: "彰化",
-            src: "https://images.pexels.com/photos/13326244/pexels-photo-13326244.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        }
-    ]
-
   return (
     <div id='faci'>
         
@@ -101,7 +78,7 @@ const Service = ({viewPic}) => {
             </div>
             <div className='nearbyWrapper'>
                 <Slide>
-                    <h2>周邊景點</h2>
+                    <h2>{place.city}特色景點</h2>
                 </Slide>
                 
                 <Swiper

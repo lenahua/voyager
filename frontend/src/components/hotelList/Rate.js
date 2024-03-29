@@ -8,21 +8,8 @@ import '../../css/rate.css'
 
 
 
-const Rate = () => {
-    // const guest = "";
-    // guest = guests.map((data)=>(
-    //     <GuestCard name={data.name} img={data.img}
-    //             stars={data.stars} disc={data.disc}
-    //             date={data.date} />
-    // ))
-
-    // function GuestCard  (props) {
-    //     return(
-    //         <div className='guestContainer'>
-
-    //         </div>
-    //     )
-    // }
+const Rate = ({rate}) => {
+    
 
     return (
         
@@ -34,27 +21,27 @@ const Rate = () => {
                 </Slide>
                 <div className='rateBlock'>
                     <h3>整體評分</h3>
-                    <p>4.3</p>
+                    <p>{rate.avgAll}</p>
                     <FaStar className='icon'/>
                 </div>
                 <div className='rateBlock'>
                     <h3>整體清潔度</h3>
-                    <p>4.6</p>
+                    <p>{rate.avgClean}</p>
                     <FaBroom className='icon'/>     
                 </div>
                 <div className='rateBlock'>
                     <h3>飯店服務</h3>
-                    <p>4.8</p>
+                    <p>{rate.avgService}</p>
                     <MdRoomService className='icon'/>
                 </div>
                 <div className='rateBlock'>
                     <h3>設施與設備</h3>
-                    <p>4.5</p>
+                    <p>{rate.avgFacility}</p>
                     <FaTools className='icon'/>
                 </div>
                 <div className='rateBlock'>
                     <h3>地理位置</h3>
-                    <p>4.6</p>
+                    <p>{rate.avgPosition}</p>
                     <FaSearchLocation className='icon'/>
                 </div>
             </div>

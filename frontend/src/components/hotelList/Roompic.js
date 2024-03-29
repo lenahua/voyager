@@ -9,11 +9,11 @@ import '../../css/roompic.css'
 const Roompic = ({id, isOpen, onClose, selectRoomPic, selectRoomData, selectRoom}) => {
     const [sliderData, setSliderData] = useState(selectRoomPic[0])
     const biggerHandler = (index)=>{
-        console.log(index);
+        // console.log(index);
         const slider = selectRoomPic[index]
         setSliderData(slider)
     }
-    console.log("This is:"+selectRoomData)
+    // console.log("This is:"+selectRoomData)
     
   return (
             // <div>

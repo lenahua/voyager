@@ -15,7 +15,7 @@ const containerStyle = {
   height: '250px'
 };
 
-const Hotel = ({place, photos}) => {
+const Hotel = ({place, photos, rate}) => {
   // map init
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -82,7 +82,7 @@ const Hotel = ({place, photos}) => {
             ))
             }
           </div>
-          <div className='rating'>4.3</div>
+          <div className='rating'>{rate.avgAll}</div>
           <h1 className='hotelTitle'>{place.name}</h1>
           <div className='hotelAddress'>
             <FaLocationArrow/>

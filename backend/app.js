@@ -853,12 +853,53 @@ app.get("/hotelInfo/:id", function (req, res) {
         function (err, viewPicsRows) {
           if (err) reject("Error fetching view picture");
           let newViewPics = changeToBase64(viewPicsRows);
-          // console.log(newViewPics);
+          // console.log("pic"+newViewPics);
           resolve(newViewPics);
         }
       );
     });
   };
+
+  const getRate = ()=>{
+    return new Promise((resolve, reject)=>{
+      connection.query(
+        "SELECT rateClean, ratePosition, rateService, rateFacility FROM `orderinfo` WHERE hotelId =?",
+        [hotelId],
+        function(err, rateRows){
+          if(err) reject("error fetching rate");
+          let totalClean = 0;
+          let totalPosition = 0;
+          let totalService = 0;
+          let totalFacility = 0;
+          
+          rateRows.forEach(row=>{
+            totalClean += row.rateClean;
+            totalPosition += row.ratePosition;
+            totalService += row.rateService;
+            totalFacility += row.rateFacility;
+          })
+          // console.log("clean"+ totalClean)
+
+          let avgClean = totalClean / rateRows.length;
+          let avgPosition = totalPosition / rateRows.length;
+          let avgService = totalService / rateRows.length;
+          let avgFacility = totalFacility / rateRows.length;
+          let avgAll = (avgClean + avgPosition + avgService + avgFacility) / 4;
+          // console.log("avgAll"+ avgAll)
+          const avgRates = {
+            avgClean,
+            avgPosition,
+            avgService,
+            avgFacility,
+            avgAll
+          }
+          
+          resolve(avgRates);
+          // console.log("avg"+avgRates)
+        }
+      )
+    })
+  }
 
   // 使用 Promise執行所有資料庫查詢
   Promise.all([
@@ -868,6 +909,7 @@ app.get("/hotelInfo/:id", function (req, res) {
     getHotelRoomTypes(),
     getUserReviews(),
     getViewPage(),
+    getRate()
   ])
     .then(
       ([
@@ -877,6 +919,7 @@ app.get("/hotelInfo/:id", function (req, res) {
         roomPicRows,
         reviewRows,
         newViewPics,
+        avgRates
       ]) => {
         const responseData = {
           hotel: hotelData,
@@ -885,6 +928,7 @@ app.get("/hotelInfo/:id", function (req, res) {
           roomPic: roomPicRows,
           reviews: reviewRows,
           viewpics: newViewPics,
+          avgRates: avgRates
         };
         // console.log(viewPicsRows)
         res.send(responseData);
