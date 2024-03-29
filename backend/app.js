@@ -964,6 +964,7 @@ app.get("/login", verifyUser, (req, res) => {
 app.post("/login", (req, res) => {
   const account = req.body.account;
   const password = req.body.password;
+  console.log("account"+account)
   connection.query(
     "select * from userinfo where account = ? and password = ?",
     [account, password],

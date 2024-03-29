@@ -57,6 +57,9 @@ const Service = ({place,viewPic}) => {
             title: "房卡進出"
         }
     ]
+    if(!place){
+        return
+    }
 
   return (
     <div id='faci'>
