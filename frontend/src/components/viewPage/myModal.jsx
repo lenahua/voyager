@@ -104,17 +104,7 @@ class myModal extends React.Component {
                         
                         <div class="postHead d-flex align-items-center justify-content-between border-bottom border-secondary py-2">
                             <h3 class="mb-0">{(this.props.info.length)?this.props.info[0].title:""}</h3>
-                            <button id="viewSavingIcon"className='border-0' onClick={this.clickSaving}>
-                                {
-                                (this.props.savingState)?(
-                                    <svg class="bi bi-bookmark-fill" width="28" height="28" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" d="M3 3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12l-5-3-5 3V3z"/>
-                                    </svg>
-                                ):(<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                    </svg>
-                                )}                                   
-                            </button>
+
                         </div>
 
                         <div class="postBody h-100 px-2">
@@ -203,9 +193,7 @@ class myModal extends React.Component {
                         
                         <div class="postFoot">
                             <div class="postInfo py-1 border-top border-1 border-secondary">
-                                <span class="postTotalLike">{this.props.likeCounter}個讚</span>
-                                <span class="postTotalComment ms-2">{(this.props.commentCounter.length)?this.props.commentCounter[0].comment_counter:""}則回覆</span>
-                                <button id="viewLikeIcon" class="float-end iconBtn" onClick={this.clickLike}>
+                                <button id="viewLikeIcon" class="iconBtn" onClick={this.clickLike}>
                                     {
                                     (this.props.likeState)?(
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class=" bi bi-suit-heart-fill" viewBox="0 0 16 16">
@@ -216,6 +204,19 @@ class myModal extends React.Component {
                                         </svg>
                                     )}
                                 </button>
+                                <span class="postTotalLike ms-2">{this.props.likeCounter}個讚</span>
+                                <span class="postTotalComment ms-2">{(this.props.commentCounter.length)?this.props.commentCounter[0].comment_counter:""}則回覆</span>  
+                                <button id="viewSavingIcon"className='border-0 float-end' onClick={this.clickSaving}>
+                                {
+                                (this.props.savingState)?(
+                                    <svg class="bi bi-bookmark-fill" width="28" height="28" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" d="M3 3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v12l-5-3-5 3V3z"/>
+                                    </svg>
+                                ):(<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    </svg>
+                                )}                                   
+                            </button>    
                             </div>
                             <div class="writeCommentBox py-2 border-top border-1 border-secondary d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-chat d-block flex-shrink-0" viewBox="0 0 16 16">

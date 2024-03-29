@@ -20,7 +20,6 @@ class FilterBar extends React.Component{
         {area:'東部地區',
          location:['宜蘭縣','花蓮縣','台東縣']}
     ]
-
     //取得各地區內的縣市名稱
     getlocationName = (locationAry) => {
 
@@ -91,8 +90,14 @@ class Content extends React.Component{
                     </div>    
 
                     <div className="sortBox d-flex justify-content-between">
-                        <button className="badge border-0 text-dark" style={{ fontSize: '20px', padding: '10px 16px' }}>最新</button>
-                        <button className="badge border-0 text-dark" style={{ fontSize: '20px', padding: '10px 16px' }}>熱門</button>
+                        <button className="badge border-0 text-dark" 
+                                style={{ fontSize: '20px', padding: '10px 16px' }}
+                                onClick={()=>{this.changeSort('desc');}}
+                        >最新</button>
+                        <button className="badge border-0 text-dark" 
+                                style={{ fontSize: '20px', padding: '10px 16px' }}
+                                onClick={()=>{this.changeSort('popular');}}        
+                        >熱門</button>
                     </div>
                 </div>      
                 {this.props.dataAry.map(post=>
@@ -115,6 +120,9 @@ class Content extends React.Component{
     sarchClick = (sarchText)=>{
         this.props.handleSarchText(sarchText);
     }
+    changeSort = (sortString) =>{
+        this.props.handleListSort(sortString);
+    }
 
 }
 
@@ -134,7 +142,8 @@ class Container extends React.Component{
         loginUid:0,
         modalIsOpen:false,
         sarchText:'',
-        location:'所有地區'
+        location:'所有地區',
+        listSort:'desc'
          
     }
     render() {
@@ -163,16 +172,12 @@ class Container extends React.Component{
 
                 <Content dataAry={this.state.dataAry} handleModal={this.handleModal}
                          handleSarchText={this.handleSarchText} 
+                         handleListSort = {this.handleListSort}
                 />
             </div>
         );
     }
-    handleModalColse = ()=>{
-        let newState = {...this.state};
-        newState.modalIsOpen = false;
-        console.log("modal close!");
-        this.setState(newState);
-    }
+    
     componentDidMount = async() =>{
         let result = await axios.get("http://localhost:8000/viewPage/imgList");
         let newState = {...this.state};
@@ -216,6 +221,12 @@ class Container extends React.Component{
         
         this.setState(newState);
     }
+    handleModalColse = ()=>{
+        let newState = {...this.state};
+        newState.modalIsOpen = false;
+        console.log("modal close!");
+        this.setState(newState);
+    }
     handleLikeState = (state)=>{  
         let newState = {...this.state};
         newState.likeState = state ;     
@@ -240,11 +251,20 @@ class Container extends React.Component{
         let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&tag=${sarchText}`);
         let newState = {...this.state};
         newState.dataAry = result.data;
-        newState.sarchText = sarchText;   
-        
+        newState.sarchText = sarchText;         
         this.setState(newState);
-        
     }
+    handleListSort = (sortString)=>{    
+        let newState = {...this.state};     
+        if(sortString==='popular'){
+            alert(sortString);
+            newState.dataAry.sort((a,b)=>{
+                return b.likeCounter = a.likeCounter;
+            })
+        }
+        this.setState(newState);
+    }
+
 }
 
 //整頁viewPage
