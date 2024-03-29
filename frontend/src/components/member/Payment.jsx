@@ -220,21 +220,29 @@ function PaymentInfo() {
             className="inputButton-outline-delete"
             style={{ fontWeight: "bold" }}
           >
-            最多新增三張信用卡，點擊刪除
+            最多新增三張信用卡，點擊圖標X刪除
           </h6>
         )}
       </div>
 
       <div className="d-flex cardbox" style={{ alignItems: "center" }}>
         {creditCardInfo.map((card, index) => (
-          <div key={index} style={{ margin: "10px" }}>
+          <div key={index} className="card-image-container">
             {getCardImage(card.cardType) && (
-              <img
-                src={getCardImage(card.cardType)}
-                alt={card.cardType}
-                style={{ cursor: "pointer" }}
-                onClick={() => deletecard(card.creditId)}
-              />
+              <>
+                <img
+                  src={getCardImage(card.cardType)}
+                  alt={card.cardType}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => deletecard(card.creditId)}
+                />
+                {creditCardInfo.length >= 3 && (
+                  <i
+                    className="bi bi-x-circle-fill close-icon"
+                    onClick={() => deletecard(card.creditId)}
+                  ></i>
+                )}
+              </>
             )}
           </div>
         ))}

@@ -86,11 +86,12 @@
 
 .rateForm {
   padding: 10px;
+  height: 100px;
 }
 
 .startIcon {
-  margin-right: 40px;
-  font-size: 30px;
+  margin-right: 25px;
+  font-size: 20px;
 }
 
 .rateAnwser {
@@ -98,7 +99,12 @@
   align-items: flex-start;
   margin-top: 10px;
 }
-
+.rate-title {
+  font-weight: bold;
+  border-left: 5px solid black;
+  padding-left: 10px;
+  color: black;
+}
 .orderstatus {
   display: flex;
   flex-direction: column;
@@ -128,12 +134,30 @@
   padding: 5px 15px;
   margin-top: 10px;
 }
-.follow-btn {
-  padding: 8px 16px; /* 按鈕內邊距 */
-  background: var(--primary-color); /* 按鈕背景顏色 */
-  color: white; /* 文字顏色 */
-  border: none; /* 去除邊框 */
-  border-radius: 4px; /* 圓角邊框 */
 
-  text-align: center; /* 文字居中 */
+.form-button {
+  background: var(--primary-color);
+  color: white;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 15px;
+  margin-top: 10px;
+}
+
+.form-button-cancel {
+  background: white;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 15px;
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 5px;
 }

@@ -44,8 +44,8 @@
   padding: 15px;
 }
 .inputButton-outline-delete {
-  background: white;
-  color: var(--secondary-color);
+  background: var(--secondary-color);
+  color: white;
   border: solid 1px var(--secondary-color);
   border-radius: 4px;
   cursor: pointer;

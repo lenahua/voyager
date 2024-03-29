@@ -5,17 +5,6 @@ import "@fontsource/inter";
 import { Modal, TextField, Rating, Popover } from "@mui/material";
 import { Link } from "react-router-dom";
 
-/* {
-  "orderId": 5,
-  "Uid": 10,
-  "name": "台中赫絲珀HSR高鐵行旅 Hesper Hotel",
-  "startDate": "2024-05-10T16:00:00.000Z",
-  "endDate": "2024-05-27T16:00:00.000Z",
-  "price": 1020,
-  "hotelId": 2,
-  "photo_urls": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/250509585.jpg?k=045b1c581ca6faa9c656dae02f404decd7fec21845fcdbe7e8cd21f3e8d74221&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/179241673.jpg?k=bbd696940a0974e0c5bb9a65011a400b018423ee333c1f6081a44130dd73de34&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/182105364.jpg?k=9b0ba142d9a5a8fd14dcc1fb3bf0704c99c0cabfc1a4b1356f01bd1903a039c3&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/256677827.jpg?k=3eb3c25bee1f776eda991c404d309d5b739c1fe59ca86a07a00406c40b420ac3&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/182105495.jpg?k=0d69f4a7973e1d9db55066b57077a7e887f2a4b1ab9652a78d7ee91ce26f6d47&o=&hp=1, https://cf.bstatic.com/xdata/images/hotel/max1024x768/182105411.jpg?k=303a5d976bbd7821f659613d4bce0fbb5d0da00c09c5479dd61ebb33677ad54d&o=&hp=1"
-}, */
-
 function OrdersList({ filterOrders, filterOption, hotelId }) {
   console.log(filterOrders);
   return (
@@ -291,6 +280,7 @@ function Order({
               )}
               <Popover
                 id={popId}
+                hotelName={hotelName}
                 open={open && filterOption !== "all"}
                 anchorEl={anchor}
                 onClose={handleClose}
@@ -328,44 +318,64 @@ function Order({
                       <button className="list-group-item list-group-item-action">
                         <span onClick={handleOpenForm}>評分訂單</span>
                       </button>
-                      <Modal open={openForm} onClose={handleCloseForm}>
+                      <Modal
+                        open={openForm}
+                        onClose={handleCloseForm}
+                        hotelName={hotelName}
+                      >
                         <div style={style}>
                           <form>
-                            <div style={{ padding: "30px 15px" }}>
+                            <div style={{ padding: "30px 15px 10px 15px" }}>
                               <div>
-                                <h4
+                                <h2
+                                  style={{
+                                    fontWeight: "bold",
+                                    borderLeft: "5px #3c93d6 solid",
+                                    paddingLeft: "10px",
+                                    color: "#3c93d6",
+                                  }}
+                                >
+                                  {hotelName}
+                                </h2>
+                                <div
                                   style={{
                                     marginTop: "30px",
                                     marginButtom: "30px",
                                   }}
                                 >
-                                  評分標題
-                                </h4>
+                                  <h4 className="rate-title">評分標題</h4>
+                                </div>
                                 <TextField
-                                  style={{ width: "100%", marginTop: "5px" }}
+                                  style={{ width: "100%", marginTop: "10px" }}
                                   id="outlined-basic"
                                   variant="standard"
-                                  label="評分標題"
                                   value={title}
+                                  placeholder="評分標題"
                                   onChange={handleTitleChange}
+                                  InputProps={{
+                                    style: { fontSize: "18px" },
+                                  }}
                                 />
-                                <h4
+                                <div
                                   style={{
                                     marginTop: "30px",
                                     marginButtom: "30px",
                                   }}
                                 >
-                                  評分內文
-                                </h4>
+                                  <h4 className="rate-title">評分內文</h4>
+                                </div>
                                 <TextField
-                                  style={{ width: "100%", marginTop: "5px" }}
+                                  style={{ width: "100%", marginTop: "10px" }}
                                   id="standard-multiline-static"
                                   multiline
-                                  rows={4}
+                                  rows={5}
+                                  placeholder="評分內文"
                                   variant="standard"
-                                  label="評分內容"
                                   value={content}
                                   onChange={handleContentChange}
+                                  InputProps={{
+                                    style: { fontSize: "18px" },
+                                  }}
                                 />{" "}
                                 <div
                                   style={{
@@ -375,7 +385,9 @@ function Order({
                                 >
                                   <div className="row">
                                     <div className="rateForm col-6">
-                                      <h4>整潔度</h4>
+                                      <h4 style={{ fontWeight: "bold" }}>
+                                        整潔度
+                                      </h4>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="clean"
@@ -398,7 +410,9 @@ function Order({
                                       </div>
                                     </div>
                                     <div className="rateForm col-6">
-                                      <h4>服務</h4>
+                                      <h4 style={{ fontWeight: "bold" }}>
+                                        服務
+                                      </h4>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="service"
@@ -423,7 +437,9 @@ function Order({
                                       </div>
                                     </div>
                                     <div className="rateForm col-6">
-                                      <h4>設備</h4>
+                                      <h4 style={{ fontWeight: "bold" }}>
+                                        設備
+                                      </h4>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="facility"
@@ -451,7 +467,9 @@ function Order({
                                       </div>
                                     </div>
                                     <div className="rateForm col-6">
-                                      <h4>位置</h4>
+                                      <h4 style={{ fontWeight: "bold" }}>
+                                        位置
+                                      </h4>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="position"
@@ -488,6 +506,7 @@ function Order({
                               type="button"
                               onClick={handleCloseForm}
                               className="form-button form-button-cancel"
+                              style={{ fontSize: "20px" }}
                             >
                               取消
                             </button>
@@ -495,7 +514,7 @@ function Order({
                             <button
                               className="form-button"
                               type="button"
-                              style={{ float: "right" }}
+                              style={{ float: "right", fontSize: "20px" }}
                               onClick={submitRatings}
                             >
                               確認
