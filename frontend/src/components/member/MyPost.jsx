@@ -64,17 +64,6 @@ function MyPosts({ userId }) {
   };
   const toggleDrawer = (open) => (e) => setIsDrawerOpen(open);
   const { register, handleSubmit } = useForm();
-  const VisuallyHiddenInputstyle = {
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  };
 
   const onSubmit = async (data) => {
     const Uid = "10";
@@ -107,57 +96,40 @@ function MyPosts({ userId }) {
   };
   const drawerContent = (
     <React.Fragment>
-      <div className="drawertitle">
-        <h2 style={{ fontWeight: "bold" }}>新增貼文</h2>
+      <div style={{ textAlign: "center" }}>
+        <h3 style={{ fontWeight: "bold", padding: "15px", color: "#3c93d6" }}>
+          上傳照片
+        </h3>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="upload-body">
-          <div style={{ marginBottom: "25px" }}>
-            <h4 style={{ marginBottom: "15px" }}>貼文標題</h4>
+        <div className="row">
+          <div className="col-6">
+            <input {...register("picture")} type="file" name="picture" />
+          </div>
+          <div className="col-6">
+            <h3>貼文標題</h3>
             <input
               {...register("title")}
               type="text"
               placeholder="Enter title"
             />
-            <h4 style={{ marginBottom: "15px" }}>貼文說明</h4>
+            <h3>貼文說明</h3>
             <input
               {...register("description")}
               type="text"
               placeholder="Enter description"
             />
 
-            <h4>地點</h4>
+            <h3>位置</h3>
             <select {...register("location")}>
               <option value="">Select a location</option>
-              <option value="台北">台北</option>
-              <option value="台中">台中</option>
-              <option value="高雄">高雄</option>
-              <option value="新竹">新竹</option>
-              <option value="花蓮">花蓮</option>
-              <option value="台東">台東</option>
+              <option value="Taipei">Taipei</option>
+              <option value="Taichung">Taichung</option>
+              <option value="Kaohsiung">Kaohsiung</option>
             </select>
           </div>
         </div>
-
-        <div>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            type="submit"
-            fullWidth
-            style={{ backgroundColor: " #3c93d6" }}
-          >
-            <span style={{ fontSize: "20px" }}>上傳照片</span>
-            <input
-              {...register("picture")}
-              type="file"
-              name="picture"
-              style={{ display: "none" }}
-            />
-          </Button>
-        </div>
+        <button type="submit">Submit</button>
       </form>
     </React.Fragment>
   );
