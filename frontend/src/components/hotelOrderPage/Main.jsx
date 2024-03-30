@@ -56,6 +56,12 @@ class HotelOrderPage extends Component {
                     
                     </div>
                     <div className="col-md-8 mt-5 offset-md-1 " style={{paddingLeft: "0px",paddingRight: "0px"}}>
+                        {
+                            !this.props.auth && 
+                            <div className="border border-3 border-secondary rounded-2 mb-3">
+                                <div className="m-3 fw-bold text-primary"><h5>登入即可自動套用個人資料預訂。</h5></div>
+                            </div>
+                        }
                         <div className="border border-3 border-secondary rounded-2">
                             <div className="m-4">
                             <h4>輸入個人資料</h4>
@@ -252,9 +258,9 @@ class HotelOrderPage extends Component {
         var newRoomState = {...this.state};
         newRoomState.roomType=roomResult.data;
         this.setState(newRoomState);
-        if(this.props.auth == false){
-            alert("請先登入會員");
-        }
+        // if(this.props.auth == false){
+        //     alert("請先登入會員");
+        // }
     }
     doClick = async () => {
         var dataToServer = {
