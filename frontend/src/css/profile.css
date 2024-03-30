@@ -6,9 +6,6 @@
 .outerBackground {
   background-color: #cacbd5;
   min-height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .cit {

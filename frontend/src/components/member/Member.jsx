@@ -128,14 +128,14 @@ function Member({ userId }) {
   return (
     <div>
       <div className="outerBackground">
+        <div>
+          <img className="cit" src={bg} alt="backgroundImage" />
+          {isLoggedInUser ? (
+            <button className="profile-button">更換背景圖片</button>
+          ) : null}
+        </div>
         <div className="innerBackground">
           <div>
-            <div>
-              <img className="cit" src={bg} alt="backgroundImage" />
-              {isLoggedInUser ? (
-                <button className="profile-button">更換背景圖片</button>
-              ) : null}
-            </div>
             <div className="card-body little-profile text-center">
               <div className="pro-img">
                 <img
