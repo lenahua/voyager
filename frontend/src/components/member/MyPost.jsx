@@ -9,7 +9,6 @@ import "../../css/viewPage.css";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Button from "@mui/material/Button";
 
 function MyPosts({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,17 +63,6 @@ function MyPosts({ userId }) {
   };
   const toggleDrawer = (open) => (e) => setIsDrawerOpen(open);
   const { register, handleSubmit } = useForm();
-  const VisuallyHiddenInputstyle = {
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  };
 
   const onSubmit = async (data) => {
     const Uid = "10";
@@ -105,58 +93,85 @@ function MyPosts({ userId }) {
       alert("An error occurred: " + error.message);
     }
   };
+
   const drawerContent = (
     <React.Fragment>
       <div className="drawertitle">
-        <h2 style={{ fontWeight: "bold" }}>新增貼文</h2>
+        <h3
+          style={{ fontWeight: "bold", color: "#3c93d6" }}
+          className="mb-2 mt-2"
+        >
+          上傳照片
+        </h3>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="upload-body">
-          <div style={{ marginBottom: "25px" }}>
-            <h4 style={{ marginBottom: "15px" }}>貼文標題</h4>
-            <input
-              {...register("title")}
-              type="text"
-              placeholder="Enter title"
-            />
-            <h4 style={{ marginBottom: "15px" }}>貼文說明</h4>
-            <input
-              {...register("description")}
-              type="text"
-              placeholder="Enter description"
-            />
+        <div className="pt-3 pb-3">
+          <div className="row">
+            <div className="col-6 " style={{ height: "100%" }}>
+              <div class="mb-4">
+                <label for="exampleFormControlInput1" class="form-label">
+                  <h4>貼文標題</h4>
+                </label>
+                <input
+                  {...register("title")}
+                  type="text"
+                  placeholder="景點標題"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                />
+              </div>
+              <div class="mb-2">
+                {" "}
+                <h4>景點位置</h4>
+                <select
+                  class="form-select form-select-md"
+                  aria-label=".form-select-lg example"
+                  {...register("location")}
+                >
+                  <option selected>台北</option>
+                  <option value="台北市">台北</option>
+                  <option value="新北市">新北</option>
+                  <option value="新竹市">新竹</option>
+                  <option value="台中市">台中</option>
+                  <option value="台南市">台南</option>
+                  <option value="高雄市">高雄</option>
+                  <option value="花蓮市">花蓮</option>
+                  <option value="台東市">台東</option>
+                </select>
+              </div>
+            </div>
 
-            <h4>地點</h4>
-            <select {...register("location")}>
-              <option value="">Select a location</option>
-              <option value="台北">台北</option>
-              <option value="台中">台中</option>
-              <option value="高雄">高雄</option>
-              <option value="新竹">新竹</option>
-              <option value="花蓮">花蓮</option>
-              <option value="台東">台東</option>
-            </select>
+            <div className="col-6 d-flex flex-column justify-content-end mb-3">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">
+                  <h4>貼文說明</h4>
+                </label>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="5"
+                  {...register("description")}
+                  type="text"
+                  placeholder="Enter description"
+                ></textarea>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            type="submit"
-            fullWidth
-            style={{ backgroundColor: " #3c93d6" }}
-          >
-            <span style={{ fontSize: "20px" }}>上傳照片</span>
-            <input
-              {...register("picture")}
-              type="file"
-              name="picture"
-              style={{ display: "none" }}
-            />
-          </Button>
+          <div className="row">
+            {" "}
+            <div className=" col-9">
+              <input
+                {...register("picture")}
+                type="file"
+                name="picture"
+                class="form-control"
+                style={{ height: "100%" }}
+              />
+            </div>
+            <button type="submit" className="upload-btn col-3 ">
+              確認
+            </button>
+          </div>
         </div>
       </form>
     </React.Fragment>
@@ -214,7 +229,7 @@ function MyPosts({ userId }) {
               my: "auto",
               mx: "auto",
               position: "fixed",
-              top: "50%",
+              top: "55%",
               transform: "translate(-50%, -50%)",
               bgcolor: "background.paper",
               boxShadow: 24,

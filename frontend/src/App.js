@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 import ViewPage from "./components/viewPage/viewPage";
 import Home from "./components/homePage/home";
@@ -11,6 +11,7 @@ import Welcome from "./components/welcomePage/welcome";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Nav from "./components/nav";
+import Footer from './components/homePage/Footer'
 
 import axios from "axios";
 
@@ -30,6 +31,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    
     axios
       .get("http://localhost:8000/login")
       .then((res) => {
@@ -84,6 +86,7 @@ class App extends Component {
               render={(props) => <Member {...props} userId={this.state.uid} />}
             />
           </Switch>
+        <Footer/>
         </div>
       </BrowserRouter>
     );

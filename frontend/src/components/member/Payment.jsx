@@ -10,6 +10,11 @@ function PaymentInfo() {
   const [creditCardInfo, setCreditCardInfo] = useState([]);
   console.log(creditCardInfo);
   const Uid = localStorage.getItem("Uid") || "10";
+  const [cardInfo, setCardInfo] = useState({
+    cardNumber: "",
+    valid: "", // 有效期限
+    cvv: "",
+  });
   const fetchCreditCardInfo = async () => {
     try {
       const response = await axios.get(
@@ -27,24 +32,17 @@ function PaymentInfo() {
     }
   }, [Uid]); // 依賴陣列中包括userId，當userId變化時會重新執行
 
-  const [cardInfo, setCardInfo] = useState({
-    cardNumber: "",
-    valid: "", // 有效期限
-    cvv: "",
-  });
-  const deletecard = async (creditId) => {
-    try {
-      await axios.delete(
-        `http://localhost:8000/member/info/card/${Uid}/${creditId}`
-      );
-      alert(`已刪除信用卡！`);
-      fetchCreditCardInfo();
-    } catch (error) {
-      console.error("Error deleting card:", error);
-      alert("刪除失敗");
-    }
-  };
+  //modal state
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
+  //country state for credit card
+  const [selectedCountry, setSelectedCountry] = useState("台灣");
+  const handleChangecountry = (e) => setSelectedCountry(e.target.value);
+
+  //card state for credit card info
+  const [cardType, setCardType] = useState("");
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCardInfo((prevState) => ({
@@ -62,10 +60,41 @@ function PaymentInfo() {
       }
     }
   };
+  const cardImages = {
+    Visa: VisaImage,
+    MasterCard: MasterCardImage,
+    "American Express": AmericanExpressImage,
+  };
+  const detectCardType = (number) => {
+    const regexMap = [
+      { regex: /^4[0-9]{12}(?:[0-9]{3})?$/, type: "Visa" },
+      { regex: /^5[1-5][0-9]{14}$/, type: "MasterCard" },
+      { regex: /^3[47][0-9]{13}$/, type: "American Express" },
+      { regex: /^(?:2131|1800|35\d{3})\d{11}$/, type: "JCB" },
+    ];
 
+    for (let i = 0; i < regexMap.length; i++) {
+      if (number.match(regexMap[i].regex)) {
+        return regexMap[i].type;
+      }
+    }
+  };
+  const getCardImage = (cardType) => {
+    switch (cardType) {
+      case "Visa":
+        return VisaImage;
+      case "MasterCard":
+        return MasterCardImage;
+      case "American Express":
+        return AmericanExpressImage;
+      default:
+        return null;
+    }
+  };
+
+  //submit credit card info
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const completeCardInfo = {
       ...cardInfo,
       cardType,
@@ -100,40 +129,21 @@ function PaymentInfo() {
     }
   };
 
-  const [cardType, setCardType] = useState("");
-  const cardImages = {
-    Visa: VisaImage,
-    MasterCard: MasterCardImage,
-    "American Express": AmericanExpressImage,
-  };
-  const detectCardType = (number) => {
-    const regexMap = [
-      { regex: /^4[0-9]{12}(?:[0-9]{3})?$/, type: "Visa" },
-      { regex: /^5[1-5][0-9]{14}$/, type: "MasterCard" },
-      { regex: /^3[47][0-9]{13}$/, type: "American Express" },
-      { regex: /^(?:2131|1800|35\d{3})\d{11}$/, type: "JCB" },
-    ];
-
-    for (let i = 0; i < regexMap.length; i++) {
-      if (number.match(regexMap[i].regex)) {
-        return regexMap[i].type;
-      }
+  //delete credit card info
+  const deletecard = async (creditId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/member/info/card/${Uid}/${creditId}`
+      );
+      alert(`已刪除信用卡！`);
+      fetchCreditCardInfo();
+    } catch (error) {
+      console.error("Error deleting card:", error);
+      alert("刪除失敗");
     }
   };
 
-  const getCardImage = (cardType) => {
-    switch (cardType) {
-      case "Visa":
-        return VisaImage;
-      case "MasterCard":
-        return MasterCardImage;
-      case "American Express":
-        return AmericanExpressImage;
-      default:
-        return null;
-    }
-  };
-
+  //modal style and country options
   const style = {
     position: "absolute",
     top: "50%",
@@ -145,11 +155,6 @@ function PaymentInfo() {
     borderRadius: "20px",
     padding: "30px 30px",
   };
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [selectedCountry, setSelectedCountry] = useState("台灣");
   const country = [
     {
       value: "美國",
@@ -197,9 +202,6 @@ function PaymentInfo() {
       label: "阿根廷",
     },
   ];
-  const handleChangecountry = (event) => {
-    setSelectedCountry(event.target.value);
-  };
 
   return (
     <div className="infoBox" style={{ marginBottom: "150px" }}>
@@ -218,21 +220,29 @@ function PaymentInfo() {
             className="inputButton-outline-delete"
             style={{ fontWeight: "bold" }}
           >
-            最多新增三張信用卡，點擊刪除
+            最多新增三張信用卡，點擊圖標X刪除
           </h6>
         )}
       </div>
 
       <div className="d-flex cardbox" style={{ alignItems: "center" }}>
         {creditCardInfo.map((card, index) => (
-          <div key={index} style={{ margin: "10px" }}>
+          <div key={index} className="card-image-container">
             {getCardImage(card.cardType) && (
-              <img
-                src={getCardImage(card.cardType)}
-                alt={card.cardType}
-                style={{ cursor: "pointer" }}
-                onClick={() => deletecard(card.creditId)}
-              />
+              <>
+                <img
+                  src={getCardImage(card.cardType)}
+                  alt={card.cardType}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => deletecard(card.creditId)}
+                />
+                {creditCardInfo.length >= 3 && (
+                  <i
+                    className="bi bi-x-circle-fill close-icon"
+                    onClick={() => deletecard(card.creditId)}
+                  ></i>
+                )}
+              </>
             )}
           </div>
         ))}

@@ -438,11 +438,10 @@ app.get("/viewPage/getModallily", function (req, res) {
     post.postcontent,
     post.likecounter, 
     userinfo.account
-FROM 
-    imgdata
-INNER JOIN post ON imgdata.postid = post.postid
-INNER JOIN userinfo ON post.uid = userinfo.uid
-WHERE 
+    FROM imgdata
+    INNER JOIN post ON imgdata.postid = post.postid
+    INNER JOIN userinfo ON post.uid = userinfo.uid
+    WHERE 
     post.postid = ?;
 `,
     [req.query.postid],
@@ -462,14 +461,10 @@ app.get(`/viewPage/getCommentlily`, function (req, res) {
     postcomment.commenttime, 
     postcomment.uid, 
     userinfo.account
-FROM 
-    postcomment
-INNER JOIN userinfo ON postcomment.uid = userinfo.uid
-WHERE 
-    postcomment.postid = ?
-ORDER BY 
-    postcomment.commenttime DESC;
-;`,
+    FROM postcomment
+    INNER JOIN userinfo ON postcomment.uid = userinfo.uid
+    WHERE postcomment.postid = ?
+    ORDER BY postcomment.commenttime DESC;`,
     [req.query.postid],
     function (err, result) {
       res.send(result);
@@ -948,24 +943,24 @@ app.get("/hotelInfo/:id", function (req, res) {
     });
   };
 
-  const getRate = ()=>{
-    return new Promise((resolve, reject)=>{
+  const getRate = () => {
+    return new Promise((resolve, reject) => {
       connection.query(
         "SELECT rateClean, ratePosition, rateService, rateFacility FROM `orderinfo` WHERE hotelId =?",
         [hotelId],
-        function(err, rateRows){
-          if(err) reject("error fetching rate");
+        function (err, rateRows) {
+          if (err) reject("error fetching rate");
           let totalClean = 0;
           let totalPosition = 0;
           let totalService = 0;
           let totalFacility = 0;
-          
-          rateRows.forEach(row=>{
+
+          rateRows.forEach((row) => {
             totalClean += row.rateClean;
             totalPosition += row.ratePosition;
             totalService += row.rateService;
             totalFacility += row.rateFacility;
-          })
+          });
           // console.log("clean"+ totalClean)
 
           let avgClean = totalClean / rateRows.length;
@@ -979,15 +974,15 @@ app.get("/hotelInfo/:id", function (req, res) {
             avgPosition,
             avgService,
             avgFacility,
-            avgAll
-          }
-          
+            avgAll,
+          };
+
           resolve(avgRates);
           // console.log("avg"+avgRates)
         }
-      )
-    })
-  }
+      );
+    });
+  };
 
   // 使用 Promise執行所有資料庫查詢
   Promise.all([
@@ -997,7 +992,7 @@ app.get("/hotelInfo/:id", function (req, res) {
     getHotelRoomTypes(),
     getUserReviews(),
     getViewPage(),
-    getRate()
+    getRate(),
   ])
     .then(
       ([
@@ -1007,7 +1002,7 @@ app.get("/hotelInfo/:id", function (req, res) {
         roomPicRows,
         reviewRows,
         newViewPics,
-        avgRates
+        avgRates,
       ]) => {
         const responseData = {
           hotel: hotelData,
@@ -1016,7 +1011,7 @@ app.get("/hotelInfo/:id", function (req, res) {
           roomPic: roomPicRows,
           reviews: reviewRows,
           viewpics: newViewPics,
-          avgRates: avgRates
+          avgRates: avgRates,
         };
         // console.log(viewPicsRows)
         res.send(responseData);
@@ -1052,7 +1047,7 @@ app.get("/login", verifyUser, (req, res) => {
 app.post("/login", (req, res) => {
   const account = req.body.account;
   const password = req.body.password;
-  console.log("account"+account)
+  console.log("account" + account);
   connection.query(
     "select * from userinfo where account = ? and password = ?",
     [account, password],
