@@ -3,6 +3,7 @@ import { CiUser, CiLock } from "react-icons/ci";
 import axios from 'axios';
 import "../css/login.css"
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import train from '../img/train.png'
 
 const Login = ({loginStatus}) => {
   // 取得輸入的使用者資料，判斷輸入的資料是否吻合資料庫的資料，吻合跳轉至首頁
@@ -39,10 +40,12 @@ const Login = ({loginStatus}) => {
     
   }
 
+
   
   
 
   return (
+    <>
     <div className='Logincontainer'>
       <div className='header'>
         <div className='text'>登入</div>
@@ -69,6 +72,8 @@ const Login = ({loginStatus}) => {
       </form>
       <div>{loginStatus}</div>
     </div>
+    <img src={train} alt='' className='trainLogo'/>
+    </>
   )
 }
 

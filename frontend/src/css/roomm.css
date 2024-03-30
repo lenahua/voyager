@@ -80,12 +80,14 @@
 .price{
     border: none;
     border-radius: 10px;
-    background-color: #4f57a8;
+    background-color: #5860bb;
     color: #fff;
     padding: 10px 20px;
     cursor: pointer;
     font-size: 16px;
-
+}
+.price:hover{
+    background-color: #474fa5;
 }
 .roomName{
     cursor: pointer;

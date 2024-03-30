@@ -57,7 +57,7 @@ const Room = ({room, onClick, handleSelect}) => {
                   <div className='roomCardRestroom'>
                     <div className='restRoom'>
                       <FaPaperclip/>
-                      <p >剩餘房間數</p>
+                      <p >選擇房間數量</p>
                     </div>
              
                     <select onChange={(ev)=>handleSelect(ev, roomdetail.price)}>
