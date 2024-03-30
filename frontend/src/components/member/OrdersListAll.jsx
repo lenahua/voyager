@@ -6,10 +6,27 @@ import { Modal, TextField, Rating, Popover } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function OrdersList({ filterOrders, filterOption, hotelId }) {
-  console.log(filterOrders);
+  console.log("ori filterorder", filterOrders);
+  let sortedOrders = [...filterOrders];
+
+  if (filterOption === "future") {
+    sortedOrders = sortedOrders
+      .filter((order) => {
+        let startDate = new Date(order.startDate);
+        let today = new Date();
+        return startDate > today;
+      })
+      .sort((a, b) => {
+        let distanceA = new Date(a.startDate) - new Date();
+        let distanceB = new Date(b.startDate) - new Date();
+        return distanceA - distanceB;
+      });
+  }
+  console.log("sorted filterorder", filterOrders);
+
   return (
     <div className="mt-3 mb-5 ">
-      {filterOrders.map((order) => (
+      {sortedOrders.map((order) => (
         <Order
           key={order.orderId}
           hotelName={order.name}
@@ -70,6 +87,26 @@ function Order({
     5: "十分滿意",
     0: "",
   };
+  const DaysLeft = (startDate) => {
+    const now = new Date();
+    const start = new Date(startDate);
+    const timeDiff = start - now;
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  };
+  let timeLeftString = "";
+  if (orderStatus === "future") {
+    const daysLeft = DaysLeft(startDate);
+    if (daysLeft < 30) {
+      timeLeftString = (
+        <div className="time-left-days">距離入住還有 {daysLeft} 天</div>
+      );
+    } else {
+      const monthsLeft = Math.ceil(daysLeft / 30);
+      timeLeftString = (
+        <div className="time-left-months">距離入住還有 {monthsLeft} 個月</div>
+      );
+    }
+  }
 
   const [hover1, setHover1] = React.useState(-1);
   const [hover2, setHover2] = React.useState(-1);
@@ -545,15 +582,11 @@ function Order({
             )}
           </div>
         )}
-        {/* {orderStatus === "future" && (
+        {orderStatus === "future" && (
           <div>
-            {dayLeft ? (
-              <div className="form-button-rated">已評分</div>
-            ) : (
-              <div className="form-button-not-rated">未評分</div>
-            )}
+            <div>{timeLeftString}</div>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

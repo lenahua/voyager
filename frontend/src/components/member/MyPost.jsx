@@ -101,7 +101,7 @@ function MyPosts({ userId }) {
           style={{ fontWeight: "bold", color: "#3c93d6" }}
           className="mb-2 mt-2"
         >
-          上傳照片
+          上傳貼文
         </h3>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
