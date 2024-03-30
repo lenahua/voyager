@@ -76,8 +76,8 @@ class App extends Component {
             <Route path="/hotelList" component={HotelList} />
             <Route path="/hotelInfo/:id" component={HotelInfo} />
             <Route
-              path="/hotelOrder"
-              render={(props) => <HotelOrder {...props} userId={this.state.uid} />}
+              path="/hotelOrder/:hotelId/:roomId"
+              render={(props) => <HotelOrder {...props} userId={this.state.uid}  auth={this.state.auth}/>}
             />
             <Route
               path="/member"
