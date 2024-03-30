@@ -54,6 +54,7 @@ function PaymentInfo() {
     if (name === "cardNumber") {
       if (value.replace(/\s+/g, "").length >= 15) {
         const detectedCardType = detectCardType(value);
+        console.log(detectedCardType);
         setCardType(detectedCardType);
       } else {
         setCardType(""); // 如果卡號長度不足，則重置卡片類型
