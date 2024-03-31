@@ -74,7 +74,6 @@ app.get("/viewPage/getModal", function (req, res) {
     [req.query.postid],
     function (err, result) {
       let newResult = changeToBase64(result);
-      console.log(result);
       res.send(newResult);
     }
   );
@@ -102,13 +101,29 @@ app.get("/viewPage/allPost", function (req, res) {
   });
 });
 
-//取得所有不同貼文的第一張照片
+//取得每篇貼文的第一張照片及like總數及回覆總數
 app.get("/viewPage/imgList", function (req, res) {
   connection.query(
-    `SELECT MIN(id), postid, img 
-        FROM imgdata 
-        GROUP BY postid 
-        ORDER BY postid DESC `,
+    `SELECT imgdata.postid , imgdata.img, postliketable.listTotalLike,postcomment.totalcomment
+    FROM (
+        SELECT MIN(id) AS imgid, postid, img
+        FROM imgdata
+        GROUP BY postid
+    ) AS imgdata
+    LEFT JOIN (
+        SELECT postid,COUNT(uid) AS listTotalLike
+        FROM postliketable
+        GROUP BY postid
+    ) AS postliketable 
+    ON imgdata.postid = postliketable.postid
+    LEFT JOIN (
+      SELECT post.postid,COUNT(*) AS totalcomment
+      FROM post,postcomment
+      WHERE post.postid = postcomment.postid
+      GROUP by postcomment.postid
+    ) AS postcomment
+    ON imgdata.postid = postcomment.postid
+    ORDER BY imgdata.postid DESC;`,
     [],
     function (err, result) {
       result = changeToBase64(result);
@@ -116,23 +131,6 @@ app.get("/viewPage/imgList", function (req, res) {
     }
   );
 });
-//取得指定縣市的所有不同貼文的第一張圖片及該貼文的相關資訊
-// app.get("/viewPage/locationFilter", function (req, res) {
-//   connection.query(
-//     `
-//         SELECT *,min(imgdata.id) as firstPicId
-//         FROM post,imgdata
-//         WHERE location = ? AND
-//         post.postid = imgdata.postid
-//         GROUP BY imgdata.postid
-//         ORDER BY imgdata.postid DESC`,
-//     [req.query.lname],
-//     function (err, result) {
-//       result = changeToBase64(result);
-//       res.send(result);
-//     }
-//   );
-// });
 
 app.get("/viewPage/locationFilter", function (req, res) {
   let tag = req.query.tag ? `%${req.query.tag}%` : "";
@@ -142,16 +140,24 @@ app.get("/viewPage/locationFilter", function (req, res) {
   console.log("lname:", lname);
 
   if (tag) {
-    connection.query(
-      `
-    SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
-    FROM post,imgdata,posttag
-    WHERE post.postid = imgdata.postid AND 
-    post.postid = posttag.postid AND	
-    posttag.tag like ? AND
-    post.location like ? 
-    GROUP BY imgdata.postid
-    ORDER BY post.postdate DESC`,
+    connection.query(`
+    SELECT tagtable.postid, tagtable.img,postliketable.listTotalLike
+      FROM(
+        SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
+          FROM post,imgdata,posttag
+          WHERE post.postid = imgdata.postid AND 
+          post.postid = posttag.postid AND	
+          posttag.tag like ? AND
+          post.location like ? 
+          GROUP BY imgdata.postid
+          ORDER BY post.postdate DESC
+      ) AS tagtable 
+      LEFT JOIN(
+        SELECT postid,COUNT(uid) AS listTotalLike
+          FROM postliketable
+          GROUP BY postliketable.postid    	
+      )AS postliketable
+      ON tagtable.postid = postliketable.postid`,
       [tag, lname],
       function (err, result) {
         result = changeToBase64(result);
@@ -159,14 +165,22 @@ app.get("/viewPage/locationFilter", function (req, res) {
       }
     );
   } else {
-    connection.query(
-      `
-    SELECT *,MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
-    FROM post,imgdata
-    WHERE post.postid = imgdata.postid AND 
-    post.location like ? 
-    GROUP BY imgdata.postid
-    ORDER BY imgdata.postid DESC`,
+    connection.query(`
+      SELECT imgtable.postid,imgtable.img,postliketable.listTotalLike
+      FROM(
+      SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
+          FROM post,imgdata
+          WHERE post.postid = imgdata.postid AND 
+          post.location like ? 
+          GROUP BY imgdata.postid
+      )AS imgtable
+      LEFT JOIN(
+          SELECT postid,COUNT(uid) AS listTotalLike
+          FROM postliketable
+          GROUP BY postliketable.postid
+      )AS postliketable
+      ON imgtable.postid = postliketable.postid
+      ORDER BY imgtable.postid DESC`,
       [lname],
       function (err, result) {
         result = changeToBase64(result);
@@ -184,7 +198,7 @@ app.post(`/viewPage/postComment`, function (req, res) {
         VALUES (?,?,?,0,NOW());`,
     [req.body.postid, req.body.uid, req.body.commentText],
     function (err, result) {
-      console.log(result);
+   
       res.send(result);
     }
   );
@@ -200,7 +214,7 @@ app.get(`/viewPage/getComment`, function (req, res) {
         ORDER BY commenttime DESC`,
     [req.query.postid],
     function (err, result) {
-      console.log(result);
+    
       res.send(result);
     }
   );
@@ -246,7 +260,9 @@ app.get(`/viewPage/getLikeState`, function (req, res) {
         postid = ?`,
     [req.query.uid, req.query.postid],
     function (err, result) {
+      console.log(result);
       res.send(result);
+      
     }
   );
 });
@@ -254,8 +270,8 @@ app.get(`/viewPage/getLikeState`, function (req, res) {
 app.delete(`/viewPage/cancelLike`, function (req, res) {
   connection.query(
     `
-        DELETE FROM postliketable WHERE uid = ?`,
-    [req.query.uid],
+    DELETE FROM postliketable WHERE uid = ? AND postid = ?`,
+    [req.query.uid,req.query.postid],
     function (err, result) {
       res.send("cancel sucess");
     }

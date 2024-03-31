@@ -72,7 +72,7 @@ class Content extends React.Component{
     
     render(){
         return(
-            <div className="content row col-12 col-lg-10 g-3">
+            <div className="content row col-12 col-lg-10">
                 <div className=" col-12 d-flex align-items-center justify-content-between">
                     
                     <div className="searchBox mb-1 ps-3 border border-3 rounded-pill d-flex align-items-center">
@@ -89,10 +89,10 @@ class Content extends React.Component{
                         </button>
                     </div>    
 
-                    <div className="sortBox d-flex justify-content-between">
+                    <div className="sortBox d-flex justify-content-between px-0">
                         <button className="badge border-0 text-dark" 
                                 style={{ fontSize: '20px', padding: '10px 16px' }}
-                                onClick={()=>{this.changeSort('desc');}}
+                                onClick={()=>{this.changeSort('new');}}
                         >最新</button>
                         <button className="badge border-0 text-dark" 
                                 style={{ fontSize: '20px', padding: '10px 16px' }}
@@ -101,12 +101,17 @@ class Content extends React.Component{
                     </div>
                 </div>      
                 {this.props.dataAry.map(post=>
-                    <div className="col-4 col-md-4 postbox" id={post.postid}
+                    <div className="col-4 col-md-4 postbox mt-3 p-0" id={post.postid}
                          onClick={()=>{this.changeModalContent(post.postid)}}
                     >
                         
                         <img src={`data:image/jpeg;base64,${post.img}`} alt="img"/>
-                    
+                        <div className='postHideIconBox flex-grow-0 position-absolute top-50 start-50 '>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" className=" bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                            </svg>
+                            <span className='ms-2'>{(post.listTotalLike)?post.listTotalLike:0}</span>
+                        </div>
                     </div>
                     
                 )}                
@@ -121,7 +126,7 @@ class Content extends React.Component{
         this.props.handleSarchText(sarchText);
     }
     changeSort = (sortString) =>{
-        this.props.handleListSort(sortString);
+        this.props.getSortString(sortString);
     }
 
 }
@@ -139,18 +144,19 @@ class Container extends React.Component{
         likeCounter:0,
         likeState:0,
         savingState:0,
-        loginUid:0,
+        loginUid:this.props.loginUid,
         modalIsOpen:false,
         sarchText:'',
         location:'所有地區',
-        listSort:'desc'
+        listSort:'new'
          
     }
     render() {
 
         return(  
             <div className="container max-width: 100% mt-3 d-flex gx-5 align-items-start">
-                <MyModal  info={this.state.modalInfoAry} 
+                <MyModal  
+                        info={this.state.modalInfoAry} 
                         tag={this.state.postTagAry} 
                         comment = {this.state.postCommentAry}
                         commentCounter = {this.state.commentCounter}                   
@@ -172,7 +178,7 @@ class Container extends React.Component{
 
                 <Content dataAry={this.state.dataAry} handleModal={this.handleModal}
                          handleSarchText={this.handleSarchText} 
-                         handleListSort = {this.handleListSort}
+                         getSortString = {this.getSortString}
                 />
             </div>
         );
@@ -183,25 +189,42 @@ class Container extends React.Component{
         let newState = {...this.state};
         newState.dataAry = result.data;
         newState.loginUid = this.props.loginUid ; 
+        console.log("didmout get data:");
+        console.log(newState);
         this.setState(newState);
     }
-    // handleFilterBar = (result) =>{
-    //     let newState = {...this.state};
-    //     newState.dataAry = result.data;
-    //     console.log("newState:",newState);
-    //     this.setState(newState);
-    // }  
+
+    getSortString = (sortString)=>{
+        let newState = {...this.state};
+        newState.listSort = sortString;
+        newState.dataAry = this.handleListSort(sortString,newState.dataAry);
+        this.setState(newState);
+    }
+
+    handleListSort = (sortString,dataAry)=>{         
+        if(sortString==='popular'){
+            console.log("do sort by popular");
+            dataAry.sort((front,next)=> (
+                next.listTotalLike - front.listTotalLike))
+        }else if(sortString==='new'){
+            console.log("do sort by new");
+            dataAry.sort((front,next)=>(
+                next.postid - front.postid 
+            )) 
+        }
+        return dataAry;
+    }
+   
     handleModal = async(postid)=>{
-        console.log("***************************");
+        console.log("do handleModal");
         const [postContent, postTag,postComment,
-              commentCounter,commentAccount,likeCounter,likeState,savingState] = await Promise.all([
+              commentCounter,commentAccount,likeState,savingState] = await Promise.all([
 
             axios.get(`http://localhost:8000/viewPage/getModal?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getTag?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getComment?postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getCommentCouner?postid=${postid}`),        
-            axios.get(`http://localhost:8000/viewPage/getCommentAccount?postid=${postid}`),
-            axios.get(`http://localhost:8000/viewPage/getLikeCounter?postid=${postid}`),
+            axios.get(`http://localhost:8000/viewPage/getCommentAccount?postid=${postid}`),           
             axios.get(`http://localhost:8000/viewPage/getLikeState?uid=${this.state.loginUid}&postid=${postid}`),
             axios.get(`http://localhost:8000/viewPage/getSavingState?uid=${this.state.loginUid}&postid=${postid}`)       
         ]);
@@ -213,12 +236,17 @@ class Container extends React.Component{
         newState.postCommentAry = postComment.data;
         newState.commentCounter = commentCounter.data ; 
         newState.commentAccount = commentAccount.data;
-        newState.likeCounter = likeCounter.data[0].likeCounter;
         newState.likeState = likeState.data[0].state;
         newState.savingState = savingState.data[0].state;
         newState.modalIsOpen = true ; 
-        console.log("change to newState:",newState);
-        
+
+        for(let i=0;i<this.state.dataAry.length;i++){
+            if(this.state.dataAry[i].postid===postid){
+                newState.likeCounter = this.state.dataAry[i].listTotalLike; 
+            }
+        }
+
+        console.log("change to newState:",newState);  
         this.setState(newState);
     }
     handleModalColse = ()=>{
@@ -227,12 +255,25 @@ class Container extends React.Component{
         console.log("modal close!");
         this.setState(newState);
     }
-    handleLikeState = (state)=>{  
-        let newState = {...this.state};
-        newState.likeState = state ;     
-        (state) ? newState.likeCounter+=1:newState.likeCounter-=1;        
-        this.setState(newState);
+    //state是關閉modal後的like狀態
+    handleLikeState = (postid,state)=>{  
+        console.log("do handleLikeState");
+        let newState = {...this.state};       
+        newState.likeState = state; 
+        for(let i=0;i<this.state.dataAry.length;i++){
+            if(this.state.dataAry[i].postid===postid){
+               if(state){     
+                    newState.dataAry[i].listTotalLike+=1;
+                    newState.likeCounter+=1;
+                }else{      
+                    newState.dataAry[i].listTotalLike-=1; 
+                    newState.likeCounter-=1;        
+                }                
+            }
+        }
+        this.setState(newState);  
     }
+
     handleSavingState = (state)=>{   
         let newState = {...this.state};
         newState.savingState = state ;      
@@ -242,28 +283,20 @@ class Container extends React.Component{
         console.log("h location",locationName);
         let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${locationName}&tag=${this.state.sarchText}`);
         let newState = {...this.state};
-        newState.dataAry = result.data;
+        newState.dataAry = this.handleListSort(this.state.listSort,result.data);
         newState.location = locationName ; 
+        
         this.setState(newState);
     } 
     handleSarchText = async(sarchText) =>{
         console.log("關鍵字:",sarchText);
         let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&tag=${sarchText}`);
         let newState = {...this.state};
-        newState.dataAry = result.data;
+        newState.dataAry = this.handleListSort(this.state.listSort,result.data);
         newState.sarchText = sarchText;         
         this.setState(newState);
     }
-    handleListSort = (sortString)=>{    
-        let newState = {...this.state};     
-        if(sortString==='popular'){
-            alert(sortString);
-            newState.dataAry.sort((a,b)=>{
-                return b.likeCounter = a.likeCounter;
-            })
-        }
-        this.setState(newState);
-    }
+  
 
 }
 

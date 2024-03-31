@@ -49,17 +49,53 @@ nav{
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     overflow: hidden;
 }
 .postbox::after{
     content:'';
     display: block;
     padding-top: 100%;
+    width: 100%;
 }
 .postbox img{
     position: absolute;
-    width: 100%;
-   
+    width: 96%;
+}
+.postbox .postHideIconBox{
+    transform: translate(-50%, -50%);
+}
+.postHideIconBox{
+    z-index: 250;
+    display: none;
+}
+.postbox:hover .postHideIconBox {
+    display: flex;
+    align-items: center;
+}
+.postHideIconBox span{
+    font-size: 26px;
+    color: white; 
+}
+.postHideIconBox svg{
+    fill: white;
+}
+
+.postbox::before{
+    content: '';
+    position: absolute;
+    top:50%;
+    left: 50%;
+    background-color: black;
+    width: 96%;
+    height: 100%;
+    opacity: 0;
+    transition: 0.3s;
+    transform: translate(-50%, -50%);
+}
+.postbox:hover::before{
+    opacity: 0.3;
+    z-index: 200;
 }
 
 
