@@ -76,6 +76,7 @@ body {
 .room-info {
     position: relative;
     left: 75%;
+  
 
     
 }
@@ -174,7 +175,7 @@ width: 800px;
     position: absolute;
     height: 50px;
     width: 80px;
-    top: 25px;
+    top: 2px;
 
 }
 

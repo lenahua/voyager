@@ -1115,46 +1115,68 @@ app.get("/", function (req, res) {
   res.send("hello world");
 });
 
+// app.get("/hotelList/hotels", (req, res) => {
+//   const city = req.body.city;
+//   console.log("city", city);
+
+//   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city
+//     FROM hotel_table
+//     JOIN (
+//     SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+//     FROM hotel_photos
+//     GROUP BY hotel_id
+//     ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+//     JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+//     JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`;
+
+//   let queryParams = [];
+
+//   if (city) {
+//     sqlQuery += ` WHERE hotel_table.city = ?`;
+//     queryParams.push(city); // 
+//   }
+
+//   connection.query(sqlQuery, queryParams, (err, results) => {
+//     if (err) {
+//       console.error("查詢失敗:", err);
+//       res.status(500).send("服務器錯誤");
+//       return;
+//     }
+//     res.json(results);
+//     console.log(results);
+//   });
+// });
+
 app.get("/hotelList/hotels", (req, res) => {
-  //第一條路徑
-  const queryParam = req.query.query;
+  const city = req.query.city; // 這裡改為使用 query 參數
+  console.log("city", city);
 
-  let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price
-  FROM hotel_table
-  JOIN (
-  SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
-  FROM hotel_photos
-  GROUP BY hotel_id
-  ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
-  JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
-  JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
+  let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city
+    FROM hotel_table
+    JOIN (
+    SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+    FROM hotel_photos
+    GROUP BY hotel_id
+    ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+    JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+    JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id
+    GROUP BY hotel_table.hotel_id`; // 添加 GROUP BY 子句以確保僅返回每個飯店的第一筆資料
 
-  if (queryParam) {
-    sqlQuery += ` WHERE hotel_table.name LIKE ? OR hotel_table.address LIKE ?`;
+  let queryParams = [];
 
-    connection.query(
-      sqlQuery,
-      [`%${queryParam}%`, `%${queryParam}%`],
-      (err, results) => {
-        // 處理查詢結果
-      }
-    );
-  } else {
-    // 沒填參數,就變回原始查詢
-    connection.query(sqlQuery, (err, results) => {
-      // 查詢結果
-    });
+  if (city) {
+    sqlQuery += ` HAVING hotel_table.city = ?`; // 使用 HAVING 子句過濾城市
+    queryParams.push(city); 
   }
 
-  // 搜尋清單
-
-  connection.query(sqlQuery, (err, results) => {
+  connection.query(sqlQuery, queryParams, (err, results) => {
     if (err) {
       console.error("查詢失敗:", err);
       res.status(500).send("服務器錯誤");
       return;
     }
     res.json(results);
+    console.log(results);
   });
 });
 
@@ -1171,6 +1193,131 @@ app.get("/hotelList/roomtype", (req, res) => {
   JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
 
   connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
+  });
+});
+
+
+/* app.post("/hotelList/search", (req, res) => {
+  //房型種類路徑
+  const city = req.body.city
+  console.log("city",city)
+  const city_1 = toString(city)
+  console.log("city1",city_1)
+
+  const sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url,room_type,room_people,bed_count,price,city
+  FROM hotel_table
+  JOIN (
+  SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+  FROM hotel_photos
+  GROUP BY hotel_id
+  ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+  JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+  JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`; // 抓取數據庫資料
+  
+  if (city) {
+    sqlQuery += ` WHERE hotel_table.city = ？}`;
+  }
+
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("服務器錯誤");
+      return;
+    }
+    res.json(results);
+  });
+    
+});  */  
+
+app.post("/hotelList/search", (req, res) => {
+  const city = req.body.city;
+  const hotelName = req.body.hotelName;
+  const startDate = req.body.startDate; // 從請求中獲取開始日期
+  const endDate = req.body.endDate; 
+  console.log("city", city);
+  console.log("hotelName", hotelName);
+  console.log('startDate', startDate);
+  console.log('endDate', endDate);
+
+  let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city, checkDate, checkOutDate
+    FROM hotel_table
+    JOIN (
+    SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+    FROM hotel_photos
+    GROUP BY hotel_id
+    ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+    JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+    JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`;
+
+  let queryParams = [];
+
+  if (city) {
+    sqlQuery += ` WHERE hotel_table.city = ?`;
+    queryParams.push(city); 
+  }
+
+  if (hotelName) {
+    if (queryParams.length > 0) {
+      sqlQuery += ` AND hotel_table.hotel_name LIKE ?`; 
+    } else {
+      sqlQuery += ` WHERE hotel_table.hotel_name LIKE ?`;
+    }
+    queryParams.push(`%${hotelName}%`); 
+  }
+
+  if (startDate && endDate) {
+    if (queryParams.length > 0) {
+      sqlQuery += ` AND (hotel_table.checkDate <= ? AND hotel_table.checkOutDate >= ?)`; 
+    } else {
+      sqlQuery += ` WHERE (hotel_table.checkDate <= ? AND hotel_table.checkOutDate >= ?)`;
+    }
+    queryParams.push(startDate, endDate);
+  }
+
+  connection.query(sqlQuery, queryParams, (err, results) => {
+    if (err) {
+      console.error("查詢失敗:", err);
+      res.status(500).send("錯誤");
+      return;
+    }
+    res.json(results);
+    console.log(results);
+  });
+});
+
+
+app.post("/hotelList/searchDate", (req, res) => {
+  const startDate = req.body.startDate; // 從請求中獲取開始日期
+  const endDate = req.body.endDate; // 從請求中獲取結束日期
+  console.log('date',startDate);
+  console.log('outdate', endDate)
+
+  // 在 SQL 查詢中使用開始和結束日期來篩選訂房時間
+  const sqlQuery = `
+    SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, checkDate, checkOutDate
+    FROM hotel_table
+    JOIN (
+      SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+      FROM hotel_photos
+      GROUP BY hotel_id
+    ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+    JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+    JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id
+    WHERE checkDate >= ? AND checkOutDate <= ?`; // 根據入住日期和退房日期進行篩選
+
+  connection.query(sqlQuery, [startDate, endDate], (err, results) => {
     if (err) {
       console.error("查詢失敗:", err);
       res.status(500).send("服務器錯誤");

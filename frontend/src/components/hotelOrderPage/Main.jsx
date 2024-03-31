@@ -276,7 +276,7 @@ class HotelOrderPage extends Component {
         console.log(dataToServer);
         await axios.post('http://localhost:8000/checkout/hotel/order', dataToServer);
         alert("已完成訂單 點擊確定探索更多景點");
-        window.location = "/viewPage";
+        window.location = "/viewPage/台中市";
         
     }
     changeSelectedCard = (e) => {

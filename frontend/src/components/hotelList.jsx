@@ -6,7 +6,6 @@ class HotelList extends React.Component {
   render() {
     return (
       <div>
-        <NavbarTitle />
         <SearchOrder />
       </div>
     );

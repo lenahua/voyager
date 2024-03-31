@@ -18,7 +18,7 @@ export default function App() {
         '#surface1 > path:nth-child(4)'
         
     ],{
-        duration: 1,
+        duration: 1.75,
         opacity: 0,
         stagger: {
             each : 0.2,
@@ -32,7 +32,7 @@ export default function App() {
         '#surface1 > path:nth-child(3)',
         '#surface1 > path:nth-child(5)'
     ],{
-        duration: 1,
+        duration: 1.75,
         opacity: 0,
         stagger: {
             each : 0.2,
@@ -52,7 +52,7 @@ export default function App() {
         '#surface1 > g:nth-child(14) > path',
         '#surface1 > g:nth-child(13) > path'
     ],{
-        duration: 1,
+        duration: 1.75,
         x: 'random(-500, 500)',
         y: 'random(-500, 500)',
         rotation: 'random(0,360)',
