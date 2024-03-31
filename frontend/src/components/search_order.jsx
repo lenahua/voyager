@@ -677,7 +677,7 @@ import axios from 'axios';
                     </div>
                     <div className="btn btn-primary room-info">
                       <div className="btn-title">
-                    <Link to={'/hotelinfo/id:?'} className="text-white text-decoration-none">
+                    <Link to={`/hotelinfo/${hotel.hotel_id}`} className="text-white text-decoration-none">
                       查看房間資訊
                       </Link>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-compact-right" viewBox="0 0 16 16">
