@@ -5,7 +5,7 @@ import { FaBed, FaPaperclip } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import "../../css/roomm.css"
 
-const Room = ({room, onClick, handleSelect}) => {
+const Room = ({room, onClick, handleSelect, totalPrice}) => {
   
 
 
@@ -57,7 +57,7 @@ const Room = ({room, onClick, handleSelect}) => {
                   <div className='roomCardRestroom'>
                     <div className='restRoom'>
                       <FaPaperclip/>
-                      <p >剩餘房間數</p>
+                      <p >選擇房間數量</p>
                     </div>
              
                     <select onChange={(ev)=>handleSelect(ev, roomdetail.price)}>
@@ -69,7 +69,7 @@ const Room = ({room, onClick, handleSelect}) => {
                   </div>
 
                     
-                    <Link to={`/hotelOrder/${roomdetail.hotel_id}/${roomdetail.room_id}`}>
+                    <Link to={`/hotelOrder/${roomdetail.hotel_id}/${roomdetail.room_id}/${totalPrice}`}>
                       <button className='price' >立即預訂</button>
                     </Link>
                 </div>

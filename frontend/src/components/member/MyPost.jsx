@@ -9,7 +9,6 @@ import "../../css/viewPage.css";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Button from "@mui/material/Button";
 
 function MyPosts({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,17 +63,6 @@ function MyPosts({ userId }) {
   };
   const toggleDrawer = (open) => (e) => setIsDrawerOpen(open);
   const { register, handleSubmit } = useForm();
-  const VisuallyHiddenInputstyle = {
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  };
 
   const onSubmit = async (data) => {
     const Uid = "10";
@@ -105,58 +93,85 @@ function MyPosts({ userId }) {
       alert("An error occurred: " + error.message);
     }
   };
+
   const drawerContent = (
     <React.Fragment>
       <div className="drawertitle">
-        <h2 style={{ fontWeight: "bold" }}>新增貼文</h2>
+        <h3
+          style={{ fontWeight: "bold", color: "#3c93d6" }}
+          className="mb-2 mt-2"
+        >
+          上傳貼文
+        </h3>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="upload-body">
-          <div style={{ marginBottom: "25px" }}>
-            <h4 style={{ marginBottom: "15px" }}>貼文標題</h4>
-            <input
-              {...register("title")}
-              type="text"
-              placeholder="Enter title"
-            />
-            <h4 style={{ marginBottom: "15px" }}>貼文說明</h4>
-            <input
-              {...register("description")}
-              type="text"
-              placeholder="Enter description"
-            />
+        <div className="pt-3 pb-3">
+          <div className="row">
+            <div className="col-6 " style={{ height: "100%" }}>
+              <div class="mb-4">
+                <label for="exampleFormControlInput1" class="form-label">
+                  <h4>貼文標題</h4>
+                </label>
+                <input
+                  {...register("title")}
+                  type="text"
+                  placeholder="景點標題"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                />
+              </div>
+              <div class="mb-2">
+                {" "}
+                <h4>景點位置</h4>
+                <select
+                  class="form-select form-select-md"
+                  aria-label=".form-select-lg example"
+                  {...register("location")}
+                >
+                  <option selected>台北</option>
+                  <option value="台北市">台北</option>
+                  <option value="新北市">新北</option>
+                  <option value="新竹市">新竹</option>
+                  <option value="台中市">台中</option>
+                  <option value="台南市">台南</option>
+                  <option value="高雄市">高雄</option>
+                  <option value="花蓮市">花蓮</option>
+                  <option value="台東市">台東</option>
+                </select>
+              </div>
+            </div>
 
-            <h4>地點</h4>
-            <select {...register("location")}>
-              <option value="">Select a location</option>
-              <option value="台北">台北</option>
-              <option value="台中">台中</option>
-              <option value="高雄">高雄</option>
-              <option value="新竹">新竹</option>
-              <option value="花蓮">花蓮</option>
-              <option value="台東">台東</option>
-            </select>
+            <div className="col-6 d-flex flex-column justify-content-end mb-3">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">
+                  <h4>貼文說明</h4>
+                </label>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="5"
+                  {...register("description")}
+                  type="text"
+                  placeholder="為你的貼文增加說明吧！"
+                ></textarea>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            type="submit"
-            fullWidth
-            style={{ backgroundColor: " #3c93d6" }}
-          >
-            <span style={{ fontSize: "20px" }}>上傳照片</span>
-            <input
-              {...register("picture")}
-              type="file"
-              name="picture"
-              style={{ display: "none" }}
-            />
-          </Button>
+          <div className="row">
+            {" "}
+            <div className=" col-9">
+              <input
+                {...register("picture")}
+                type="file"
+                name="picture"
+                class="form-control"
+                style={{ height: "100%" }}
+              />
+            </div>
+            <button type="submit" className="upload-btn col-3 ">
+              確認
+            </button>
+          </div>
         </div>
       </form>
     </React.Fragment>
@@ -299,7 +314,55 @@ function Modalll({ isOpen, onClose, postid }) {
     };
     loadData();
   }, [postid, isOpen]); // 依賴數組 isOpen 和 postid
+  const [likedComments, setLikedComments] = useState([]);
+  const toggleLike = (index) => {
+    setLikedComments((prevLikedComments) => {
+      const updatedLikes = [...prevLikedComments];
+      updatedLikes[index] = !updatedLikes[index];
+      return updatedLikes;
+    });
+  };
 
+  const [newComment, setNewComment] = useState("");
+  const postComment = async () => {
+    console.log(postid);
+    const Uid = localStorage.getItem("Uid") || "10";
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/viewPage/postComment`,
+        {
+          postid: postid,
+          uid: Uid,
+          commentText: newComment,
+        }
+      );
+
+      if (response.data) {
+        console.log("Comment posted successfully");
+        setNewComment("");
+        fetchComments();
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/viewPage/getCommentlily?postid=${postid}`
+      );
+      if (response.data) {
+        setPostCommentAry(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+  useEffect(() => {
+    if (isOpen && postid) {
+      fetchComments();
+    }
+  }, [isOpen, postid]);
   return (
     <Modal
       show={isOpen}
@@ -369,12 +432,12 @@ function Modalll({ isOpen, onClose, postid }) {
                 </svg>
               </div>
               {/* postContent */}
-              <div className="postContent">
+              <div className="postContent mt-1">
                 <Link to="">
                   <b>{modalInfoAry.length ? modalInfoAry[0].account : ""}</b>
                 </Link>
 
-                <p>
+                <p className="postContent mt-2">
                   {formatContentAry.map((sentence, index) => {
                     return (
                       <React.Fragment key={index}>
@@ -399,6 +462,7 @@ function Modalll({ isOpen, onClose, postid }) {
             </div>
 
             {postCommentAry.map((comment, index) => {
+              const isLiked = likedComments[index] || false;
               return (
                 <div key={index} className="postComment py-2 d-flex">
                   <div className="postIconSpace d-flex justify-content-center">
@@ -434,12 +498,15 @@ function Modalll({ isOpen, onClose, postid }) {
                     </p>
                   </div>
 
-                  <div className="likeBtnSpace">
+                  <div
+                    className="likeBtnSpaceee"
+                    onClick={() => toggleLike(index)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="14"
                       height="14"
-                      fill="currentColor"
+                      fill={isLiked ? "red" : "currentColor"}
                       className="bi bi-suit-heart"
                       viewBox="0 0 16 16"
                     >
@@ -487,18 +554,24 @@ function Modalll({ isOpen, onClose, postid }) {
               >
                 <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z" />
               </svg>
-              <div class="textAreaBox me-2">
+              <div class="textAreaBox ms-2 d-flex align-items-center">
                 <textarea
                   rows="1"
                   cols="50"
                   class="w-100 border-0"
                   placeholder="我要留言.."
                   style={{ resize: "none" }}
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
                 ></textarea>
               </div>
-              <Link to="" class="text-primary sendBtn flex-shrink-0">
+              <div
+                class="text-primary sendBtn flex-shrink-0"
+                onClick={postComment}
+                style={{ cursor: "pointer" }}
+              >
                 發布
-              </Link>
+              </div>
             </div>
           </div>
         </div>

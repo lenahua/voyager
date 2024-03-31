@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { withRouter } from "react-router";
 class HotelOrderPage extends Component {
     constructor(props){
         super(props);
         this.state = { 
-            userInfo : [{account: '', email: '', name: '', telephone: ''}],
-            creditCard : [{cardType: '', cardNumber: '', name: '', valid: '', cvc: ''}, {}, {}, {}, {}],
+            userInfo : [{account: '請輸入用戶名', email: '請輸入電子信箱', name: '請輸入姓名', telephone: '請輸入電話', Uid:0}],
+            creditCard : [{cardType: 'Visa', cardNumber: '0000-0000-0000-0000', name: '請輸入姓名', valid: '2024-12-30T16:00:00.000Z', cvc: '123'}, {}, {}, {}, {}],
             order : [],
             selectIndex : 0,
-            date : [[],[],[],[]],
-            hotel : [{name: '', address: ''}],
-            roomType : [{room_type: '', price: ''}]
+            date : [['2024', '12'],['2024', '12'],[],[]],
+            hotel : [{name: '樂微行旅 The Way Inn.', address: '台中市南區民意街66號'}],
+            roomType : [{room_type: '日式雙人房－禁菸', price: '4,284'}],
+            newPrice : 0
         } 
     }
 
@@ -46,15 +48,21 @@ class HotelOrderPage extends Component {
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>已選擇：</h3>
                                 <h5>{this.state.roomType[0].room_type}</h5>
-                                <h4 className="text-primary">共入住兩晚</h4>
-                                <button className="btn btn-primary btn-sm my-3" type="button" onClick={()=>{window.location='/';}}>更改選擇</button>
-                                <h4 className="text-primary">總金額：{this.state.roomType[0].price}</h4>
+                                <h4 className="text-primary">共入住一晚</h4>
+                                <button className="btn btn-primary btn-sm my-3" type="button" onClick={()=>{window.location="/hotelInfo/1";}}>更改選擇</button>
+                                <h4 className="text-primary">總金額：{this.state.newPrice}</h4>
                             </div>
                         </div>
                     </div>
                     
                     </div>
                     <div className="col-md-8 mt-5 offset-md-1 " style={{paddingLeft: "0px",paddingRight: "0px"}}>
+                        {
+                            !this.props.auth && 
+                            <div className="border border-3 border-secondary rounded-2 mb-3">
+                                <div className="m-3 fw-bold text-primary"><h5>登入即可自動套用個人資料預訂。</h5></div>
+                            </div>
+                        }
                         <div className="border border-3 border-secondary rounded-2">
                             <div className="m-4">
                             <h4>輸入個人資料</h4>
@@ -210,41 +218,53 @@ class HotelOrderPage extends Component {
             </div>
         );
     }
+    componentDidUpdate = async (prevProps,prevState) => {
+        if(this.props.userId !== prevProps.userId){
+            // this.setState({uid : this.props.userId});
+            console.log('after componentDidUpdate',this.props.userId);
+            // console.log('after componentDidUpdate',this.props.auth);
+            console.log("after auth is ",this.props.auth);
+            var result = await axios(`http://localhost:8000/checkout/user/${this.props.userId}`); 
+            var newState = {...this.state}; 
+            newState.userInfo = result.data;
+            this.setState(newState);
+
+            var CreditResult = await axios(`http://localhost:8000/checkout/creditCard/${newState.userInfo[0].Uid}`);
+            var newCreState = {...this.state};
+            newCreState.creditCard = CreditResult.data;
+            // console.log(CreditResult.data[0]);
+            CreditResult.data.map((item, index)=>{ 
+                var yearAMonth = item.valid.split('-',2);
+                newCreState.date[index] = yearAMonth;
+            })
+            // console.log(newCreState.date);
+            this.setState(newCreState);
+        }
+        
+        // console.log("uid2 is ",this.props.userId);
+        
+    }
     componentDidMount = async () => { 
-        localStorage.setItem("previouspath", window.location.pathname)
-        var result = await axios('http://localhost:8000/checkout/user/10'); 
-        var newState = {...this.state}; 
-        newState.userInfo = result.data;
-        // console.log(result.data);
-        this.setState(newState);
-
-        var CreditResult = await axios(`http://localhost:8000/checkout/creditCard/${newState.userInfo[0].Uid}`);
-        var newCreState = {...this.state};
-        newCreState.creditCard = CreditResult.data;
-        // console.log(CreditResult.data[0]);
-        CreditResult.data.map((item, index)=>{
-            var yearAMonth = item.valid.split('-',2);
-            newCreState.date[index] = yearAMonth;
-        })
-        // console.log(newCreState.date);
-        this.setState(newCreState);
-
-        var hotelResult = await axios('http://localhost:8000/checkout/hotel/1');
+        localStorage.setItem("previouspath", window.location.pathname);
+        console.log("before componentDidUpdate",this.props.userId);
+        const { match } = this.props;
+        console.log("before auth is ",this.props.auth);
+        
+        
+        var hotelResult = await axios(`http://localhost:8000/checkout/hotel/${match.params.hotelId}`);
         var newHotelState = {...this.state};
-        // console.log(hotelResult.data);
         newHotelState.hotel = hotelResult.data;
         this.setState(newHotelState);
-        // console.log('new : ',newHotelState.hotel[0].name);
         
-        var roomResult = await axios(`http://localhost:8000/checkout/hotel/${newHotelState.hotel[0].hotel_id}/1`);
-        // console.log(roomResult.data[0]);
+        var roomResult = await axios(`http://localhost:8000/checkout/hotel/${match.params.hotelId}/${match.params.roomId}`);
         var newRoomState = {...this.state};
         newRoomState.roomType=roomResult.data;
-        console.log(newRoomState.roomType);
         this.setState(newRoomState);
-        
-
-
+        // if(this.props.auth == false){
+        //     alert("請先登入會員");
+        // }
+        console.log("price",match.params.price);
+        this.setState({newPrice : match.params.price});
     }
     doClick = async () => {
         var dataToServer = {
@@ -321,4 +341,4 @@ class HotelOrderPage extends Component {
 
 }
  
-export default HotelOrderPage;
+export default withRouter(HotelOrderPage);

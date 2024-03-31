@@ -8,6 +8,7 @@ import Rate from '../components/hotelList/Rate';
 import Review from '../components/hotelList/Review';
 import Rule from '../components/hotelList/Rule';
 
+
 import {useParams, useLocation} from "react-router-dom"
 import axios from 'axios';
 
@@ -87,12 +88,16 @@ function HotelInfo(){
             <Hotel place={place} photos={photos} rate={rate}/>
 
             <Room room={room} onClick={handleModalClick} 
-                            handleSelect={handleSelect}/>
-            {isModalVisible === true  ? <Roompic id={id}
-                                            onClose={handleModalClose} 
-                                            selectRoomPic={selectRoomPic} 
-                                            selectRoomData={selectRoomData}
-                                            selectRoom={selectRoom}/> : ""}
+                            handleSelect={handleSelect} totalPrice={totalPrice}/>
+            {isModalVisible === true  ? (<div className="mWrapper">
+                                            <div className="mBackground" onClick={handleModalClose}></div>
+                                                <Roompic id={id}
+                                                    onClose={handleModalClose} 
+                                                    selectRoomPic={selectRoomPic} 
+                                                    selectRoomData={selectRoomData}
+                                                    selectRoom={selectRoom}
+                                                    totalPrice={totalPrice}/>
+                                                    </div>) : ""}
             <Service place={place} viewPic={viewPic}/>
             <Rate rate={rate}/>
             <Review review={review}/>

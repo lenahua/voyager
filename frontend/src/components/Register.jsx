@@ -3,6 +3,7 @@ import { CiUser, CiMail, CiLock } from "react-icons/ci";
 import "../css/login.css"
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import train from '../img/train.png'
 
 const Register = () => {
 
@@ -34,7 +35,8 @@ const Register = () => {
     })
   }
   return (
-    <div className='Logincontainer'>
+    <>
+    <div className='Logincontainer regiBg'>
       <div className='header'>
         <div className='text'>註冊</div>
         <div className='underline'></div>
@@ -64,8 +66,9 @@ const Register = () => {
             <button className='submit'>註冊</button>
         </div>
       </form>
-      
     </div>
+    <img src={train} alt='' className='trainLogoRe'/>
+    </>
   )
 }
 
