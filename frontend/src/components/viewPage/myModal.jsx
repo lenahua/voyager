@@ -32,21 +32,12 @@ class myModal extends React.Component {
         this.props.handleModal(this.props.info[0].postid);
     }
     //點愛心改變已點讚或未點讚,點擊後的狀態傳給handleLikeState
-    clickLike = async(postid)=>{
-   
-     
-               
+    clickLike = async(postid)=>{      
         if(this.props.likeState){
-            alert("移除like");
             await axios.delete(`http://localhost:8000/viewPage/cancelLike?uid=${this.props.loginUid}&postid=${this.props.info[0].postid}`);
-          
             this.props.handleLikeState(postid,0);
         }else{
-           
-            alert("增加like");
-            await axios.post(`http://localhost:8000/viewPage/addLike?uid=${this.props.loginUid}&postid=${this.props.info[0].postid}`);
-      
-          
+            await axios.post(`http://localhost:8000/viewPage/addLike?uid=${this.props.loginUid}&postid=${this.props.info[0].postid}`);  
             this.props.handleLikeState(postid,1);
         }
     }
@@ -80,9 +71,7 @@ class myModal extends React.Component {
         
         return (
             <Modal show={isOpen} onHide={onClose} size="xl" centered id="viewPageModal" className="viewModal">
-             
-                       
-                          
+                         
                 <div id="mybox" className="mybox d-flex flex-row flex-wrap w-100 h-100">
                     <div className="imgArea col-12 col-sm-6 d-flex align-items-center h-100 flex-shrink-1">   
                     

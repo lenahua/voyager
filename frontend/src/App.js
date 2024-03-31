@@ -70,7 +70,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route
-              path="/viewPage"
+              path="/viewPage/:location?"
               render={(props) => (
                 <ViewPage {...props} userId={this.state.uid} />
               )}

@@ -104,11 +104,12 @@ app.get("/viewPage/allPost", function (req, res) {
 //取得每篇貼文的第一張照片及like總數及回覆總數
 app.get("/viewPage/imgList", function (req, res) {
   connection.query(
-    `SELECT imgdata.postid , imgdata.img, postliketable.listTotalLike,postcomment.totalcomment
+    `SELECT imgdata.postid , imgdata.img, postliketable.listTotalLike,postcomment.totalcomment,imgdata.postdate
     FROM (
-        SELECT MIN(id) AS imgid, postid, img
-        FROM imgdata
-        GROUP BY postid
+        SELECT MIN(id) AS imgid, post.postid, imgdata.img,post.postdate
+		FROM imgdata,post
+		WHERE post.postid = imgdata.postid
+		GROUP BY postid
     ) AS imgdata
     LEFT JOIN (
         SELECT postid,COUNT(uid) AS listTotalLike
@@ -123,7 +124,7 @@ app.get("/viewPage/imgList", function (req, res) {
       GROUP by postcomment.postid
     ) AS postcomment
     ON imgdata.postid = postcomment.postid
-    ORDER BY imgdata.postid DESC;`,
+	ORDER BY imgdata.postdate DESC;`,
     [],
     function (err, result) {
       result = changeToBase64(result);
@@ -141,23 +142,23 @@ app.get("/viewPage/locationFilter", function (req, res) {
 
   if (tag) {
     connection.query(`
-    SELECT tagtable.postid, tagtable.img,postliketable.listTotalLike
-      FROM(
-        SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag
-          FROM post,imgdata,posttag
-          WHERE post.postid = imgdata.postid AND 
-          post.postid = posttag.postid AND	
-          posttag.tag like ? AND
-          post.location like ? 
-          GROUP BY imgdata.postid
-          ORDER BY post.postdate DESC
-      ) AS tagtable 
-      LEFT JOIN(
-        SELECT postid,COUNT(uid) AS listTotalLike
-          FROM postliketable
-          GROUP BY postliketable.postid    	
-      )AS postliketable
-      ON tagtable.postid = postliketable.postid`,
+    SELECT tagtable.postid, tagtable.img,postliketable.listTotalLike,tagtable.postdate
+    FROM(
+      SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,posttag.tag,post.postdate
+      FROM post,imgdata,posttag
+      WHERE post.postid = imgdata.postid AND 
+      post.postid = posttag.postid AND	
+      posttag.tag like ? AND
+      post.location like ? 
+      GROUP BY imgdata.postid
+    ) AS tagtable 
+    LEFT JOIN(
+      SELECT postid,COUNT(uid) AS listTotalLike
+      FROM postliketable
+      GROUP BY postliketable.postid    	
+    )AS postliketable
+    ON tagtable.postid = postliketable.postid
+    ORDER BY tagtable.postdate DESC`,
       [tag, lname],
       function (err, result) {
         result = changeToBase64(result);
@@ -166,24 +167,25 @@ app.get("/viewPage/locationFilter", function (req, res) {
     );
   } else {
     connection.query(`
-      SELECT imgtable.postid,imgtable.img,postliketable.listTotalLike
-      FROM(
-      SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img
-          FROM post,imgdata
-          WHERE post.postid = imgdata.postid AND 
-          post.location like ? 
-          GROUP BY imgdata.postid
-      )AS imgtable
-      LEFT JOIN(
-          SELECT postid,COUNT(uid) AS listTotalLike
-          FROM postliketable
-          GROUP BY postliketable.postid
-      )AS postliketable
-      ON imgtable.postid = postliketable.postid
-      ORDER BY imgtable.postid DESC`,
+    SELECT imgtable.postid,imgtable.img,postliketable.listTotalLike,imgtable.postdate
+    FROM(
+    SELECT MIN(imgdata.id) as firstimg ,post.postid,imgdata.img,post.postdate
+        FROM post,imgdata
+        WHERE post.postid = imgdata.postid AND 
+        post.location like ? 
+        GROUP BY imgdata.postid
+    )AS imgtable
+    LEFT JOIN(
+        SELECT postid,COUNT(uid) AS listTotalLike
+        FROM postliketable
+        GROUP BY postliketable.postid
+    )AS postliketable
+    ON imgtable.postid = postliketable.postid
+    ORDER BY imgtable.postdate DESC`,
       [lname],
       function (err, result) {
         result = changeToBase64(result);
+        console.log(result[0]);
         res.send(result);
       }
     );

@@ -147,14 +147,14 @@ class Container extends React.Component{
         loginUid:this.props.loginUid,
         modalIsOpen:false,
         sarchText:'',
-        location:'所有地區',
+        location:this.props.location,
         listSort:'new'
          
     }
     render() {
 
         return(  
-            <div className="container max-width: 100% mt-3 d-flex gx-5 align-items-start">
+            <div className="container max-width: 100% mt-3 d-flex gx-5 align-items-start mb-3">
                 <MyModal  
                         info={this.state.modalInfoAry} 
                         tag={this.state.postTagAry} 
@@ -209,9 +209,13 @@ class Container extends React.Component{
                 next.listTotalLike - front.listTotalLike))
         }else if(sortString==='new'){
             console.log("do sort by new");
-            dataAry.sort((front,next)=>(
-                next.postid - front.postid 
-            )) 
+            console.log(dataAry);
+            dataAry.sort((front,next)=>{
+               
+                let dateA = new Date(front.postdate);
+                let dateB = new Date(next.postdate);
+                return dateB - dateA;
+            }) 
         }
         return dataAry;
     }
@@ -286,7 +290,7 @@ class Container extends React.Component{
         let newState = {...this.state};
         newState.dataAry = this.handleListSort(this.state.listSort,result.data);
         newState.location = locationName ; 
-        
+        console.log(newState);
         this.setState(newState);
     } 
     handleSarchText = async(sarchText) =>{
@@ -294,7 +298,8 @@ class Container extends React.Component{
         let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&tag=${sarchText}`);
         let newState = {...this.state};
         newState.dataAry = this.handleListSort(this.state.listSort,result.data);
-        newState.sarchText = sarchText;         
+        newState.sarchText = sarchText;    
+        console.log(newState);     
         this.setState(newState);
     }
   
@@ -306,10 +311,18 @@ class viewPage extends React.Component{
     state = {};
     
     render(){ 
+        let location = this.props.match.params.location ;
+        let loginUid = this.props.userId ; 
+        if(!location){
+            location = '所有地區';
+        }
+        console.log("location:",location);
+        console.log("loginUid:",loginUid);
         return(
             <React.Fragment>
-
-                <Container loginUid={this.props.userId}/>  
+                <Container loginUid={loginUid}
+                           location={location}
+                />  
             </React.Fragment>
         );
     }   
