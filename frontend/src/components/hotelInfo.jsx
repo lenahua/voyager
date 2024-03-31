@@ -88,12 +88,16 @@ function HotelInfo(){
             <Hotel place={place} photos={photos} rate={rate}/>
 
             <Room room={room} onClick={handleModalClick} 
-                            handleSelect={handleSelect}/>
-            {isModalVisible === true  ? <Roompic id={id}
-                                            onClose={handleModalClose} 
-                                            selectRoomPic={selectRoomPic} 
-                                            selectRoomData={selectRoomData}
-                                            selectRoom={selectRoom}/> : ""}
+                            handleSelect={handleSelect} totalPrice={totalPrice}/>
+            {isModalVisible === true  ? (<div className="mWrapper">
+                                            <div className="mBackground" onClick={handleModalClose}></div>
+                                                <Roompic id={id}
+                                                    onClose={handleModalClose} 
+                                                    selectRoomPic={selectRoomPic} 
+                                                    selectRoomData={selectRoomData}
+                                                    selectRoom={selectRoom}
+                                                    totalPrice={totalPrice}/>
+                                                    </div>) : ""}
             <Service place={place} viewPic={viewPic}/>
             <Rate rate={rate}/>
             <Review review={review}/>

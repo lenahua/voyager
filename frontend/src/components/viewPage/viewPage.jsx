@@ -179,6 +179,7 @@ class Container extends React.Component{
     }
     
     componentDidMount = async() =>{
+        localStorage.setItem("previouspath", window.location.pathname) 
         let result = await axios.get("http://localhost:8000/viewPage/imgList");
         let newState = {...this.state};
         newState.dataAry = result.data;
