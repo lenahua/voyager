@@ -11,7 +11,8 @@ class HotelOrderPage extends Component {
             selectIndex : 0,
             date : [['2024', '12'],['2024', '12'],[],[]],
             hotel : [{name: '樂微行旅 The Way Inn.', address: '台中市南區民意街66號'}],
-            roomType : [{room_type: '日式雙人房－禁菸', price: '4,284'}]
+            roomType : [{room_type: '日式雙人房－禁菸', price: '4,284'}],
+            newPrice : 0
         } 
     }
 
@@ -47,9 +48,9 @@ class HotelOrderPage extends Component {
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>已選擇：</h3>
                                 <h5>{this.state.roomType[0].room_type}</h5>
-                                <h4 className="text-primary">共入住兩晚</h4>
+                                <h4 className="text-primary">共入住一晚</h4>
                                 <button className="btn btn-primary btn-sm my-3" type="button" onClick={()=>{window.location="/hotelInfo/1";}}>更改選擇</button>
-                                <h4 className="text-primary">總金額：{this.state.roomType[0].price}</h4>
+                                <h4 className="text-primary">總金額：{this.state.newPrice}</h4>
                             </div>
                         </div>
                     </div>
@@ -249,6 +250,7 @@ class HotelOrderPage extends Component {
         const { match } = this.props;
         console.log("before auth is ",this.props.auth);
         
+        
         var hotelResult = await axios(`http://localhost:8000/checkout/hotel/${match.params.hotelId}`);
         var newHotelState = {...this.state};
         newHotelState.hotel = hotelResult.data;
@@ -261,6 +263,8 @@ class HotelOrderPage extends Component {
         // if(this.props.auth == false){
         //     alert("請先登入會員");
         // }
+        console.log("price",match.params.price);
+        this.setState({newPrice : match.params.price});
     }
     doClick = async () => {
         var dataToServer = {
