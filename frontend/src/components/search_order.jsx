@@ -60,8 +60,6 @@ import axios from 'axios';
       localStorage.setItem("previouspath", window.location.pathname)
       Promise.all([
          fetch('http://localhost:8000/hotelList/hotels'),
-         fetch('http://localhost:8000/hotelList/roomtype'),
-
       ])
         .then(responses => Promise.all(responses.map(res => res.json())))
         .then(([hotelsData, roomsData]) => {
@@ -208,11 +206,11 @@ import axios from 'axios';
 
   handleSearch = (e) => {
   const { searchQuery, hotelName, dates } = this.state;
-  axios.post('http://localhost:8000/hotelList/searchDate', {
-    city: searchQuery,
+  axios.post('http://localhost:8000/hotelList/search', {
+    city: searchQuery,  //新增對應的旅館名稱值
     hotelName: hotelName, // 新增對應的旅館名稱值
-    startDate: dates[0],
-    endDate: dates[1]
+    // startDate: dates[0],
+    // endDate: dates[1]
   })
     .then(response => {
       this.setState({ hotels: response.data });
@@ -285,7 +283,7 @@ import axios from 'axios';
                 value={hotelName} 
                 onChange={this.handleHotelNameChange}
 />
-                <Button className="button-color search-button" variant="outline-secondary" onClick={() => this.setState({ city: '' })}><XCircleFill /></Button>
+                {/* <Button className="button-color search-button" variant="outline-secondary" onClick={() => this.setState({ city: '' })}><XCircleFill /></Button> */}
               </div>
               <div className="button-container position-relative">
                 <DatePicker
@@ -297,16 +295,6 @@ import axios from 'axios';
                   onChange={this.handleDateChange}
                   minDate={new Date()}
                   onClick={this.toggleClass}
-                />
-              </div>
-              <div className="button-container">
-                <FormControl
-                  type="text"
-                  placeholder="人數"
-                  className="search-color search-input_1 search-end"
-                  aria-label="人數"
-                  value={people}
-                  onChange={(e) => this.setState({ people: e.target.value })}
                 />
               </div>
               <Button variant="btn btn-primary button-radius button-search" onClick={this.handleSearch}>搜尋</Button>
@@ -471,16 +459,25 @@ import axios from 'axios';
                     </button>
             
              
-                    <button className='btn' onClick={() => this.toggleRoomTypeSelection('高級雙人')}>
+                    <button className='btn' onClick={() => this.toggleRoomTypeSelection('標準雙人')}>
                         <input 
                             type="checkbox" 
-                            value="高級雙人" 
-                            checked={selectedRoomTypes.includes('高級雙人')}
+                            value="標準雙人" 
+                            checked={selectedRoomTypes.includes('標準雙人')}
                             onChange={() => {}} 
-                        /> 高級雙人房
+                        /> 標準雙人房
                     </button>
                
-              
+                    <button className='btn' onClick={() => this.toggleRoomTypeSelection('三人房')}>
+                        <input 
+                            type="checkbox" 
+                            value="三人房" 
+                            checked={selectedRoomTypes.includes('三人房')}
+                            onChange={() => {}} 
+                        /> 三人房
+                    </button>
+
+
                     <button className='btn' onClick={() => this.toggleRoomTypeSelection('四人房')}>
                         <input 
                             type="checkbox" 
@@ -679,8 +676,10 @@ import axios from 'axios';
                       <div className='p-2'>${hotel.price}</div>
                     </div>
                     <div className="btn btn-primary room-info">
-                      <div className="btn-title text-dark">
-                        查看房間資訊
+                      <div className="btn-title">
+                    <Link to={'/hotelinfo/id:?'} className="text-white text-decoration-none">
+                      查看房間資訊
+                      </Link>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-compact-right" viewBox="0 0 16 16">
                           <path fillRule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671"/>
                         </svg>

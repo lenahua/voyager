@@ -1113,8 +1113,40 @@ app.get("/", function (req, res) {
   res.send("hello world");
 });
 
+// app.get("/hotelList/hotels", (req, res) => {
+//   const city = req.body.city;
+//   console.log("city", city);
+
+//   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city
+//     FROM hotel_table
+//     JOIN (
+//     SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+//     FROM hotel_photos
+//     GROUP BY hotel_id
+//     ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+//     JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+//     JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`;
+
+//   let queryParams = [];
+
+//   if (city) {
+//     sqlQuery += ` WHERE hotel_table.city = ?`;
+//     queryParams.push(city); // 
+//   }
+
+//   connection.query(sqlQuery, queryParams, (err, results) => {
+//     if (err) {
+//       console.error("查詢失敗:", err);
+//       res.status(500).send("服務器錯誤");
+//       return;
+//     }
+//     res.json(results);
+//     console.log(results);
+//   });
+// });
+
 app.get("/hotelList/hotels", (req, res) => {
-  const city = req.body.city;
+  const city = req.query.city; // 這裡改為使用 query 參數
   console.log("city", city);
 
   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city
@@ -1125,13 +1157,14 @@ app.get("/hotelList/hotels", (req, res) => {
     GROUP BY hotel_id
     ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
     JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
-    JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`;
+    JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id
+    GROUP BY hotel_table.hotel_id`; // 添加 GROUP BY 子句以確保僅返回每個飯店的第一筆資料
 
   let queryParams = [];
 
   if (city) {
-    sqlQuery += ` WHERE hotel_table.city = ?`;
-    queryParams.push(city); // 
+    sqlQuery += ` HAVING hotel_table.city = ?`; // 使用 HAVING 子句過濾城市
+    queryParams.push(city); 
   }
 
   connection.query(sqlQuery, queryParams, (err, results) => {
@@ -1213,7 +1246,8 @@ app.post("/hotelList/search", (req, res) => {
   const endDate = req.body.endDate; 
   console.log("city", city);
   console.log("hotelName", hotelName);
-  
+  console.log('startDate', startDate);
+  console.log('endDate', endDate);
 
   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city, checkDate, checkOutDate
     FROM hotel_table
@@ -1240,21 +1274,20 @@ app.post("/hotelList/search", (req, res) => {
     }
     queryParams.push(`%${hotelName}%`); 
   }
-  
-  // if (startDate && endDate) {
-  //   if (queryParams.length > 0) {
-  //     sqlQuery += ` AND hotel_table.checkDate >= ? AND hotel_table.checkOutDate <= ?`; 
-  //   } else {
-  //     sqlQuery += ` WHERE hotel_table.checkDate >= ? AND hotel_table.checkOutDate <= ?`;
-  //   }
-  //   queryParams.push(startDate, endDate); 
-  // }
-  
+
+  if (startDate && endDate) {
+    if (queryParams.length > 0) {
+      sqlQuery += ` AND (hotel_table.checkDate <= ? AND hotel_table.checkOutDate >= ?)`; 
+    } else {
+      sqlQuery += ` WHERE (hotel_table.checkDate <= ? AND hotel_table.checkOutDate >= ?)`;
+    }
+    queryParams.push(startDate, endDate);
+  }
 
   connection.query(sqlQuery, queryParams, (err, results) => {
     if (err) {
       console.error("查詢失敗:", err);
-      res.status(500).send("服務器錯誤");
+      res.status(500).send("錯誤");
       return;
     }
     res.json(results);
