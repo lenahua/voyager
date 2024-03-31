@@ -252,6 +252,7 @@ function Order({
       console.log("Ratings submitted successfully", response.data);
       setFormOpen(false);
       setIsRated(true);
+      handleClose();
     } catch (error) {
       console.error("Error submitting ratings:", error);
     }
@@ -357,12 +358,20 @@ function Order({
                       </button>
                       <Modal
                         open={openForm}
-                        onClose={handleCloseForm}
+                        onClose={() => {
+                          handleCloseForm();
+                          handleClose();
+                        }}
                         hotelName={hotelName}
                       >
                         <div style={style}>
                           <form>
-                            <div style={{ padding: "30px 15px 10px 15px" }}>
+                            <div
+                              style={{
+                                padding: "30px 15px 10px 15px",
+                                width: "680px",
+                              }}
+                            >
                               <div>
                                 <h2
                                   style={{
