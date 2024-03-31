@@ -963,11 +963,11 @@ app.get("/hotelInfo/:id", function (req, res) {
           });
           // console.log("clean"+ totalClean)
 
-          let avgClean = totalClean / rateRows.length;
-          let avgPosition = totalPosition / rateRows.length;
-          let avgService = totalService / rateRows.length;
-          let avgFacility = totalFacility / rateRows.length;
-          let avgAll = (avgClean + avgPosition + avgService + avgFacility) / 4;
+          let avgClean = Math.floor(totalClean / rateRows.length);
+          let avgPosition = Math.floor(totalPosition / rateRows.length);
+          let avgService = Math.floor(totalService / rateRows.length);
+          let avgFacility = Math.floor(totalFacility / rateRows.length);
+          let avgAll = Math.floor((avgClean + avgPosition + avgService + avgFacility) / 4);
           // console.log("avgAll"+ avgAll)
           const avgRates = {
             avgClean,
