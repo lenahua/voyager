@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap';
 import '../../css/homePage/Slide2.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -86,7 +87,7 @@ class Slide2 extends Component {
                             <h1>台北</h1>
                             <h3>板橋凱撒大飯店</h3>
                             <p>板橋凱撒大飯店距離板橋火車站3分鐘步行路程，設有健身中心和享有獨特城市景觀的屋頂室外游泳池。客人可以光顧飯店內的餐廳和酒吧。</p>
-                            <a href="#" className="btnSlide">查看更多台北飯店</a>
+                            <a href="/hotelList/taipei" className="btnSlide">查看更多台北飯店</a>
                         </div>
                     </div>
                     <div className="slide2" id="slide5">
@@ -95,7 +96,7 @@ class Slide2 extends Component {
                             <h1>台中</h1>
                             <h3>台中裕元花園酒店</h3>
                             <p>台中裕元花園酒店位於台中市，這家奢華的 5 星級住宿設有室內外游泳池與私人花園，並提供舒緩身心的 SPA 課程。住宿距離台灣高鐵接駁巴士站僅 2 分鐘步行路程。全館提供免費 WiFi。</p>
-                            <a href="#" className="btnSlide">查看更多台中飯店</a>
+                            <a href="/hotelList/taichung" className="btnSlide">查看更多台中飯店</a>
                         </div>
                     </div>
                     
