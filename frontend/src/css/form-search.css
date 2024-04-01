@@ -55,6 +55,9 @@ body {
     left: 730px;
     margin-top: 20px;
 }
+.page-icon {
+    margin-left: 400px;
+}
 
 .indate {
     position: relative;
@@ -216,3 +219,11 @@ width: 800px;
     background-color: white;
 }
 
+.navbar-plan {
+    overflow-y: auto;
+    max-height: 1300px;
+    padding: 20px;
+    box-shadow: inset;
+   
+
+}

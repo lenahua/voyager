@@ -320,7 +320,7 @@ import axios from 'axios';
               </div> */}
             <div className='container overflow-hidden'>
               
-          <div className='row'>
+          <div className='row fs-5'>
               <div className="p-3 search-result ps-5 mb-0">
             <h4 className='ps-2 d-flex justify-content-between search-result'>
               <span className="text-primary city-result">
@@ -366,28 +366,28 @@ import axios from 'axios';
               <h5 className="">排列 :</h5>
               <span>
                 <span className="gap ps-2">|</span>
-                <a href="" className="gap-1">
+                <a href="" className="gap-1 text-decoration-none">
                   <i className="bi bi-hand-thumbs-up-fill ps-2"></i>
                   熱門度
                 </a>
               </span>
               <span>
                 <span className="gap ps-2">|</span>
-                <button className="gap-1 text-black link-like-button">
+                <button className="gap-1 text-black link-like-button text-decoration-none">
                 <i className="bi bi-fire ps-2"></i>
                   熱門程度
                 </button>
               </span>
               <span>
                 <span className="gap ps-2">|</span>
-                <button className="gap-1 text-black link-like-button" onClick={() => this.handleOptionClick('sortByPriceAsc')}>
+                <button className="gap-1 text-black link-like-button text-decoration-none" onClick={() => this.handleOptionClick('sortByPriceAsc')}>
                 <i className="bi bi-currency-dollar ps-2 "></i>
                   價格:低到高
                 </button>
               </span>
               <span>
                 <span className="gap ps-2">|</span>
-                <button className="gap-1 text-black link-like-button" onClick={() => this.handleOptionClick('sortByPriceDesc')}>
+                <button className="gap-1 text-black link-like-button text-decoration-none" onClick={() => this.handleOptionClick('sortByPriceDesc')}>
                 <i className="bi bi-currency-dollar ps-2"></i>
                   價格:高到低
                 </button>
