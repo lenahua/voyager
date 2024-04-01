@@ -268,15 +268,17 @@ class HotelOrderPage extends Component {
     }
     doClick = async () => {
         var dataToServer = {
-            Uid:this.state.userInfo[0].Uid,
+            Uid:this.props.userId,
             hotelId:this.state.hotel[0].hotel_id,
-            startDate:'2024-04-24',
-            endDate:'2024-04-26'
+            startDate:'2024-04-17',
+            endDate:'2024-04-18',
+            price: this.state.newPrice
+            // price: this.state.newPrice
         }
         console.log(dataToServer);
         await axios.post('http://localhost:8000/checkout/hotel/order', dataToServer);
-        alert("已完成訂單 點擊確定探索更多景點");
-        window.location = "/viewPage/台中市";
+        // alert("已完成訂單 點擊確定探索更多景點");
+        // window.location = "/viewPage/台中市";
         
     }
     changeSelectedCard = (e) => {

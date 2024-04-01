@@ -866,9 +866,10 @@ app.get("/checkout/hotel/:hotelId/:roomId", function (req, res) {
 //點擊完成訂單傳送訂單資訊到訂單記錄
 app.post("/checkout/hotel/order", function (req, res) {
   connection.query(
-    "insert into `orderinfo` ( Uid, hotelId, startDate, endDate) values (?, ?, ?, ?)",
-    [req.body.Uid, req.body.hotelId, req.body.startDate, req.body.endDate],
+    "insert into `orderinfo` ( Uid, hotelId, startDate, endDate, price) values (?, ?, ?, ?, ?)",
+    [req.body.Uid, req.body.hotelId, req.body.startDate, req.body.endDate,req.body.price],
     function (err, rows) {
+      console.log(req.body);
       res.send(JSON.stringify(req.body));
     }
   );
