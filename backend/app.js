@@ -941,7 +941,7 @@ app.get("/hotelInfo/:id", function (req, res) {
   const getUserReviews = () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ?",
+        "SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ? ORDER BY orderId DESC",
         [hotelId],
         function (err, reviewRows) {
           if (err) reject("Error fetching user reviews");
@@ -986,12 +986,20 @@ app.get("/hotelInfo/:id", function (req, res) {
           });
           // console.log("clean"+ totalClean)
 
-          let avgClean = Math.floor(totalClean / rateRows.length);
-          let avgPosition = Math.floor(totalPosition / rateRows.length);
-          let avgService = Math.floor(totalService / rateRows.length);
-          let avgFacility = Math.floor(totalFacility / rateRows.length);
-          let avgAll = Math.floor((avgClean + avgPosition + avgService + avgFacility) / 4);
-          // console.log("avgAll"+ avgAll)
+          let avgClean = (totalClean / rateRows.length).toFixed(1);
+          let avgPosition = (totalPosition / rateRows.length).toFixed(1);
+          let avgService = (totalService / rateRows.length).toFixed(1);
+          let avgFacility = (totalFacility / rateRows.length).toFixed(1);
+
+          // 先將平均數轉為字串，在進行平均的加總計算
+          let avgCleanNumeric = parseFloat(avgClean);
+          let avgPositionNumeric = parseFloat(avgPosition);
+          let avgServiceNumeric = parseFloat(avgService);
+          let avgFacilityNumeric = parseFloat(avgFacility);
+
+          let avgAll = ((avgCleanNumeric + avgPositionNumeric + avgServiceNumeric + avgFacilityNumeric) / 4).toFixed(1);
+          // let avgAllNum = parseFloat(avgAll);
+          console.log("avgAll"+ avgAll)
           const avgRates = {
             avgClean,
             avgPosition,
