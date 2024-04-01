@@ -366,7 +366,7 @@ import axios from 'axios';
               <h5 className="">排列 :</h5>
               <span>
                 <span className="gap ps-2">|</span>
-                <a href="＃" className="gap-1">
+                <a href="" className="gap-1">
                   <i className="bi bi-hand-thumbs-up-fill ps-2"></i>
                   熱門度
                 </a>
@@ -382,14 +382,14 @@ import axios from 'axios';
                 <span className="gap ps-2">|</span>
                 <button className="gap-1 text-black link-like-button" onClick={() => this.handleOptionClick('sortByPriceAsc')}>
                 <i className="bi bi-currency-dollar ps-2 "></i>
-                  價格:高到低
+                  價格:低到高
                 </button>
               </span>
               <span>
                 <span className="gap ps-2">|</span>
                 <button className="gap-1 text-black link-like-button" onClick={() => this.handleOptionClick('sortByPriceDesc')}>
                 <i className="bi bi-currency-dollar ps-2"></i>
-                  價格:低到高
+                  價格:高到低
                 </button>
               </span>
             </div>
@@ -461,13 +461,13 @@ import axios from 'axios';
                     </button>
             
              
-                    <button className='btn' onClick={() => this.toggleRoomTypeSelection('標準雙人')}>
+                    <button className='btn' onClick={() => this.toggleRoomTypeSelection('雙床房')}>
                         <input 
                             type="checkbox" 
-                            value="標準雙人" 
-                            checked={selectedRoomTypes.includes('標準雙人')}
+                            value="雙床房" 
+                            checked={selectedRoomTypes.includes('雙床房')}
                             onChange={() => {}} 
-                        /> 標準雙人房
+                        /> 雙床房
                     </button>
                
                     <button className='btn' onClick={() => this.toggleRoomTypeSelection('三人房')}>
@@ -664,7 +664,7 @@ import axios from 'axios';
                     <h3 className="card-title p-0 font-title">{hotel.hotel_name}</h3>
                     <div className='justify-content-between mb-4'>
                       <button className='p-2 text-decoration-none link-like-button'>{hotel.adress}</button>
-                      <button className='text-decoration-none link-like-button'>{hotel.facility}</button>
+                      <button className='text-decoration-none link-like-button'></button>
                       <button className='text-decoration-none link-like-button'></button>
                     </div>
                     <div className='left-line'>
