@@ -91,11 +91,9 @@ class Content extends React.Component{
 
                     <div className="sortBox d-flex justify-content-between px-0">
                         <button className="badge border-0 text-dark" 
-                                style={{ fontSize: '20px', padding: '10px 16px' }}
                                 onClick={()=>{this.changeSort('new');}}
                         >最新</button>
                         <button className="badge border-0 text-dark" 
-                                style={{ fontSize: '20px', padding: '10px 16px' }}
                                 onClick={()=>{this.changeSort('popular');}}        
                         >熱門</button>
                     </div>
@@ -179,6 +177,7 @@ class Container extends React.Component{
                 <Content dataAry={this.state.dataAry} handleModal={this.handleModal}
                          handleSarchText={this.handleSarchText} 
                          getSortString = {this.getSortString}
+                         listSort = {this.state.listSort}
                 />
             </div>
         );

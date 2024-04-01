@@ -54,10 +54,17 @@ class myModal extends React.Component {
         }
     }
     //轉換日期格式:UTC轉當地時間
-    formatTime = (utcDateString)=>{ 
+    formatTimeForComment = (utcDateString)=>{ 
         const utcDate = new Date(utcDateString);
         const localDateString = utcDate.toLocaleString();
         return localDateString;
+    }
+    formatTimeForPost = (utcDateString) => { 
+        const utcDate = new Date(utcDateString);
+        const year = utcDate.getFullYear();
+        const month = (utcDate.getMonth() + 1); 
+        const day = utcDate.getDate(); 
+        return `${year}/${month < 10 ? '0' + month : month}/${day < 10 ? '0' + day : day}`; 
     }
     render() { 
         //貼文內容換行字串處理
@@ -98,9 +105,9 @@ class myModal extends React.Component {
                     
                     <div className="postArea col-12 col-sm-6 d-flex flex-column px-2 h-100 flex-shrink-1">
                         
-                        <div className="postHead d-flex align-items-center justify-content-between border-bottom border-secondary py-2">
-                            <h3 className="mb-0">{(this.props.info.length)?this.props.info[0].title:""}</h3>
-
+                        <div className="postHead d-flex align-items-end justify-content-between border-bottom border-secondary py-2">
+                            <h3 className="mb-0 d-inline-block">{(this.props.info.length)?this.props.info[0].title:""}</h3>
+                            <p className='mb-0'>{(this.props.info.length)?this.formatTimeForPost(this.props.info[0].postdate):""}</p>        
                         </div>
 
                         <div className="postBody h-100 px-2">
@@ -133,7 +140,7 @@ class myModal extends React.Component {
                                         {this.props.tag.map(tag=>{
                                             return(
                                                 <React.Fragment>
-                                                    <a href="">#{tag.tag}</a>
+                                                    <a href="" className='me-1'>#{tag.tag}</a>
                                                 </React.Fragment>
                                             )
                                         })}
@@ -163,7 +170,7 @@ class myModal extends React.Component {
                                                     {comment.comment}
                                                 </p>
                                                 <p>
-                                                    <span className="commentTime me-2">{this.formatTime(comment.commenttime)}</span>
+                                                    <span className="commentTime me-2">{this.formatTimeForComment(comment.commenttime)}</span>
                                                     <span className="likeCounter ms-1">{comment.likecounter}個讚</span>
                                                     <span className="commentCounter ms-1">回覆</span>
                                                     
