@@ -103,7 +103,7 @@
 }
 .trainLogo{
     position: absolute;
-    top: 119.8%;
+    top: 107.8%;
     left: -100px;
     animation: moveTrain 10s linear infinite;
 }
@@ -118,7 +118,7 @@
 /* register train */
 .trainLogoRe{
     position: absolute;
-    top: 134%;
+    top: 120.6%;
     /* bottom: 20px; */
     left: -100px;
     animation: moveTrain 10s linear infinite;
