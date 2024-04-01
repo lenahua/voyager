@@ -26,7 +26,7 @@ class HotelOrderPage extends Component {
                             <div className="p-2  bd-highlight">
                                 <h4>您的訂房資訊</h4>
                                 <div className="d-flex mt-2">
-                                    <div className="me-auto "><p className='fw-bold'>{this.state.hotel[0].name}</p></div> {/*ps-2*/}
+                                    <div className="me-auto "><h5 className='fw-bold'>{this.state.hotel[0].name}</h5></div> {/*ps-2*/}
                                     {/* <div>61則評語</div>
                                     <div className="bg-info ms-4 p-2 rounded-2">4.5</div> */}
                                 </div>
@@ -35,20 +35,20 @@ class HotelOrderPage extends Component {
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>入住時間</h3>
-                                <p className="ps-2">2024年4月15日 (一)</p>
+                                <h5 className="ps-2">2024年4月15日 (一)</h5>
                                 <p className="ps-2">15:00—21:00</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                             <h3>退房時間</h3>
-                                <p className="ps-2">2024年4月16日 (二)</p>
+                                <h5 className="ps-2">2024年4月16日 (二)</h5>
                                 <p className="ps-2">11:00前</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>已選擇：</h3>
                                 <h5>{this.state.roomType[0].room_type}</h5>
-                                <h4 className="text-primary">共入住一晚</h4>
+                                <h4 className="text-primary">共兩房</h4>
                                 <button className="btn btn-primary btn-sm my-3" type="button" onClick={()=>{window.location="/hotelInfo/1";}}>更改選擇</button>
                                 <h4 className="text-primary">總金額：{this.state.newPrice}</h4>
                             </div>
