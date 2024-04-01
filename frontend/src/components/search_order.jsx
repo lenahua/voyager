@@ -270,11 +270,13 @@ import axios from 'axios';
                 <FormControl
                   type="text"
                   placeholder="搜尋目的地"
-                  className="search-color search-input"
+                  className="search-color search-input me-1"
                   aria-label="城市"
                   value={searchQuery}
                   onChange={this.handleSearchChange}
                 />
+                </div>
+                <div>
                 <FormControl
                 type="text"
                 placeholder="搜尋旅館名稱" // 
@@ -667,11 +669,11 @@ import axios from 'axios';
                     </div>
                     <div className='left-line'>
                       <span className='p-2'>{hotel.room_type}</span>
-                      <span className='p-2'>24晚</span>
+                      <span className='p-2'></span>
                       <br></br>
-                      <span className='p-2'>剩餘房間</span>
+                      <span className='p-2'>{hotel.facility}</span>
                       <span className="land-mark">
-                        <i className="bi bi-calendar ps-3"></i><button className="text-link link-hover link-like-button" >預約日期</button>
+                        <i className="bi bi-calendar ps-3"></i><button className="text-link link-hover link-like-button" ></button>
                       </span>
                       <div className='p-2'>${hotel.price}</div>
                     </div>
