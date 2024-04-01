@@ -270,8 +270,8 @@ class HotelOrderPage extends Component {
         var dataToServer = {
             Uid:this.props.userId,
             hotelId:this.state.hotel[0].hotel_id,
-            startDate:'2024-04-17',
-            endDate:'2024-04-18',
+            startDate:'2024-05-29',
+            endDate:'2024-05-30',
             price: this.state.newPrice
             // price: this.state.newPrice
         }
