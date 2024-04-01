@@ -35,13 +35,13 @@ class HotelOrderPage extends Component {
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>入住時間</h3>
-                                <p className="ps-2">2024年2月19日 (一)</p>
+                                <p className="ps-2">2024年5月29日 (三)</p>
                                 <p className="ps-2">15:00—21:00</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                             <h3>退房時間</h3>
-                                <p className="ps-2">2024年2月21日 (三)</p>
+                                <p className="ps-2">2024年5月30日 (四)</p>
                                 <p className="ps-2">11:00前</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
@@ -277,8 +277,8 @@ class HotelOrderPage extends Component {
         }
         console.log(dataToServer);
         await axios.post('http://localhost:8000/checkout/hotel/order', dataToServer);
-        // alert("已完成訂單 點擊確定探索更多景點");
-        // window.location = "/viewPage/台中市";
+        alert("已完成訂單 點擊確定探索更多景點");
+        window.location = "/viewPage/台中市";
         
     }
     changeSelectedCard = (e) => {
