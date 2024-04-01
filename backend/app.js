@@ -1165,7 +1165,8 @@ app.get("/hotelList/hotels", (req, res) => {
     ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
     JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
     JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id
-    GROUP BY hotel_table.hotel_id`; // 加 GROUP BY 返回每個飯店第一筆資料
+    GROUP BY hotel_table.hotel_id  
+    ORDER by hotel_id DESC`;  // 加 GROUP BY 返回每個飯店第一筆資料
 
   let queryParams = [];
 
@@ -1257,14 +1258,19 @@ app.post("/hotelList/search", (req, res) => {
   // console.log('endDate', endDate);
 
   let sqlQuery = `SELECT hotel_table.*, hotel_photos.photo_url, room_type, room_people, bed_count, price, city
-    FROM hotel_table
-    JOIN (
-    SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
-    FROM hotel_photos
-    GROUP BY hotel_id
-    ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
-    JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
-    JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id`;
+  FROM hotel_table
+  JOIN (
+  SELECT hotel_id, MIN(photo_id) AS minimum_photo_id
+  FROM hotel_photos
+  GROUP BY hotel_id
+  ) AS first_photo ON hotel_table.hotel_id = first_photo.hotel_id
+  JOIN hotel_photos ON first_photo.minimum_photo_id = hotel_photos.photo_id
+  JOIN (
+  SELECT hotel_id, MIN(price) AS min_price
+  FROM hotel_room
+  GROUP BY hotel_id
+  ) AS min_price_room ON hotel_table.hotel_id = min_price_room.hotel_id
+  JOIN hotel_room ON hotel_table.hotel_id = hotel_room.hotel_id AND hotel_room.price = min_price_room.min_price`;
 
   let queryParams = [];
 

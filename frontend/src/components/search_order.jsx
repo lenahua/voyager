@@ -25,12 +25,13 @@ import axios from 'axios';
         city: "搜尋目的地",
         date: "入住日期",
         people: "人數",
-        dates: [new Date(), new Date()],
+        dates: [null, null],
         hotels: [],
         searchQuery: '',
 
       };
       this.wrapperRef = React.createRef(); //用於點擊外部關閉下拉選單
+      this.handleDateChange = this.handleDateChange.bind(this);
     }
     // 點擊下拉按鈕切換選單顯示狀態
     toggleDropdown = () => {
@@ -213,10 +214,19 @@ import axios from 'axios';
     // endDate: dates[1]
   })
     .then(response => {
-      this.setState({ hotels: response.data });
+      this.setState({ hotels: response.data,
+                      showDates: true });
+      
     })
     .catch(error => console.error('Error fetching hotels:', error));
 };
+
+handleDateChange(dates) {
+  // 更新日期狀態
+  this.setState({
+    dates: dates,
+  });
+}
 
   onChange = (update) => {
     this.setState({ dates: update });
@@ -225,7 +235,7 @@ import axios from 'axios';
 
     render() { 
       const { hotels, rooms, selectedCities, selectedRoomTypes, selectedPriceRanges, selectedPeople, selectFacility, showCityDropdown} = this.state;
-      const { city, date, people, dates, searchQuery, hotelName} = this.state;
+      const { city, date, people, dates, searchQuery, hotelName, showDates} = this.state;
       const parsePrice = (priceStr) => {
         // 移除字符串中的千位分隔符（,）轉換為數字
         return Number(priceStr.replace(/,/g, ''));
@@ -289,8 +299,8 @@ import axios from 'axios';
               </div>
               <div className="button-container position-relative">
                 <DatePicker
-                  type=""
                   className="search-color"
+                  placeholderText="查詢日期"
                   selectsRange={true}
                   startDate={dates[0]}
                   endDate={dates[1]}
@@ -672,9 +682,11 @@ import axios from 'axios';
                       <span className='p-2'></span>
                       <br></br>
                       <span className='p-2'>{hotel.facility}</span>
-                      <span className="land-mark">
-                        <i className="bi bi-calendar ps-3"></i><button className="text-link link-hover link-like-button" ></button>
-                      </span>
+                      <div className="land-mark">
+                        <i className="bi bi-calendar ps-3 "></i>
+                        {showDates && dates[0] && <span className='ps-3 text-decoration-none text-dark'>{dates[0].toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}~</span>}                       
+                        {showDates && dates[1] && <span className='text-decoration-none text-dark'>{dates[1].toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}</span>}
+                      </div>
                       <div className='p-2'>${hotel.price}</div>
                     </div>
                     <div className="btn btn-primary room-info">

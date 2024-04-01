@@ -219,11 +219,18 @@ width: 800px;
     background-color: white;
 }
 
-/* .navbar-plan {
-    overflow-y: auto;
-    max-height: 1300px;
-    padding: 20px;
-    box-shadow: inset;
-   
-
-} */
+.react-datepicker__input-container {
+    position: relative;
+  }
+  
+  .react-datepicker__input-container input {
+    padding-left: 15px; 
+  }
+  
+  .react-datepicker__input-container::before {
+    position: absolute;
+    left: 5px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    color: #aaa; 
+  }
