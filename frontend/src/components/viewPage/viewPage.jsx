@@ -186,7 +186,7 @@ class Container extends React.Component{
     
     componentDidMount = async() =>{
         localStorage.setItem("previouspath", window.location.pathname) 
-        let result = await axios.get("http://localhost:8000/viewPage/imgList");
+        let result = await axios.get(`http://localhost:8000/viewPage/locationFilter?lname=${this.state.location}&tag=${this.state.sarchText}`);
         let newState = {...this.state};
         newState.dataAry = result.data;
         newState.loginUid = this.props.loginUid ; 

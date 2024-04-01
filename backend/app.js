@@ -103,12 +103,16 @@ app.get("/viewPage/allPost", function (req, res) {
 
 //取得每篇貼文的第一張照片及like總數及回覆總數
 app.get("/viewPage/imgList", function (req, res) {
+
+  let lname = req.query.location === "所有地區" ? `%` : `${req.query.location}`;
+  console.log(lname);
   connection.query(
     `SELECT imgdata.postid , imgdata.img, postliketable.listTotalLike,postcomment.totalcomment,imgdata.postdate
     FROM (
         SELECT MIN(id) AS imgid, post.postid, imgdata.img,post.postdate
 		FROM imgdata,post
-		WHERE post.postid = imgdata.postid
+		WHERE post.postid = imgdata.postid  AND
+		post.location = ?
 		GROUP BY postid
     ) AS imgdata
     LEFT JOIN (
@@ -125,7 +129,7 @@ app.get("/viewPage/imgList", function (req, res) {
     ) AS postcomment
     ON imgdata.postid = postcomment.postid
 	ORDER BY imgdata.postdate DESC;`,
-    [],
+    [lname],
     function (err, result) {
       result = changeToBase64(result);
       res.send(result);
