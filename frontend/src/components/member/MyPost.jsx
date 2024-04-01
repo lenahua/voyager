@@ -229,7 +229,7 @@ function MyPosts({ userId }) {
               my: "auto",
               mx: "auto",
               position: "fixed",
-              top: "50%",
+              top: "45%",
               transform: "translate(-50%, -50%)",
               bgcolor: "background.paper",
               boxShadow: 24,
