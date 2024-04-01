@@ -35,13 +35,13 @@ class HotelOrderPage extends Component {
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>入住時間</h3>
-                                <p className="ps-2">2024年5月29日 (三)</p>
+                                <p className="ps-2">2024年4月15日 (一)</p>
                                 <p className="ps-2">15:00—21:00</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                             <h3>退房時間</h3>
-                                <p className="ps-2">2024年5月30日 (四)</p>
+                                <p className="ps-2">2024年4月16日 (二)</p>
                                 <p className="ps-2">11:00前</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
@@ -270,8 +270,8 @@ class HotelOrderPage extends Component {
         var dataToServer = {
             Uid:this.props.userId,
             hotelId:this.state.hotel[0].hotel_id,
-            startDate:'2024-05-29',
-            endDate:'2024-05-30',
+            startDate:'2024-04-15',
+            endDate:'2024-04-16',
             price: this.state.newPrice
             // price: this.state.newPrice
         }
