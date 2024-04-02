@@ -180,7 +180,7 @@ function MyPosts({ userId }) {
               my: "auto",
               mx: "auto",
               position: "fixed",
-              top: "20%",
+              top: "50%",
               transform: "translate(-50%, -50%)",
               bgcolor: "background.paper",
               boxShadow: 24,
