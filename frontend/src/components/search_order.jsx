@@ -381,13 +381,7 @@ handleDateChange(dates) {
                   熱門度
                 </a>
               </span>
-              <span>
-                <span className="gap ps-2">|</span>
-                <button className="gap-1 text-black link-like-button text-decoration-none">
-                <i className="bi bi-fire ps-2"></i>
-                  熱門程度
-                </button>
-              </span>
+              
               <span>
                 <span className="gap ps-2">|</span>
                 <button className="gap-1 text-black link-like-button text-decoration-none" onClick={() => this.handleOptionClick('sortByPriceAsc')}>
