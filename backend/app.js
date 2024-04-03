@@ -941,7 +941,7 @@ app.get("/hotelInfo/:id", function (req, res) {
   const getUserReviews = () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ? ORDER BY orderId DESC",
+        "SELECT orderinfo.*, userinfo.name FROM orderinfo JOIN userinfo ON orderinfo.Uid = userinfo.Uid WHERE orderinfo.hotelId = ? AND orderinfo.ratetime IS NOT NULL  ORDER BY orderId DESC",
         [hotelId],
         function (err, reviewRows) {
           if (err) reject("Error fetching user reviews");
