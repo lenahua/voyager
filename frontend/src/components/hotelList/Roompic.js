@@ -95,8 +95,17 @@ const Roompic = ({id, isOpen, onClose, selectRoomPic, selectRoomData, selectRoom
                 <div className='bottomMiddle'>
                 {selectRoomData[0].bed_type}<IoIosBed/>
                 </div>
+                <div className='roomNumSelect'>
+                    <p>選擇房間數量</p>
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+                
                 <Link to={`/hotelOrder/${id}/${selectRoom}/${totalPrice}`}>
-                <button className='bookingButton' >立即預訂</button>
+                    <button className='bookingButton' >立即預訂</button>
                 </Link>
             </div>
         </div>
