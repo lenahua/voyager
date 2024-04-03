@@ -151,7 +151,17 @@
     margin-top: 20px;
   }
 }
+.private {
+  color: #3c93d6;
+}
 
+.public {
+  color: #ff914d;
+}
+
+.statusbackground {
+  background-color: black;
+}
 /* 中型设备（平板电脑） */
 @media (min-width: 768px) and (max-width: 991.98px) {
   .infoBox {

@@ -181,3 +181,13 @@
   padding: 5px 15px;
   margin-top: 10px;
 }
+
+.rate-icon {
+  font-size: 23px;
+  margin-left: 10px;
+  align-items: baseline;
+}
+
+.rate-and-icon {
+  display: flex;
+}
