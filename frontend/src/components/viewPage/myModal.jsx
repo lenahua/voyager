@@ -56,7 +56,8 @@ class myModal extends React.Component {
     //轉換日期格式:UTC轉當地時間
     formatTimeForComment = (utcDateString)=>{ 
         const utcDate = new Date(utcDateString);
-        const localDateString = utcDate.toLocaleString();
+        let localDateString = utcDate.toLocaleString();
+        localDateString = localDateString.replace(/\//g, '-');
         return localDateString;
     }
     formatTimeForPost = (utcDateString) => { 
@@ -64,7 +65,7 @@ class myModal extends React.Component {
         const year = utcDate.getFullYear();
         const month = (utcDate.getMonth() + 1); 
         const day = utcDate.getDate(); 
-        return `${year}/${month < 10 ? '0' + month : month}/${day < 10 ? '0' + day : day}`; 
+        return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`; 
     }
     render() { 
         //貼文內容換行字串處理
