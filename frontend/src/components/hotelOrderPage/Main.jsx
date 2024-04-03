@@ -89,7 +89,7 @@ class HotelOrderPage extends Component {
                                 </div>
                                 <div className="row mt-3">
                                     <div className='col-6'>
-                                        <p>國家/地區 *</p>
+                                        <p className="fw-bold fs-4">國家/地區 *</p>
                                         <select className="form-select form-select-md">
                                         <option value="0">台灣</option>
                                         <option value="1">日本</option>
@@ -123,7 +123,7 @@ class HotelOrderPage extends Component {
                             <form>
                                 <div className="row mt-3">
                                     <div className="col-8">
-                                        <label htmlFor="Credit" className="form-label">選擇其他信用卡/金融卡 </label>
+                                        <label htmlFor="Credit" className="form-label">選擇信用卡/金融卡 </label>
                                         <select className="form-select form-select-md" onChange={this.changeSelectedCard}>
                                             {
                                                 this.state.creditCard.map((card, index) => (
@@ -145,7 +145,7 @@ class HotelOrderPage extends Component {
                                 </div>
                                 <div className="row mt-3">
                                     <div className='col-6'>
-                                        <p>卡別 *</p>
+                                        <p className="fw-bold fs-4">卡別 *</p>
                                         <select className="form-select form-select-md" value={this.state.creditCard[this.state.selectIndex].cardType} onChange={this.changeCardType}>
                                             <option value="Visa">Visa</option>
                                             <option value="JCB">JCB</option>
@@ -172,7 +172,7 @@ class HotelOrderPage extends Component {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-6">
-                                        <p>有效期限 月份 *</p>
+                                        <p className="fw-bold fs-4">有效期限 月份 *</p>
                                         <select className="form-select form-select-md" value={this.state.date[this.state.selectIndex][1]} onChange={this.changeMonth}>
                                             <option value="01">01</option>   
                                             <option value="02">02</option>   
@@ -189,7 +189,7 @@ class HotelOrderPage extends Component {
                                         </select>
                                     </div>
                                     <div className="col-3 ">
-                                        <p>年份 *</p>
+                                        <p className="fw-bold fs-4">年份 *</p>
                                         <select className="form-select form-select-md" value={this.state.date[this.state.selectIndex][0]} onChange={this.changeYear}>
                                             <option value="2024">2024</option>   
                                             <option value="2025">2025</option>   
