@@ -234,3 +234,9 @@ width: 800px;
     transform: translateY(-50%);
     color: #aaa; 
   }
+
+  .star {
+    color: gold; 
+    font-size: 20px; 
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }

@@ -8,7 +8,9 @@ import Slider from "react-slick";
 import "../css/viewPage.css";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 import { useForm } from "react-hook-form";
+
 function MyPosts({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);

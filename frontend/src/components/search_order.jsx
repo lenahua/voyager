@@ -28,6 +28,7 @@ import axios from 'axios';
         dates: [null, null],
         hotels: [],
         searchQuery: '',
+      
 
       };
       this.wrapperRef = React.createRef(); //用於點擊外部關閉下拉選單
@@ -76,7 +77,9 @@ import axios from 'axios';
       this.setState({ hotels: newHotels });
     };
 
-
+    handleDateChange = (dates) => {
+      this.setState({ dates: dates });
+    };
      
     toggleCitySelection = (city) => {   //城市
       const { selectedCities } = this.state;
@@ -145,7 +148,7 @@ import axios from 'axios';
       }
     }
      
-    sortByPrice = (direction) => {
+    sortByPrice = (direction) => { //價格升序
       const { hotels } = this.state;
       const sortedHotels = hotels.slice().sort((a, b) => {
         // 假設 price 是一個數字，如果是字符串形式的價格，需要先轉換為數字
@@ -157,6 +160,30 @@ import axios from 'axios';
       this.setState({ hotels: sortedHotels });
     };
     
+    sortByHot = (order) => { // 熱門度排序
+      const { hotels } = this.state; 
+      const sortedData = hotels.sort((a, b) => { 
+        if (order === '倒序') {       
+          return b.hot - a.hot;
+        } else {
+          return a.hot - b.hot;
+          
+        }
+      });
+      // 更新狀態以反映排序後的數據
+      this.setState({ hotels: sortedData }); 
+    };
+
+    renderStars = (rating) => { // 熱門度轉為星星
+      const stars = [];
+      console.log(rating);
+      for (let i = 0; i < rating; i++) {
+        stars.push(<span key={i} className="star">&#9733;</span>);
+      }
+      return stars;
+    };
+  
+
     handleOptionClick = (action) => {
       // 關閉下拉選單
       this.setState({ showDropdown: false }, () => {
@@ -168,6 +195,8 @@ import axios from 'axios';
           case 'sortByPriceDesc':
             this.sortByPrice('降序');
             break;
+            case 'sortByHot':
+              this.sortByHot('倒序');
           // 可以添加更多case來處理其他情況
           default:
             break;
@@ -227,15 +256,16 @@ handleDateChange(dates) {
     dates: dates,
   });
 }
-
+ 
   onChange = (update) => {
     this.setState({ dates: update });
   };
     
 
     render() { 
-      const { hotels, rooms, selectedCities, selectedRoomTypes, selectedPriceRanges, selectedPeople, selectFacility, showCityDropdown} = this.state;
-      const { city, date, people, dates, searchQuery, hotelName, showDates} = this.state;
+      const { hotels, rooms, selectedCities, selectedRoomTypes, selectedPriceRanges, selectedPeople, selectFacility, showCityDropdown, renderStars} = this.state;
+      const { city, date, people, dates, searchQuery, hotelName, showDates, stars} = this.state;
+      const { hot } = this.props;
       const parsePrice = (priceStr) => {
         // 移除字符串中的千位分隔符（,）轉換為數字
         return Number(priceStr.replace(/,/g, ''));
@@ -307,6 +337,7 @@ handleDateChange(dates) {
                   onChange={this.handleDateChange}
                   minDate={new Date()}
                   onClick={this.toggleClass}
+                  dateFormat="yyyy-MM-dd"
                 />
               </div>
               <Button variant="btn btn-primary button-radius button-search" onClick={this.handleSearch}>搜尋</Button>
@@ -365,6 +396,7 @@ handleDateChange(dates) {
                 </button>
                 {this.state.showDropdown && (
                   <div className="dropdown-menu hot-option">
+                    <a href="#" className="dropdown-item" onClick={() => this.handleOptionClick('sortByHot')}>熱門排序高到低</a>
                     <a href="#" className="dropdown-item" onClick={() => this.handleOptionClick('sortByPriceAsc')}>價格排序低到高</a>
                     <a href="#" className="dropdown-item" onClick={() => this.handleOptionClick('sortByPriceDesc')}>價格排序高到低</a>
                   </div>
@@ -376,10 +408,10 @@ handleDateChange(dates) {
               <h5 className="">排列 :</h5>
               <span>
                 <span className="gap ps-2">|</span>
-                <a href="" className="gap-1 text-decoration-none">
+                <button  className="gap-1 text-black link-like-button text-decoration-none" onClick={() => this.handleOptionClick('sortByHot')}>
                   <i className="bi bi-hand-thumbs-up-fill ps-2"></i>
                   熱門度
-                </a>
+                </button>
               </span>
               
               <span>
@@ -665,7 +697,7 @@ handleDateChange(dates) {
                 </div>
                 <div className='col-md-8 position-relative'>
                   <div className="card-body p-1 m-0">
-                    <h3 className="card-title p-0 font-title">{hotel.hotel_name}</h3>
+                    <h3 className="card-title p-0 font-title">{hotel.hotel_name}</h3><span>{this.renderStars(hotel.hot)}</span>
                     <div className='justify-content-between mb-4'>
                       <button className='p-2 text-decoration-none link-like-button'>{hotel.adress}</button>
                       <button className='text-decoration-none link-like-button'></button>
@@ -678,8 +710,17 @@ handleDateChange(dates) {
                       <span className='p-2'>{hotel.facility}</span>
                       <div className="land-mark">
                         <i className="bi bi-calendar ps-3 "></i>
-                        {showDates && dates[0] && <span className='ps-3 text-decoration-none text-dark'>{dates[0].toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}~</span>}                       
-                        {showDates && dates[1] && <span className='text-decoration-none text-dark'>{dates[1].toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' })}</span>}
+                            {showDates && dates[0] && (
+                              <span className='ps-3 text-decoration-none text-dark'>                               
+                                {dates[0].toISOString().slice(0, 10)}        
+                                 －                      
+                              </span>
+                            )}                       
+                            {showDates && dates[1] && (
+                              <span className='text-decoration-none text-dark'>                 
+                                {dates[1].toISOString().slice(0, 10)}
+                              </span>
+                            )}
                       </div>
                       <div className='p-2'>${hotel.price}</div>
                     </div>
