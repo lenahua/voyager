@@ -176,7 +176,6 @@ import axios from 'axios';
 
     renderStars = (rating) => { // 熱門度轉為星星
       const stars = [];
-      console.log(rating);
       for (let i = 0; i < rating; i++) {
         stars.push(<span key={i} className="star">&#9733;</span>);
       }
@@ -722,7 +721,7 @@ handleDateChange(dates) {
                               </span>
                             )}
                       </div>
-                      <div className='p-2'>${hotel.price}</div>
+                      <div className='p-2'>TWD{hotel.price}</div>
                     </div>
                     <div className="btn btn-primary room-info">
                       <div className="btn-title">
