@@ -154,6 +154,15 @@ function ProfileInfo({ userId }) {
               >
                 <div className="profile-card">
                   <div className="form-box">
+                    <label className="form-label">帳號</label>
+                    <div className="form-edit" style={{ display: "none" }}>
+                      編輯
+                    </div>
+                  </div>
+                  <div className="profile-info">{userInfo[0].account}</div>
+                </div>
+                <div className="profile-card">
+                  <div className="form-box">
                     <label className="form-label">姓名</label>
                     <div className="form-edit" onClick={toggleEditMode}>
                       {editMode ? "取消" : "編輯"}
@@ -302,10 +311,10 @@ function ProfileInfo({ userId }) {
               <div className="col-lg-6 col-sm-12">
                 <div className="profile-card">
                   <div className="form-box">
-                    <label className="form-label">地址</label>
+                    <label className="form-label">性別</label>
                     <div className="form-edit">編輯</div>
                   </div>
-                  <div className="profile-info">{userInfo[0].address}</div>
+                  <div className="profile-info">{userInfo[0].gender}</div>
                 </div>
                 <div className="profile-card">
                   <div className="form-box">
@@ -322,6 +331,13 @@ function ProfileInfo({ userId }) {
                     <div className="form-edit">編輯</div>
                   </div>
                   <div className="profile-info">{userInfo[0].telephone}</div>
+                </div>
+                <div className="profile-card">
+                  <div className="form-box">
+                    <label className="form-label">地址</label>
+                    <div className="form-edit">編輯</div>
+                  </div>
+                  <div className="profile-info">{userInfo[0].address}</div>
                 </div>
               </div>
             </div>

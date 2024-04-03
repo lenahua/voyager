@@ -4,6 +4,8 @@ import "../../css/order.css";
 import "@fontsource/inter";
 import { Modal, TextField, Rating, Popover } from "@mui/material";
 import { Link } from "react-router-dom";
+import { FaStar, FaBroom, FaTools, FaSearchLocation } from "react-icons/fa";
+import { MdRoomService } from "react-icons/md";
 
 function OrdersList({ filterOrders, filterOption, hotelId }) {
   console.log("ori filterorder", filterOrders);
@@ -431,9 +433,13 @@ function Order({
                                 >
                                   <div className="row">
                                     <div className="rateForm col-6">
-                                      <h4 style={{ fontWeight: "bold" }}>
-                                        整潔度
-                                      </h4>
+                                      <div className="rate-and-icon">
+                                        <h4 style={{ fontWeight: "bold" }}>
+                                          整體整潔度
+                                        </h4>
+                                        <FaBroom className="rate-icon" />
+                                      </div>
+
                                       <div className="rateAnwser">
                                         <Rating
                                           name="clean"
@@ -456,9 +462,12 @@ function Order({
                                       </div>
                                     </div>
                                     <div className="rateForm col-6">
-                                      <h4 style={{ fontWeight: "bold" }}>
-                                        服務
-                                      </h4>
+                                      <div className="rate-and-icon">
+                                        <h4 style={{ fontWeight: "bold" }}>
+                                          飯店服務
+                                        </h4>
+                                        <MdRoomService className="rate-icon" />
+                                      </div>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="service"
@@ -483,9 +492,12 @@ function Order({
                                       </div>
                                     </div>
                                     <div className="rateForm col-6">
-                                      <h4 style={{ fontWeight: "bold" }}>
-                                        設備
-                                      </h4>
+                                      <div className="rate-and-icon">
+                                        <h4 style={{ fontWeight: "bold" }}>
+                                          設備與設施
+                                        </h4>
+                                        <FaTools className="rate-icon" />
+                                      </div>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="facility"
@@ -513,9 +525,12 @@ function Order({
                                       </div>
                                     </div>
                                     <div className="rateForm col-6">
-                                      <h4 style={{ fontWeight: "bold" }}>
-                                        位置
-                                      </h4>
+                                      <div className="rate-and-icon">
+                                        <h4 style={{ fontWeight: "bold" }}>
+                                          地理位置
+                                        </h4>
+                                        <FaSearchLocation className="rate-icon" />
+                                      </div>
                                       <div className="rateAnwser">
                                         <Rating
                                           name="position"
