@@ -35,13 +35,13 @@ class HotelOrderPage extends Component {
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>入住時間</h3>
-                                <h5 className="ps-2">2024年4月15日 (一)</h5>
+                                <h5 className="ps-2">2024-4-15 </h5>
                                 <p className="ps-2">15:00—21:00</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                             <h3>退房時間</h3>
-                                <h5 className="ps-2">2024年4月16日 (二)</h5>
+                                <h5 className="ps-2">2024-4-16 </h5>
                                 <p className="ps-2">11:00前</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
@@ -50,7 +50,7 @@ class HotelOrderPage extends Component {
                                 <h5>{this.state.roomType[0].room_type}</h5>
                                 <h4 className="text-primary">共兩房</h4>
                                 <button className="btn btn-primary btn-sm my-3" type="button" onClick={()=>{window.location="/hotelInfo/1";}}>更改選擇</button>
-                                <h4 className="text-primary">總金額：{this.state.newPrice}</h4>
+                                <h4 className="text-primary">總金額：TWD {this.state.newPrice}</h4>
                             </div>
                         </div>
                     </div>
@@ -121,6 +121,18 @@ class HotelOrderPage extends Component {
                             <div className="m-4">
                             <h4>請填寫信用卡資訊以保留訂房資格</h4>
                             <form>
+                                <div className="row mt-3">
+                                    <div className="col-8">
+                                        <label htmlFor="Credit" className="form-label">選擇其他信用卡/金融卡 </label>
+                                        <select className="form-select form-select-md" onChange={this.changeSelectedCard}>
+                                            {
+                                                this.state.creditCard.map((card, index) => (
+                                                    <option value={card.cardNumber} key={index}>{card.cardNumber}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
                                 <div className="my-3 row">
                                     <div className="col-6">
                                         <label htmlFor="CardHolder" className="form-label">持卡人姓名 *</label>
@@ -195,18 +207,7 @@ class HotelOrderPage extends Component {
                                         <input type="text" className="form-control" id="CVC" />
                                     </div>
                                 </div>
-                                <div className="row mt-3">
-                                    <div className="col-8">
-                                        <label htmlFor="Credit" className="form-label">選擇其他信用卡/金融卡 </label>
-                                        <select className="form-select form-select-md" onChange={this.changeSelectedCard}>
-                                            {
-                                                this.state.creditCard.map((card, index) => (
-                                                    <option value={card.cardNumber} key={index}>{card.cardNumber}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
+
                             </form>
                             <div className="row">
                                 <button className="btn btn-lg btn-outline-primary col-auto ms-auto me-3" onClick={this.doClick}>完成訂房</button>
