@@ -55,9 +55,20 @@ class myModal extends React.Component {
     }
     //轉換日期格式:UTC轉當地時間
     formatTimeForComment = (utcDateString)=>{ 
+        let localDateString = this.formatTimeForPost(utcDateString);
         const utcDate = new Date(utcDateString);
-        let localDateString = utcDate.toLocaleString();
-        localDateString = localDateString.replace(/\//g, '-');
+        let hours = utcDate.getHours();
+        var minutes = utcDate.getMinutes();
+        var seconds = utcDate.getSeconds();
+        
+        if(hours < 12){
+            localDateString += ` 
+            上午${hours < 10 ?'0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds: seconds}`;
+        }else{
+            hours -= 12; 
+            localDateString += ` 
+            下午${hours < 10 ?'0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds: seconds}`;
+        }
         return localDateString;
     }
     formatTimeForPost = (utcDateString) => { 
