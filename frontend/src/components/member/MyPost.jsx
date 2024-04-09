@@ -268,12 +268,6 @@ function Modalll({ isOpen, onClose, postid }) {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  const formatTime = (utcDateString) => {
-    const utcDate = new Date(utcDateString);
-    let localDateString = utcDate.toLocaleString();
-    localDateString = localDateString.replace(/\//g, "-");
-    return localDateString;
-  };
 
   const formatTimeForPost = (utcDateString) => {
     const utcDate = new Date(utcDateString);
@@ -283,6 +277,27 @@ function Modalll({ isOpen, onClose, postid }) {
     return `${year}-${month < 10 ? "0" + month : month}-${
       day < 10 ? "0" + day : day
     }`;
+  };
+  const formatTime = (utcDateString) => {
+    let localDateString = formatTimeForPost(utcDateString);
+    const utcDate = new Date(utcDateString);
+    let hours = utcDate.getHours();
+    var minutes = utcDate.getMinutes();
+    var seconds = utcDate.getSeconds();
+
+    if (hours < 12) {
+      localDateString += ` 
+        上午${hours < 10 ? "0" + hours : hours}:${
+        minutes < 10 ? "0" + minutes : minutes
+      }:${seconds < 10 ? "0" + seconds : seconds}`;
+    } else {
+      hours -= 12;
+      localDateString += ` 
+        下午${hours < 10 ? "0" + hours : hours}:${
+        minutes < 10 ? "0" + minutes : minutes
+      }:${seconds < 10 ? "0" + seconds : seconds}`;
+    }
+    return localDateString;
   };
 
   const [modalInfoAry, setModalInfoAry] = useState([]);
