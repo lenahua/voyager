@@ -86,7 +86,6 @@ function MyFavorites({ userId }) {
           return category;
         })
       );
-
       alert("收藏狀態已更改");
     } catch (error) {
       console.error("刪除收藏錯誤:", error);
@@ -150,14 +149,22 @@ function MyFavorites({ userId }) {
                 onClick={() => togglePrivate(category.categoryId)}
               >
                 {category.isPrivate ? (
-                  <i className="fa-solid fa-lock"></i>
+                  <div>
+                    <i
+                      className="fa-solid fa-lock"
+                      style={{ fontSize: "20px" }}
+                    ></i>
+                  </div>
                 ) : (
-                  <i className="fa-solid fa-unlock"></i>
+                  <i
+                    className="fa-solid fa-unlock"
+                    style={{ fontSize: "20px" }}
+                  ></i>
                 )}
               </div>
             )}
 
-            <div>{category.posts.length}</div>
+            <div style={{ fontSize: "20px" }}>{category.posts.length}</div>
           </div>
           <div className="gallery-row">
             {category.posts

@@ -40,7 +40,7 @@ const Review = ({review}) => {
                         <div className='guestCardTitle'>
                         <div className='guestCardTitleName'>
                             <FaUserCircle />
-                            <span>{data.name}</span>
+                            <span>{data.account}</span>
                         </div>
                         <span>{formateDate(data.ratetime)}</span>
                         </div>

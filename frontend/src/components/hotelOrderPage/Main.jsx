@@ -35,13 +35,13 @@ class HotelOrderPage extends Component {
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                                 <h3>入住時間</h3>
-                                <h5 className="ps-2">2024-4-15 </h5>
+                                <h5 className="ps-2">2024-04-15 </h5>
                                 <p className="ps-2">15:00—21:00</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>
                             <div className="p-2  bd-highlight mt-2">
                             <h3>退房時間</h3>
-                                <h5 className="ps-2">2024-4-16 </h5>
+                                <h5 className="ps-2">2024-04-16 </h5>
                                 <p className="ps-2">11:00前</p>
                             </div>
                             <div className="border-top border-3 mt-2 border-secondary"></div>

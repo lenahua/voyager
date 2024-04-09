@@ -44,7 +44,7 @@ const Room = ({room, onClick, handleSelect, totalPrice}) => {
                   
                   <div className='roomCardTitle' >
                     <h2 className='roomName' onClick={()=>onClick(roomdetail.room_id)} >{roomdetail.room_type}</h2>
-                    <p>每晚價錢${roomdetail.price}</p>
+                    <p>每晚價錢TWD{roomdetail.price}</p>
                   </div>
                  
                   <div className='roomCardDesc' >
