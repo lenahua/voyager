@@ -270,7 +270,19 @@ function Modalll({ isOpen, onClose, postid }) {
   };
   const formatTime = (utcDateString) => {
     const utcDate = new Date(utcDateString);
-    return utcDate.toLocaleString();
+    let localDateString = utcDate.toLocaleString();
+    localDateString = localDateString.replace(/\//g, "-");
+    return localDateString;
+  };
+
+  const formatTimeForPost = (utcDateString) => {
+    const utcDate = new Date(utcDateString);
+    const year = utcDate.getFullYear();
+    const month = utcDate.getMonth() + 1;
+    const day = utcDate.getDate();
+    return `${year}-${month < 10 ? "0" + month : month}-${
+      day < 10 ? "0" + day : day
+    }`;
   };
 
   const [modalInfoAry, setModalInfoAry] = useState([]);
@@ -396,9 +408,14 @@ function Modalll({ isOpen, onClose, postid }) {
 
         <div className="postArea col-12 col-sm-6 d-flex flex-column px-2 h-100">
           <div className="postHead d-flex align-items-center justify-content-between border-bottom border-secondary py-2">
-            <h3 className="mb-0">
+            <h3 className="mb-0 d-inline-block">
               {modalInfoAry.length ? modalInfoAry[0].title : ""}
             </h3>
+            <p className="mb-0">
+              {modalInfoAry.length
+                ? formatTimeForPost(modalInfoAry[0].postdate)
+                : ""}
+            </p>
           </div>
 
           <div className="postBody h-100 px-2">
