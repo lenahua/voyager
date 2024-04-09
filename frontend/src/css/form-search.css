@@ -103,10 +103,16 @@ body {
     right: 120px;
     background-color: white;
     color: black;
-    animation: grow 2s infinite alternate ease-in-out;
+
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
+}
+
+.hot:hover {
+    transform: scale(1.1);
+      background-color: #a3d7fc;
+      border: 1px solid transparent;
 }
 
 .hot-option {
@@ -127,16 +133,6 @@ body {
 }
 
 
-@keyframes grow {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1.2);
-      background-color: #a3d7fc;
-      border: 1px solid transparent;
-    }
-  }
 
 .button-radius {
     border-radius: 50px;
