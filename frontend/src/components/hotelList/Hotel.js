@@ -19,7 +19,7 @@ const Hotel = ({place, photos, rate}) => {
   // map init
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyAgv_GOuQjmhm65FuEXZ3SCH_FRSfhGaOM"
+    googleMapsApiKey: "APIKEY"
   })
   const markerRef = React.useRef(null);
 
